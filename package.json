@@ -1,0 +1,63 @@
+{
+  "name": "lampix-app-starter",
+  "version": "0.1.0",
+  "description": "Boilerplate for starting Lampix apps",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --config internals/webpack.prod.js --progress --colors",
+    "start": "concurrently --kill-others 'npm run start-renderer' 'wait-on http://localhost:8080 && npm run start-main'",
+    "start-renderer": "webpack-dev-server -d --inline --hot --config internals/webpack.dev.js",
+    "start-main": "cross-env NODE_ENV=development electron src/main-process/main.js",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix --ignore-pattern internals/",
+      "git add"
+    ]
+  },
+  "license": "ISC",
+  "dependencies": {
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-hot-loader": "^4.0.0",
+    "react-redux": "^5.0.7",
+    "redux": "^3.7.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.42",
+    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.42",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.42",
+    "@babel/plugin-transform-react-jsx": "^7.0.0-beta.42",
+    "@babel/preset-env": "^7.0.0-beta.42",
+    "babel-eslint": "^8.2.1",
+    "babel-loader": "^8.0.0-beta.0",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.13",
+    "clean-webpack-plugin": "^0.1.18",
+    "concurrently": "^3.5.1",
+    "cross-env": "^5.1.4",
+    "css-loader": "^0.28.9",
+    "dotenv": "^5.0.0",
+    "electron": "^1.8.4",
+    "electron-devtools-installer": "^2.2.3",
+    "eslint": "^4.17.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^1.1.6",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^2.30.1",
+    "husky": "^0.14.3",
+    "image-webpack-loader": "^4.1.0",
+    "lint-staged": "^6.1.0",
+    "node-sass": "^4.7.2",
+    "sass-loader": "^6.0.7",
+    "style-loader": "^0.20.1",
+    "uglifyjs-webpack-plugin": "^1.1.8",
+    "wait-on": "^2.1.0",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.1"
+  }
+}
