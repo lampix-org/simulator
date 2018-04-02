@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --config internals/webpack.prod.js --progress --colors",
-    "start": "concurrently --kill-others 'npm run start-renderer' 'wait-on http://localhost:8080 && npm run start-main'",
+    "start": "concurrently --kill-others \"npm run start-renderer\" \"wait-on http://localhost:8080 && npm run start-main\"",
     "start-renderer": "webpack-dev-server -d --inline --hot --config internals/webpack.dev.js",
     "start-main": "cross-env NODE_ENV=development electron src/main-process/main.js",
     "precommit": "lint-staged"
