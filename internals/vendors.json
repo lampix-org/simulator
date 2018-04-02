@@ -1,4 +1,7 @@
 [
-  "@lampix/core",
-  "@lampix/state"
+  "react",
+  "react-dom",
+  "redux",
+  "react-redux",
+  "react-hot-loader"
 ]
