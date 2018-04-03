@@ -1,10 +1,12 @@
-const { BrowserWindow } = require('electron');
+const electron = require('electron');
 const noop = require('lodash.noop');
 const mainDisplayCenterCoords = require('../utils/mainDisplayCenterCoords');
 const {
   DEFAULT_WINDOW_HEIGHT,
   DEFAULT_WINDOW_WIDTH
 } = require('../constants');
+
+const BrowserWindow = electron.BrowserWindow || electron.remote.BrowserWindow;
 
 module.exports = ({
   width = DEFAULT_WINDOW_WIDTH,

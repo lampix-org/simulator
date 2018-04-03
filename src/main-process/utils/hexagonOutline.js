@@ -1,4 +1,4 @@
-import mapPointPairs from './mapPointPairts';
+const mapPointPairs = require('./mapPointPairts');
 
 const hexagonOutline = (cx, cy, r) => {
   const h = r / 2 * Math.sqrt(3);

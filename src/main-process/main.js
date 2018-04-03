@@ -24,9 +24,10 @@ async function createWindow() {
     await installExtensions();
   }
 
-  // Create the browser window and load the index.html of the app.
-  const Admin = require('./Admin'); // eslint-disable-line
-  mainWindow = new Admin('http://localhost:8080');
+  // Create the admin window and load the index.html of the app.
+  const { createAdminBrowser } = require('./Admin'); // eslint-disable-line
+  mainWindow = createAdminBrowser();
+  mainWindow.loadURL('http://localhost:8080');
 }
 
 // This method will be called when Electron has finished

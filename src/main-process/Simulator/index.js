@@ -1,3 +1,3 @@
-import Simulator from './Simulator';
+const Simulator = require('./Simulator');
 
 module.exports = Simulator;

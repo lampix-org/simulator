@@ -1,3 +1,5 @@
 const Admin = require('./Admin');
+const createAdminBrowser = require('./createAdminBrowser');
 
-module.exports = Admin;
+exports = module.exports = Admin; // eslint-disable-line
+exports.createAdminBrowser = createAdminBrowser;

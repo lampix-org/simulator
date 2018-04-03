@@ -1,32 +1,28 @@
-const { app } = require('electron');
-const newWindow = require('../utils/newWindow');
 const noop = require('lodash.noop');
+const newWindow = require('../utils/newWindow');
 
 class Admin {
-  constructor(url) {
+  constructor() {
     this.appBrowser = null;
-
-    this.browser = newWindow({
-      onClose: () => app.quit()
-    });
-    this.browser.loadURL(url);
   }
 
-  loadApp(url, cb = noop) {
-    if (!this.appBrowser) {
-      this.appBrowser = newWindow({
-        options: {
-          resizable: false
-        }
-      });
+  loadApp(url) {
+    return new Promise((resolve) => {
+      if (!this.appBrowser) {
+        this.appBrowser = newWindow({
+          options: {
+            resizable: false
+          }
+        });
 
-      this.appBrowser.on('closed', () => {
-        this.appBrowser = null;
-      });
-    }
+        this.appBrowser.on('closed', () => {
+          this.appBrowser = null;
+        });
+      }
 
-    this.appBrowser.loadURL(url);
-    cb(null);
+      this.appBrowser.loadURL(url);
+      resolve();
+    });
   }
 
   showDevTools(cb = noop) {
@@ -35,4 +31,4 @@ class Admin {
   }
 }
 
-module.exports = Admin;
+module.exports = new Admin();
