@@ -1,6 +1,6 @@
 // Module to control application life.
 // Module to create native browser window.
-const { app, BrowserWindow } = require('electron');
+const { app } = require('electron');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -24,22 +24,9 @@ async function createWindow() {
     await installExtensions();
   }
 
-  // Create the browser window.
-  mainWindow = new BrowserWindow({ width: 1280, height: 800 });
-
-  // and load the index.html of the app.
-  mainWindow.loadURL('http://localhost:8080');
-
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
-
-  // Emitted when the window is closed.
-  mainWindow.on('closed', () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    mainWindow = null;
-  });
+  // Create the browser window and load the index.html of the app.
+  const Admin = require('./Admin'); // eslint-disable-line
+  mainWindow = new Admin('http://localhost:8080');
 }
 
 // This method will be called when Electron has finished
