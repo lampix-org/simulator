@@ -1,4 +1,3 @@
-const noop = require('lodash.noop');
 const newWindow = require('../utils/newWindow');
 
 class Admin {
@@ -25,9 +24,11 @@ class Admin {
     });
   }
 
-  showDevTools(cb = noop) {
-    this.browser.webContents.openDevTools();
-    cb(null);
+  showDevTools() {
+    return new Promise((resolve) => {
+      this.appBrowser.webContents.openDevTools();
+      resolve();
+    });
   }
 }
 
