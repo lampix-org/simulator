@@ -1,6 +1,6 @@
 const mapPointPairs = require('./mapPointPairts');
 
-const hexagonOutline = (cx, cy, r) => {
+const hexagonOutline = (cx, cy, r = 50) => {
   const h = r / 2 * Math.sqrt(3);
   const pointPairs = [
     [cx + r, cy],
@@ -16,4 +16,4 @@ const hexagonOutline = (cx, cy, r) => {
   };
 };
 
-module.exports = hexagonOutline;
+exports.hexagonOutline = hexagonOutline;
