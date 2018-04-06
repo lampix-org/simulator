@@ -121,6 +121,8 @@
     "react/self-closing-comp": "off",
     "react/no-array-index-key": "off",
     "react/prefer-stateless-function": "off",
-    "no-class-assign": "off"
+    "no-class-assign": "off",
+    "class-methods-use-this": "off",
+    "global-require": "off"
   }
 }
