@@ -1,35 +1,30 @@
-const newWindow = require('../utils/newWindow');
+const { browserWindowManager } = require('../BrowserWindowManager');
 
 class Admin {
   constructor() {
-    this.appBrowser = null;
+    // TODO Network API: Generate unique names to handle multiple apps loaded at once
+    // Return app name instead of window, or an object with both for convenience
+    // That would allow one app to send a message to another via its ID
+    this.appBrowserName = 'simulated-app';
   }
 
   loadApp(url) {
-    return new Promise((resolve) => {
-      if (!this.appBrowser) {
-        this.appBrowser = newWindow({
-          options: {
-            resizable: false
-          }
-        });
+    const { windows } = browserWindowManager;
+    if (!windows[this.appBrowserName]) {
+      browserWindowManager.newWindow({
+        name: this.appBrowserName,
+        options: {
+          resizable: false
+        }
+      });
+    }
 
-        this.appBrowser.on('closed', () => {
-          this.appBrowser = null;
-        });
-      }
-
-      this.appBrowser.loadURL(url);
-      resolve();
-    });
+    windows[this.appBrowserName].loadURL(url);
   }
 
   showDevTools() {
-    return new Promise((resolve) => {
-      this.appBrowser.webContents.openDevTools();
-      resolve();
-    });
+    browserWindowManager.windows[this.appBrowserName].webContents.openDevTools();
   }
 }
 
-module.exports = new Admin();
+exports.Admin = Admin;
