@@ -4,6 +4,10 @@ const { APP_SETTINGS } = require('./constants');
 const storeURLTemplate = (url) => `${APP_SETTINGS}/${url}`;
 
 class AppSettings {
+  constructor() {
+    this.current = null;
+  }
+
   newSettings() {
     return {
       movementDetector: false,
@@ -12,6 +16,10 @@ class AppSettings {
       recognizedClass: null,
       metadata: null
     };
+  }
+
+  setCurrentSettings(settings) {
+    this.current = settings;
   }
 
   get(url) {
