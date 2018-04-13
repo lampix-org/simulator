@@ -26,7 +26,8 @@ class BrowserWindowManager {
       width,
       height,
       x,
-      y
+      y,
+      useContentSize: true
     });
 
     const window = new BrowserWindow(windowOptions);
