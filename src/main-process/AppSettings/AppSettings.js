@@ -4,37 +4,45 @@ const { APP_SETTINGS } = require('./constants');
 const storeURLTemplate = (url) => `${APP_SETTINGS}/${url}`;
 
 class AppSettings {
-  constructor() {
-    this.current = null;
+  constructor(url) {
+    this.url = url;
+    this.storeLocation = storeURLTemplate(url);
+
+    if (store.has(this.storeLocation)) {
+      const data = store.get(this.storeLocation);
+      this.fromSource(data);
+    } else {
+      this.restoreDefaults();
+    }
   }
 
-  newSettings() {
-    return {
-      movementDetector: false,
-      classifierDetector: null,
-      classifier: null,
-      recognizedClass: null,
-      metadata: null
+  fromSource(data) {
+    this.movementDetector = data.movementDetector;
+    this.classifierDetector = data.classifierDetector;
+    this.classifier = data.classifier;
+    this.recognizedClass = data.recognizedClass;
+    this.metadata = data.metadata;
+  }
+
+  restoreDefaults() {
+    this.movementDetector = false;
+    this.classifierDetector = null;
+    this.classifier = null;
+    this.recognizedClass = null;
+    this.metadata = '';
+  }
+
+  save() {
+    const location = storeURLTemplate(this.url);
+    const data = {
+      movementDetector: this.movementDetector,
+      classifierDetector: this.classifierDetector,
+      classifier: this.classifier,
+      recognizedClass: this.recognizedClass,
+      metadata: this.metadata
     };
-  }
 
-  setCurrentSettings(settings) {
-    this.current = settings;
-  }
-
-  get(url) {
-    const location = storeURLTemplate(url);
-    return store.get(location);
-  }
-
-  save(url, data) {
-    const location = storeURLTemplate(url);
     store.set(location, data);
-  }
-
-  has(url) {
-    const location = storeURLTemplate(url);
-    return store.has(location);
   }
 }
 
