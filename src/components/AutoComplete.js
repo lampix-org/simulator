@@ -6,25 +6,26 @@ import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
+import noop from 'lodash.noop';
 
 const styles = {
   input: {
     color: 'white'
-  },
+  }
 };
 
-function AutoComplete({ items, onChange }) {
+function AutoComplete({ items, onChange, classes }) {
   return (
     <Downshift
       onChange={onChange}
       render={({
-                 getInputProps,
-                 getItemProps,
-                 isOpen,
-                 inputValue,
-                 selectedItem,
-                 highlightedIndex,
-               }) => (
+        getInputProps,
+        getItemProps,
+        isOpen,
+        inputValue,
+        selectedItem,
+        highlightedIndex
+      }) => (
         <div
           style={{ flexGrow: 1 }}
         >
@@ -32,10 +33,10 @@ function AutoComplete({ items, onChange }) {
             fullWidth
             label="URL address"
             InputLabelProps={{
-              style: { color: '#fff' }
+              className: classes.input
             }}
             inputProps={{
-              style: { color: 'white' }
+              className: classes.input
             }}
             {...getInputProps()}
           />
@@ -66,13 +67,13 @@ function AutoComplete({ items, onChange }) {
 }
 
 AutoComplete.defaultProps = {
-  onChange: () => {
-  }
+  onChange: noop
 };
 
 AutoComplete.propTypes = {
   items: PropTypes.array.isRequired, // eslint-disable-line
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  classes: PropTypes.object.isRequired // eslint-disable-line
 };
 
 export default withStyles(styles)(AutoComplete);
