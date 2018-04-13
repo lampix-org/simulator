@@ -17,8 +17,6 @@ class Simulator {
       simple: [],
       position: []
     };
-
-    global[`simulator-${url}`] = this;
   }
 
   handleMouseMove(mouseX, mouseY) {
