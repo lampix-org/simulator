@@ -26,6 +26,7 @@
         "code": 120
       }
     ],
+    "no-console": "off",
     "no-plusplus": "off",
     "no-use-before-define": "off",
     "no-restricted-syntax": [
