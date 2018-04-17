@@ -18,7 +18,6 @@ class AppSettings {
 
   fromSource(data) {
     this.movementDetector = data.movementDetector;
-    this.classifierDetector = data.classifierDetector;
     this.classifier = data.classifier;
     this.recognizedClass = data.recognizedClass;
     this.metadata = data.metadata;
@@ -27,9 +26,18 @@ class AppSettings {
   restoreDefaults() {
     this.movementDetector = false;
     this.classifierDetector = null;
-    this.classifier = null;
-    this.recognizedClass = null;
-    this.metadata = '';
+
+    this.simple = {
+      classifier: null,
+      recognizedClass: null,
+      metadata: null
+    };
+
+    this.position = {
+      classifier: null,
+      recognizedClass: null,
+      metadata: null
+    };
   }
 
   save() {

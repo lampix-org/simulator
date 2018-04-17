@@ -49,9 +49,10 @@ class Simulator {
     console.log(`Handling click / simple classification at x: ${mouseX}, y: ${mouseY}`);
 
     this.rectangles.simple.forEach((rectangle, i) => {
-      if (pointInRectangle(rectangle, mouseX, mouseY)) {
+      const { classifier, recognizedClass, metadata } = this.settings.simple;
+
+      if (rectangle.classifier === classifier && pointInRectangle(rectangle, mouseX, mouseY)) {
         console.log('Point in rectangle, calling onSimpleClassifier in the browser window');
-        const { recognizedClass, metadata } = this.settings;
         this.browser.webContents.executeJavaScript(`onSimpleClassifier(${i}, '${recognizedClass}', '${metadata}')`);
       }
     });
@@ -64,7 +65,7 @@ class Simulator {
       classifier,
       recognizedClass,
       metadata
-    } = this.settings;
+    } = this.settings.position;
     let outline = [];
 
     if (classifier === 'paper') {
