@@ -39,7 +39,6 @@ class AppSettings {
   }
 
   save() {
-    const location = storeURLTemplate(this.url);
     const data = {
       movementDetector: this.movementDetector,
       classifierDetector: this.classifierDetector,
@@ -48,7 +47,7 @@ class AppSettings {
       metadata: this.metadata
     };
 
-    store.set(location, data);
+    store.set(this.storeLocation, data);
   }
 }
 
