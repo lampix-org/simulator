@@ -1,0 +1,5 @@
+exports.TOGGLE_MOVEMENT = 'lx-simulator/IPC/TOGGLE_MOVEMENT';
+exports.SET_CLASSIFIER = 'lx-simulator/IPC/SET_CLASSIFIER';
+exports.SET_RECOGNIZED_CLASS = 'lx-simulator/IPC/SET_RECOGNIZED_CLASS';
+exports.SET_METADATA = 'lx-simulator/IPC/SET_METADATA';
+exports.UPDATE_RENDERER_SETTINGS = 'lx-simulator/IPC/UPDATE_RENDERER_SETTINGS';
