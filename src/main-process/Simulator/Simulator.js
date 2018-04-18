@@ -1,11 +1,17 @@
-const { appSettings } = require('../AppSettings');
-const { browserWindowManager } = require('../BrowserWindowManager');
-const { admin } = require('../Admin');
+const { AppSettings } = require('../AppSettings');
 const { hexagonOutline } = require('../utils/hexagonOutline');
 const { hexagonInRect } = require('../utils/hexagonInRect');
+const { onChange } = require('../utils/onChange');
+const { type } = require('../utils/type');
 
 class Simulator {
-  constructor() {
+  constructor(browser, url) {
+    this.appUrl = url;
+    this.browser = browser;
+
+    const settings = new AppSettings(url);
+    this.settings = onChange(settings, () => settings.save());
+
     this.rectangles = {
       movement: [],
       simple: [],
@@ -13,20 +19,33 @@ class Simulator {
     };
   }
 
-  handleMouseMove(event) {
-    if (!appSettings.current.movementDetector) {
+  handleMouseMove(mouseX, mouseY) {
+    if (!this.settings.movementDetector || this.rectangles.movement.length === 0) {
       return;
     }
 
-    const hexagon = hexagonOutline(event.pageX, event.pageY);
-    const { windows } = browserWindowManager;
+    const hexagon = hexagonOutline(mouseX, mouseY);
 
     this.rectangles.movement.forEach((rectangle, i) => {
       if (hexagonInRect(hexagon, rectangle)) {
-        windows[admin.appBrowserName].webContents.executeJavaScript(`onMovement(${i}, ${hexagon})`);
+        this.browser.webContents.executeJavaScript(`onMovement(${i}, ${hexagon})`);
       }
     });
   }
+
+  toggleMouseMovement() {
+    this.settings.movementDetector = !this.settings.movementDetector;
+  }
+
+  setMovementRectangles(data = []) {
+    let rectangles = data;
+
+    if (type(rectangles) === 'String') {
+      rectangles = JSON.parse(rectangles);
+    }
+
+    this.rectangles.movement = rectangles;
+  }
 }
 
-module.exports = Simulator;
+exports.Simulator = Simulator;

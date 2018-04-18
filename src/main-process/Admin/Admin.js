@@ -1,29 +1,42 @@
+const path = require('path');
 const { browserWindowManager } = require('../BrowserWindowManager');
+const { Simulator } = require('../Simulator');
 
 class Admin {
   constructor() {
-    // TODO Network API: Generate unique names to handle multiple apps loaded at once
-    // Return app name instead of window, or an object with both for convenience
-    // That would allow one app to send a message to another via its ID
-    this.appBrowserName = 'simulated-app';
+    this.simulators = {};
   }
 
   loadApp(url) {
+    console.log(`Admin.loadApp called with URL: ${url}`);
+
     const { windows } = browserWindowManager;
-    if (!windows[this.appBrowserName]) {
-      browserWindowManager.newWindow({
-        name: this.appBrowserName,
+
+    let window = windows[url];
+
+    if (!window) {
+      console.log('Creating new window and simulator.');
+      window = browserWindowManager.newWindow({
+        id: url,
         options: {
-          resizable: false
+          resizable: false,
+          webPreferences: {
+            preload: path.resolve(__dirname, '..', 'Simulator', 'preload.js'),
+            nodeIntegration: false
+          }
         }
       });
+
+      this.simulators[url] = new Simulator(window, url);
+      global[`simulator-${url}`] = this.simulators[url];
     }
 
-    windows[this.appBrowserName].loadURL(url);
-  }
+    const options = process.env.NODE_ENV === 'development' ? { extraHeaders: 'pragma: no-cache\n' } : {};
 
-  showDevTools() {
-    browserWindowManager.windows[this.appBrowserName].webContents.openDevTools();
+    console.log(`Loading app at ${url}`);
+    window.loadURL(url, options);
+
+    return this.simulators[url];
   }
 }
 

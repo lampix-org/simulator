@@ -1,3 +1,3 @@
-const Simulator = require('./Simulator');
+const { Simulator } = require('./Simulator');
 
-module.exports = Simulator;
+exports.Simulator = Simulator;
