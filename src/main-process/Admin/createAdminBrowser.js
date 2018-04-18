@@ -4,7 +4,7 @@ const path = require('path');
 module.exports = () => {
   const { browserWindowManager } = require('../BrowserWindowManager');
   const browser = browserWindowManager.newWindow({
-    name: 'admin',
+    id: 'admin',
     onClosed: () => app.quit(),
     options: {
       webPreferences: {

@@ -17,7 +17,7 @@ class Admin {
     if (!window) {
       console.log('Creating new window and simulator.');
       window = browserWindowManager.newWindow({
-        name: url,
+        id: url,
         options: {
           resizable: false,
           webPreferences: {

@@ -14,7 +14,7 @@ class BrowserWindowManager {
   }
 
   newWindow({
-    name = Math.random().toString(36).slice(2),
+    id = Math.random().toString(36).slice(2),
     width = DEFAULT_WINDOW_WIDTH,
     height = DEFAULT_WINDOW_HEIGHT,
     options = {},
@@ -31,14 +31,14 @@ class BrowserWindowManager {
     });
 
     const window = new BrowserWindow(windowOptions);
-    this.windows[name] = window;
+    this.windows[id] = window;
 
     // Emitted when the window is closed.
     window.once('closed', () => {
       // Dereference the window object, usually you would store windows
       // in an array if your app supports multi windows, this is the time
       // when you should delete the corresponding element.
-      delete this.windows[name];
+      delete this.windows[id];
       onClosed();
     });
 
