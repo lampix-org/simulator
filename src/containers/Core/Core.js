@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
-import AppBar from '../../components/AppBar';
+import ButtonAppBar from '../../components/ButtonAppBar';
 
 class Core extends Component {
   render() {
     return (
       <div>
-        <AppBar />
+        <ButtonAppBar />
       </div>
     );
   }
