@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
@@ -11,18 +12,18 @@ import lampixLogo from '../img/logo.png';
 
 const styles = {
   root: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   flex: {
-    flex: 1,
+    flex: 1
   },
   menuButton: {
     marginLeft: -12,
-    marginRight: 20,
+    marginRight: 20
   },
   logo: {
     width: 30,
-    height: 30,
+    height: 30
   },
   toolbar: {
     background: '#222222'
@@ -41,7 +42,6 @@ class ButtonAppBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedItem: null,
       inputValue: ''
     };
 
@@ -49,8 +49,8 @@ class ButtonAppBar extends React.Component {
   }
 
   loadApp = () => {
-    if (this.state.selectedItem || this.state.inputValue) {
-      this.state.selectedItem ? window.lampix.loadApp(this.state.selectedItem) : window.lampix.loadApp(this.state.inputValue);
+    if (this.state.inputValue) {
+      window.lampix.loadApp(this.state.inputValue);
     }
   }
 
@@ -59,11 +59,11 @@ class ButtonAppBar extends React.Component {
   }
 
   handleSelectedItemChange = (item) => {
-    this.setState({ selectedItem: item });
+    this.setState({ inputValue: item });
   }
   render() {
     const { classes } = this.props;
-    const { selectedItem, inputValue } = this.state;
+    const { inputValue } = this.state;
 
     return (
       <div className={classes.root}>
@@ -89,5 +89,9 @@ class ButtonAppBar extends React.Component {
     );
   }
 }
+
+ButtonAppBar.propTypes = {
+  classes: PropTypes.object.isRequired // eslint-disable-line
+};
 
 export default withStyles(styles)(ButtonAppBar);

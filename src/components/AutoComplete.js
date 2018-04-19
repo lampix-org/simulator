@@ -40,6 +40,7 @@ function AutoComplete({
             inputProps={{
               className: classes.input
             }}
+            value={inputValue}
             {...getInputProps({
               onChange: onKeyDown
             })}
