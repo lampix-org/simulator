@@ -42,7 +42,7 @@ class ButtonAppBar extends React.Component {
     super(props);
     this.state = {
       selectedItem: null,
-      inputValue: 'just in case'
+      inputValue: ''
     };
 
     this.loadApp = this.loadApp.bind(this);
