@@ -1,9 +1,11 @@
 const { Simulator } = require('../Simulator');
 const { initSimulatorSettingsListeners } = require('./ipc/initSimulatorSettingsListeners');
+const { createAdminBrowser } = require('./createAdminBrowser');
 
 class Admin {
   constructor() {
     this.simulators = {};
+    this.browser = createAdminBrowser();
 
     initSimulatorSettingsListeners();
   }
