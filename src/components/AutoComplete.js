@@ -14,7 +14,9 @@ const styles = {
   }
 };
 
-function AutoComplete({ items, onChange, onKeyDown, classes }) {
+function AutoComplete({
+  items, onChange, onKeyDown, classes
+}) {
   return (
     <Downshift
       onChange={onChange}

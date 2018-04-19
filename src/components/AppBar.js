@@ -47,10 +47,10 @@ class ButtonAppBar extends React.Component {
 
     this.loadApp = this.loadApp.bind(this);
   }
-  
+
   loadApp = () => {
     if (this.state.selectedItem || this.state.inputValue) {
-      this.state.selectedItem ?  window.lampix.loadApp(this.state.selectedItem) : window.lampix.loadApp(this.state.inputValue);
+      this.state.selectedItem ? window.lampix.loadApp(this.state.selectedItem) : window.lampix.loadApp(this.state.inputValue);
     }
   }
 
@@ -86,9 +86,8 @@ class ButtonAppBar extends React.Component {
           </Toolbar>
         </AppBar>
       </div>
-    )
+    );
   }
-  
 }
 
 export default withStyles(styles)(ButtonAppBar);
