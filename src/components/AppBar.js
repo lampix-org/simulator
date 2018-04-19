@@ -37,28 +37,58 @@ const addresses = [
   'http://localhost:8580',
 ];
 
-function ButtonAppBar(props) {
-  const { classes } = props;
-  return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar className={classes.toolbar}>
-          <IconButton color="inherit" aria-label="Logo">
-            <img src={lampixLogo} className={classes.logo} alt="lampix logo" />
-          </IconButton>
-          <AutoComplete
-            items={addresses}
-            onChange={selectedItem => console.log(selectedItem)}
-            style={{ flexGrow: 1 }}
-          />
-          <Button color="inherit">Load</Button>
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-            <MenuIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
+class ButtonAppBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedItem: null,
+      inputValue: 'just in case'
+    };
+
+    this.loadApp = this.loadApp.bind(this);
+  }
+  
+  loadApp = () => {
+    if (this.state.selectedItem || this.state.inputValue) {
+      this.state.selectedItem ?  window.lampix.loadApp(this.state.selectedItem) : window.lampix.loadApp(this.state.inputValue);
+    }
+  }
+
+  handleInputChange = (event) => {
+    this.setState({ inputValue: event.target.value });
+  }
+
+  handleSelectedItemChange = (item) => {
+    this.setState({ selectedItem: item });
+  }
+  render() {
+    const { classes } = this.props;
+    const { selectedItem, inputValue } = this.state;
+
+    return (
+      <div className={classes.root}>
+        <AppBar position="static">
+          <Toolbar className={classes.toolbar}>
+            <IconButton color="inherit" aria-label="Logo">
+              <img src={lampixLogo} className={classes.logo} alt="lampix logo" />
+            </IconButton>
+            <AutoComplete
+              items={addresses}
+              inputValue={inputValue}
+              onKeyDown={this.handleInputChange}
+              onChange={this.handleSelectedItemChange}
+              style={{ flexGrow: 1 }}
+            />
+            <Button onClick={this.loadApp} color="inherit">Load</Button>
+            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+              <MenuIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+      </div>
+    )
+  }
+  
 }
 
 export default withStyles(styles)(ButtonAppBar);

@@ -14,7 +14,7 @@ const styles = {
   }
 };
 
-function AutoComplete({ items, onChange, classes }) {
+function AutoComplete({ items, onChange, onKeyDown, classes }) {
   return (
     <Downshift
       onChange={onChange}
@@ -38,7 +38,9 @@ function AutoComplete({ items, onChange, classes }) {
             inputProps={{
               className: classes.input
             }}
-            {...getInputProps()}
+            {...getInputProps({
+              onChange: onKeyDown
+            })}
           />
           {isOpen ? (
             <Paper style={{ position: 'absolute', padding: '10px' }}>
@@ -67,12 +69,14 @@ function AutoComplete({ items, onChange, classes }) {
 }
 
 AutoComplete.defaultProps = {
-  onChange: noop
+  onChange: noop,
+  onKeyDown: noop
 };
 
 AutoComplete.propTypes = {
   items: PropTypes.array.isRequired, // eslint-disable-line
   onChange: PropTypes.func,
+  onKeyDown: PropTypes.func,
   classes: PropTypes.object.isRequired // eslint-disable-line
 };
 
