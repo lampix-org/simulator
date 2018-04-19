@@ -1,6 +1,7 @@
 const { Simulator } = require('../Simulator');
 const { initSimulatorSettingsListeners } = require('./ipc/initSimulatorSettingsListeners');
 const { createAdminBrowser } = require('./createAdminBrowser');
+const { UPDATE_SIMULATOR_LIST } = require('../ipcEvents');
 
 class Admin {
   constructor() {
@@ -27,7 +28,14 @@ class Admin {
     console.log(`Loading app at ${url}`);
     this.simulators[url].browser.loadURL(url, options);
 
+    this.sendSimulators();
+
     return this.simulators[url];
+  }
+
+  sendSimulators() {
+    console.log('Sending simulator list to renderer...');
+    this.browser.webContents.send(UPDATE_SIMULATOR_LIST, this.simulators);
   }
 }
 
