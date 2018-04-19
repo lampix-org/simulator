@@ -44,8 +44,6 @@ class ButtonAppBar extends React.Component {
     this.state = {
       inputValue: ''
     };
-
-    this.loadApp = this.loadApp.bind(this);
   }
 
   loadApp = () => {
