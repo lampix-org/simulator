@@ -10,8 +10,12 @@ window.addEventListener('click', (event) => {
   simulator.handleSimpleClassifier(event.clientX, event.clientY);
 });
 
+window.addEventListener('contextmenu', (event) => {
+  simulator.handlePositionClassifier(event.clientX, event.clientY);
+});
+
 window._lampix_internal = {
   registerMovement: (rectangles) => simulator.setMovementRectangles(rectangles),
   registerSimpleClassifier: (rectangles) => simulator.setSimpleRectangles(rectangles),
-  registerPositionClassifier: () => {}
+  registerPositionClassifier: (rectangles) => simulator.setPositionRectangles(rectangles)
 };
