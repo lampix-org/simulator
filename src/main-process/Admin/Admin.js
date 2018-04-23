@@ -1,10 +1,13 @@
 const path = require('path');
 const { browserWindowManager } = require('../BrowserWindowManager');
 const { Simulator } = require('../Simulator');
+const { initSimulatorSettingsListeners } = require('./ipc/initSimulatorSettingsListeners');
 
 class Admin {
   constructor() {
     this.simulators = {};
+
+    initSimulatorSettingsListeners();
   }
 
   loadApp(url) {

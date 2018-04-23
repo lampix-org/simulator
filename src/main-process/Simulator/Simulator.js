@@ -112,10 +112,6 @@ class Simulator {
     });
   }
 
-  toggleMouseMovement() {
-    this.settings.movementDetector = !this.settings.movementDetector;
-  }
-
   setMovementRectangles(data = []) {
     this.rectangles.movement = parseIfString(data);
   }
