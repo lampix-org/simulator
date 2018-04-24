@@ -4,10 +4,10 @@ const {
   SET_CLASSIFIER,
   SET_RECOGNIZED_CLASS,
   SET_METADATA,
-  UPDATE_RENDERER_SETTINGS
+  UPDATE_SIMULATOR_SETTINGS
 } = require('../../ipcEvents');
 
-const sendSettingsBack = (sender, url, settings) => sender.send(UPDATE_RENDERER_SETTINGS, {
+const sendSettingsBack = (sender, url, settings) => sender.send(UPDATE_SIMULATOR_SETTINGS, {
   url,
   settings
 });
