@@ -1,3 +1,4 @@
+const path = require('path');
 const { AppSettings } = require('../AppSettings');
 const { paperOutline } = require('../utils/paperOutline');
 const { hexagonOutline } = require('../utils/hexagonOutline');
@@ -5,6 +6,7 @@ const { outlineInRectangle } = require('../utils/outlineInRectangle');
 const { pointInRectangle } = require('../utils/pointInRectangle');
 const { onChange } = require('../utils/onChange');
 const { type } = require('../utils/type');
+const { newWindow } = require('../utils/newWindow');
 
 const parseIfString = (data) => {
   if (type(data) === 'String') {
@@ -15,9 +17,8 @@ const parseIfString = (data) => {
 };
 
 class Simulator {
-  constructor(browser, url) {
+  constructor(url) {
     this.appUrl = url;
-    this.browser = browser;
 
     const settings = new AppSettings(url);
     this.settings = onChange(settings, () => settings.save());
@@ -29,6 +30,21 @@ class Simulator {
     };
 
     this.idCounter = 0;
+
+    this.createOwnBrowser();
+  }
+
+  createOwnBrowser() {
+    this.browser = newWindow({
+      onClosed: () => this.cleanUp(),
+      options: {
+        resizable: false,
+        webPreferences: {
+          preload: path.join(__dirname, 'preload.js'),
+          nodeIntegration: false
+        }
+      }
+    });
   }
 
   handleMouseMove(mouseX, mouseY) {
@@ -122,6 +138,10 @@ class Simulator {
 
   setPositionRectangles(data = []) {
     this.rectangles.position = parseIfString(data);
+  }
+
+  cleanUp() {
+    this.browser = null;
   }
 }
 

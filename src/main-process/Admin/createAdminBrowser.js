@@ -1,10 +1,9 @@
 const { app } = require('electron');
 const path = require('path');
 
-module.exports = () => {
-  const { browserWindowManager } = require('../BrowserWindowManager');
-  const browser = browserWindowManager.newWindow({
-    id: 'admin',
+exports.createAdminBrowser = () => {
+  const { newWindow } = require('../utils/newWindow');
+  const browser = newWindow({
     onClosed: () => app.quit(),
     options: {
       webPreferences: {
