@@ -1,3 +1,3 @@
-import { SimulatorList } from './SimulatorList';
+import SimulatorList from './SimulatorList';
 
-export { SimulatorList };
+export default SimulatorList;
