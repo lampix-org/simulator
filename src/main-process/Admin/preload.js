@@ -22,5 +22,10 @@ window.lampix = {
   setMetadata: (url, metadata) => ipcRenderer.send(SET_METADATA, {
     url,
     metadata
-  })
+  }),
+  closeSimulator: (url) => {
+    admin.closeSimulator(url);
+    admin.sendSimulators();
+  },
+  focusSimulator: (url) => admin.focusSimulator(url)
 };
