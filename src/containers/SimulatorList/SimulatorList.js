@@ -46,47 +46,6 @@ class SimulatorList extends React.Component {
     super(props);
 
     this.state = {
-      simulatorList: {
-        'http://localhost:8080': {
-          movementDetector: true,
-          simple: {
-            classifier: 'book',
-            recognizedClass: '2',
-            metadata: 'What a save!'
-          },
-          position: {
-            classifier: null,
-            recognizedClass: null,
-            metadata: null
-          }
-        },
-        'http://localhost:3030': {
-          movementDetector: false,
-          simple: {
-            classifier: 'cls_loc_fin_all_small',
-            recognizedClass: '1',
-            metadata: null
-          },
-          position: {
-            classifier: 'cls_loc_cars',
-            recognizedClass: '1',
-            metadata: 'Frunza verde de ciment, foarte bine, excelent'
-          }
-        },
-        'http://localhost:2020': {
-          movementDetector: false,
-          simple: {
-            classifier: null,
-            recognizedClass: null,
-            metadata: null
-          },
-          position: {
-            classifier: null,
-            recognizedClass: null,
-            metadata: null
-          }
-        }
-      },
       classifierOptions: [
         'cls_loc_fin_all_small',
         'book',
@@ -98,15 +57,26 @@ class SimulatorList extends React.Component {
         '3'
       ]
     };
+    ipcRenderer.on(UPDATE_SIMULATOR_LIST, (event, data) => {
+      const simulatorData = {};
+      const dataKeys = Object.keys(data);
+      const simulatorObj = {
+        movementDetector: '',
+        simple: {},
+        position: {}
+      };
+      for (let i = 0; i < dataKeys.length; i++) {
+        simulatorObj.movementDetector = data[dataKeys[i]].settings.movementDetector;
+        simulatorObj.simple = data[dataKeys[i]].settings.simple;
+        simulatorObj.position = data[dataKeys[i]].settings.position;
+        simulatorData[dataKeys[i]] = simulatorObj;
+      }
+      this.setState({
+        simulatorList: simulatorData
+      });
+    });
   }
 
-updateSimulatorList = () => {
-  ipcRenderer.on(UPDATE_SIMULATOR_LIST, (event, data) => {
-    this.setState({
-      simulatorList: data
-    });
-  });
-}
 
 handleMovementDetectorChange = (event, url) => {
   const simulatorList = { ...this.state.simulatorList };
@@ -163,6 +133,12 @@ handlePositionMetadataChange = (event, url) => {
     simulatorList
   });
 }
+closeSimulator = (url) => {
+  window.lampix.closeSimulator(url);
+}
+focusSimulator = (url) => {
+  window.lampix.focusSimulator(url);
+}
 
 render() {
   const { classes } = this.props;
@@ -183,7 +159,7 @@ render() {
     </MenuItem>
   ));
 
-  const simulators = Object.keys(this.state.simulatorList).map((url) => {
+  const simulators = this.state.simulatorList ? Object.keys(this.state.simulatorList).map((url) => {
     const simulator = this.state.simulatorList[url];
     return (
       <div key={url}>
@@ -294,13 +270,13 @@ render() {
           </ExpansionPanelDetails>
           <Divider className={classes.divider} />
           <ExpansionPanelActions className={classes.darkBackground}>
-            <Button size="small" >Close simulator</Button>
-            <Button size="small" color="primary">Focus</Button>
+            <Button size="small" onClick={() => this.closeSimulator(url)}>Close simulator</Button>
+            <Button size="small" onClick={() => this.focusSimulator(url)} color="primary">Focus</Button>
           </ExpansionPanelActions>
         </ExpansionPanel>
       </div>
     );
-  });
+  }) : '';
 
   return (
     <div>
