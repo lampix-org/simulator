@@ -3,6 +3,8 @@ const { initSimulatorSettingsListeners } = require('./ipc/initSimulatorSettingsL
 const { createAdminBrowser } = require('./createAdminBrowser');
 const { UPDATE_SIMULATOR_LIST } = require('../ipcEvents');
 
+const logSimulatorNotFound = (url) => console.log(`Simulator for ${url} not found. Doing nothing.`);
+
 class Admin {
   constructor() {
     this.simulators = {};
@@ -20,7 +22,11 @@ class Admin {
 
     console.log('Creating new simulator...');
 
-    this.simulators[url] = new Simulator(url);
+    this.simulators[url] = new Simulator(url, () => {
+      delete this.simulators[url];
+      delete global[`simulator-${url}`];
+    });
+
     global[`simulator-${url}`] = this.simulators[url];
 
     const options = process.env.NODE_ENV === 'development' ? { extraHeaders: 'pragma: no-cache\n' } : {};
@@ -31,6 +37,30 @@ class Admin {
     this.sendSimulators();
 
     return this.simulators[url];
+  }
+
+  closeSimulator(url) {
+    console.log(`Attempting to close simulator for ${url}...`);
+
+    if (this.simulators[url]) {
+      console.log('Simulator found. Closing... ');
+      this.simulators[url].browser.close();
+      return;
+    }
+
+    logSimulatorNotFound(url);
+  }
+
+  focusSimulator(url) {
+    console.log(`Attempting to focus simulator for ${url}...`);
+
+    if (this.simulators[url]) {
+      console.log('Simulator found. Focusing... ');
+      this.simulators[url].browser.focus();
+      return;
+    }
+
+    logSimulatorNotFound(url);
   }
 
   sendSimulators() {

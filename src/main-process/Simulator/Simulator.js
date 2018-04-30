@@ -7,6 +7,7 @@ const { pointInRectangle } = require('../utils/pointInRectangle');
 const { onChange } = require('../utils/onChange');
 const { type } = require('../utils/type');
 const { newWindow } = require('../utils/newWindow');
+const noop = require('lodash.noop');
 
 const parseIfString = (data) => {
   if (type(data) === 'String') {
@@ -17,7 +18,7 @@ const parseIfString = (data) => {
 };
 
 class Simulator {
-  constructor(url) {
+  constructor(url, onClosed) {
     this.appUrl = url;
 
     const settings = new AppSettings(url);
@@ -31,12 +32,15 @@ class Simulator {
 
     this.idCounter = 0;
 
-    this.createOwnBrowser();
+    this.createOwnBrowser(onClosed);
   }
 
-  createOwnBrowser() {
+  createOwnBrowser(onClosed = noop) {
     this.browser = newWindow({
-      onClosed: () => this.cleanUp(),
+      onClosed: () => {
+        this.cleanUp();
+        onClosed();
+      },
       options: {
         resizable: false,
         webPreferences: {
