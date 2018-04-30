@@ -45,7 +45,6 @@ class Admin {
     if (this.simulators[url]) {
       console.log('Simulator found. Closing... ');
       this.simulators[url].browser.close();
-      delete this.simulators[url];
       return;
     }
 
