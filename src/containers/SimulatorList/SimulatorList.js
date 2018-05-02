@@ -48,21 +48,8 @@ class SimulatorList extends React.Component {
     this.state = {
     };
     ipcRenderer.on(UPDATE_SIMULATOR_LIST, (event, data) => {
-      const simulatorData = {};
-      const dataKeys = Object.keys(data);
-      const simulatorObj = {
-        movementDetector: false,
-        simple: {},
-        position: {}
-      };
-      for (let i = 0; i < dataKeys.length; i++) {
-        simulatorObj.movementDetector = data[dataKeys[i]].settings.movementDetector;
-        simulatorObj.simple = data[dataKeys[i]].settings.simple;
-        simulatorObj.position = data[dataKeys[i]].settings.position;
-        simulatorData[dataKeys[i]] = simulatorObj;
-      }
       this.setState({
-        simulatorList: simulatorData
+        simulatorList: data
       });
     });
   }
@@ -70,7 +57,7 @@ class SimulatorList extends React.Component {
 
 handleMovementDetectorChange = (event, url) => {
   const simulatorList = { ...this.state.simulatorList };
-  simulatorList[url].movementDetector = event.target.checked;
+  simulatorList[url].settings.movementDetector = event.target.checked;
   this.setState({
     simulatorList
   });
@@ -78,7 +65,7 @@ handleMovementDetectorChange = (event, url) => {
 
 handleSimpleClassifierChange = (event, url) => {
   const simulatorList = { ...this.state.simulatorList };
-  simulatorList[url].simple.classifier = event.target.value;
+  simulatorList[url].settingssimple.classifier = event.target.value;
   this.setState({
     simulatorList
   });
@@ -86,7 +73,7 @@ handleSimpleClassifierChange = (event, url) => {
 
 handleSimpleRecognizedClassChange = (event, url) => {
   const simulatorList = { ...this.state.simulatorList };
-  simulatorList[url].simple.recognizedClass = event.target.value;
+  simulatorList[url].settingssimple.recognizedClass = event.target.value;
   this.setState({
     simulatorList
   });
@@ -94,7 +81,7 @@ handleSimpleRecognizedClassChange = (event, url) => {
 
 handleSimpleMetadataChange = (event, url) => {
   const simulatorList = { ...this.state.simulatorList };
-  simulatorList[url].simple.metadata = event.target.value;
+  simulatorList[url].settings.simple.metadata = event.target.value;
   this.setState({
     simulatorList
   });
@@ -102,7 +89,7 @@ handleSimpleMetadataChange = (event, url) => {
 
 handlePositionClassifierChange = (event, url) => {
   const simulatorList = { ...this.state.simulatorList };
-  simulatorList[url].position.classifier = event.target.value;
+  simulatorList[url].settings.position.classifier = event.target.value;
   this.setState({
     simulatorList
   });
@@ -110,7 +97,7 @@ handlePositionClassifierChange = (event, url) => {
 
 handlePositionRecognizedClassChange = (event, url) => {
   const simulatorList = { ...this.state.simulatorList };
-  simulatorList[url].position.recognizedClass = event.target.value;
+  simulatorList[url].settings.position.recognizedClass = event.target.value;
   this.setState({
     simulatorList
   });
@@ -118,7 +105,7 @@ handlePositionRecognizedClassChange = (event, url) => {
 
 handlePositionMetadataChange = (event, url) => {
   const simulatorList = { ...this.state.simulatorList };
-  simulatorList[url].position.metadata = event.target.value;
+  simulatorList[url].settings.position.metadata = event.target.value;
   this.setState({
     simulatorList
   });
@@ -132,22 +119,22 @@ focusSimulator = (url) => {
 
 render() {
   const { classes } = this.props;
-  const classifierMenuItems = this.state.classifierOptions.map(classifier => (
+  const classifierMenuItems = this.state.classifierOptions ? this.state.classifierOptions.map(classifier => (
     <MenuItem
       key={classifier}
       value={classifier}
     >
       {classifier}
     </MenuItem>
-  ));
-  const recognizedClassMenuItems = this.state.classOption.map(recognizedClass => (
+  )) : '';
+  const recognizedClassMenuItems = this.state.classOption ? this.state.classOption.map(recognizedClass => (
     <MenuItem
       key={recognizedClass}
       value={recognizedClass}
     >
       {recognizedClass}
     </MenuItem>
-  ));
+  )) : '';
 
   const simulators = this.state.simulatorList ? Object.keys(this.state.simulatorList).map((url) => {
     const simulator = this.state.simulatorList[url];
@@ -167,7 +154,7 @@ render() {
               <Grid item xs={12}>
                 <span className={classes.paperInnerContentText}>  { 'Movement detector:' } </span>
                 <Switch
-                  checked={simulator.movementDetector}
+                  checked={simulator.settings.movementDetector}
                   onChange={(evt) => this.handleMovementDetectorChange(evt, url)}
                   value="simulator.movementDetector"
                 />
@@ -181,7 +168,7 @@ render() {
                     { 'classifier:' }
                   </span>
                   <Select
-                    value={simulator.simple.classifier || ''}
+                    value={simulator.settings.simple.classifier || ''}
                     onChange={(evt) => this.handleSimpleClassifierChange(evt, url)}
                     className={classes.marginLeft}
                   >
@@ -192,7 +179,7 @@ render() {
                       { 'recognized class:' }
                     </span>
                     <Select
-                      value={simulator.simple.recognizedClass || ''}
+                      value={simulator.settings.simple.recognizedClass || ''}
                       onChange={(evt) => this.handleSimpleRecognizedClassChange(evt, url)}
                       className={classes.marginLeft}
                     >
@@ -205,7 +192,7 @@ render() {
                     </span>
                     <TextField
                       id={`metadata_simple_${url}`}
-                      value={simulator.simple.metadata || ''}
+                      value={simulator.settings.simple.metadata || ''}
                       onChange={(evt) => this.handleSimpleMetadataChange(evt, url)}
                       margin="normal"
                       className={classes.marginLeft}
@@ -223,7 +210,7 @@ render() {
                       { 'classifier:' }
                     </span>
                     <Select
-                      value={simulator.position.classifier || ''}
+                      value={simulator.settings.position.classifier || ''}
                       onChange={(evt) => this.handlePositionClassifierChange(evt, url)}
                       className={classes.marginLeft}
                     >
@@ -235,7 +222,7 @@ render() {
                       { 'recognized class:' }
                     </span>
                     <Select
-                      value={simulator.position.recognizedClass || ''}
+                      value={simulator.settings.position.recognizedClass || ''}
                       onChange={(evt) => this.handlePositionRecognizedClassChange(evt, url)}
                       className={classes.marginLeft}
                     >
@@ -248,7 +235,7 @@ render() {
                     </span>
                     <TextField
                       id={`metadata_position_${url}`}
-                      value={simulator.position.metadata || ''}
+                      value={simulator.settings.position.metadata || ''}
                       onChange={(evt) => this.handlePositionMetadataChange(evt, url)}
                       margin="normal"
                       className={classes.marginLeft}
