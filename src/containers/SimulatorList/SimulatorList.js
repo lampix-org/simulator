@@ -46,16 +46,6 @@ class SimulatorList extends React.Component {
     super(props);
 
     this.state = {
-      classifierOptions: [
-        'cls_loc_fin_all_small',
-        'book',
-        'cls_loc_cars'
-      ],
-      classOption: [
-        '1',
-        '2',
-        '3'
-      ]
     };
     ipcRenderer.on(UPDATE_SIMULATOR_LIST, (event, data) => {
       const simulatorData = {};
