@@ -61,7 +61,7 @@ class SimulatorList extends React.Component {
       const simulatorData = {};
       const dataKeys = Object.keys(data);
       const simulatorObj = {
-        movementDetector: '',
+        movementDetector: false,
         simple: {},
         position: {}
       };
