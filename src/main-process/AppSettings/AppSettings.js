@@ -1,4 +1,4 @@
-const { store } = require('./store');
+const { store } = require('../store');
 const { APP_SETTINGS } = require('./constants');
 
 const storeURLTemplate = (url) => `${APP_SETTINGS}/${url}`;
