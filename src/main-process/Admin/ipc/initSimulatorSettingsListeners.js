@@ -14,40 +14,40 @@ function initSimulatorSettingsListeners() {
     const { settings, registeredData } = this.simulators[data.url];
     settings.movementDetector = !settings.movementDetector;
 
-    sendSettingsBack(event.sender, data.url, {
-      ...settings,
-      ...registeredData
-    });
+    sendSettingsBack(event.sender, data.url, Object.assign({}, {
+      settings,
+      registeredData
+    }));
   });
 
   ipcMain.on(SET_CLASSIFIER, (event, data) => {
     const { settings, registeredData } = this.simulators[data.url];
     settings[data.type].classifier = data.classifier;
 
-    sendSettingsBack(event.sender, data.url, {
-      ...settings,
-      ...registeredData
-    });
+    sendSettingsBack(event.sender, data.url, Object.assign({}, {
+      settings,
+      registeredData
+    }));
   });
 
   ipcMain.on(SET_RECOGNIZED_CLASS, (event, data) => {
     const { settings, registeredData } = this.simulators[data.url];
     settings[data.type].recognizedClass = data.recognizedClass;
 
-    sendSettingsBack(event.sender, data.url, {
-      ...settings,
-      ...registeredData
-    });
+    sendSettingsBack(event.sender, data.url, Object.assign({}, {
+      settings,
+      registeredData
+    }));
   });
 
   ipcMain.on(SET_METADATA, (event, data) => {
     const { settings, registeredData } = this.simulators[data.url];
     settings[data.type].metadata = data.metadata;
 
-    sendSettingsBack(event.sender, data.url, {
-      ...settings,
-      ...registeredData
-    });
+    sendSettingsBack(event.sender, data.url, Object.assign({}, {
+      settings,
+      registeredData
+    }));
   });
 }
 

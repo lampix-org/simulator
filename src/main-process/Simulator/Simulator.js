@@ -7,6 +7,7 @@ const { pointInRectangle } = require('../utils/pointInRectangle');
 const { onChange } = require('../utils/onChange');
 const { parseIfString } = require('../utils/parseIfString');
 const { newWindow } = require('../utils/newWindow');
+const { DEFAULT_CLASSES } = require('../constants');
 const noop = require('lodash.noop');
 
 const pluckUniqueClassifiersFromArray = (data) => [...new Set(data.map((rect) => rect.classifier))];
@@ -17,6 +18,7 @@ class Simulator {
     updateAdminUI = noop
   }) {
     this.appUrl = url;
+    this.updateAdminUI = updateAdminUI;
 
     const settings = new AppSettings(url);
     this.settings = onChange(settings, () => settings.save());
@@ -28,17 +30,18 @@ class Simulator {
       movement: { rectangles: [] },
       simple: {
         rectangles: [],
-        classifiers: []
+        classifiers: [],
+        get classes() { return this.rectangles.length ? DEFAULT_CLASSES : []; }
       },
       position: {
         rectangles: [],
-        classifiers: []
+        classifiers: [],
+        get classes() { return this.rectangles.length ? DEFAULT_CLASSES : []; }
       }
     };
 
     this.idCounter = 0;
     this.createOwnBrowser(onClosed);
-    this.updateAdminUI = updateAdminUI.bind(null, this.settings);
   }
 
   createOwnBrowser(onClosed = noop) {
@@ -154,19 +157,11 @@ class Simulator {
     this.registeredData.position.rectangles = parsedData;
   }
 
-  logCurrentSettings() {
-    console.log(`Simple classifiers: ${JSON.stringify(this.registeredData.simple.classifiers)}`);
-    console.log(`Position classifiers: ${JSON.stringify(this.registeredData.position.classifiers)}`);
-    console.log(`Active settings: ${JSON.stringify(this.settings, null, 2)}`);
-  }
-
   sendSettingsToAdmin() {
-    console.log('Sending settings to Admin UI via updateAdminUI:');
-
-    this.logCurrentSettings();
+    const { settings, registeredData } = this;
     this.updateAdminUI({
-      ...this.settings,
-      ...this.registeredData
+      settings,
+      registeredData
     });
   }
 

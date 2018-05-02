@@ -32,7 +32,7 @@ class Admin {
       delete global[`simulator-${url}`];
     };
 
-    const updateAdminUI = () => sendSettingsBack.bind(
+    const updateAdminUI = sendSettingsBack.bind(
       null,
       this.browser.webContents,
       url
