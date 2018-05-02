@@ -23,9 +23,6 @@ window.lampix = {
     url,
     metadata
   }),
-  closeSimulator: (url) => {
-    admin.closeSimulator(url);
-    admin.sendSimulators();
-  },
+  closeSimulator: (url) => admin.closeSimulator(url),
   focusSimulator: (url) => admin.focusSimulator(url)
 };

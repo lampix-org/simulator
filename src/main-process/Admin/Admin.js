@@ -8,7 +8,9 @@ const logSimulatorNotFound = (url) => console.log(`Simulator for ${url} not foun
 class Admin {
   constructor() {
     this.simulators = {};
-    this.browser = createAdminBrowser();
+    this.browser = createAdminBrowser(() => {
+      this.browser = null;
+    });
 
     initSimulatorSettingsListeners();
   }
@@ -25,6 +27,8 @@ class Admin {
     this.simulators[url] = new Simulator(url, () => {
       delete this.simulators[url];
       delete global[`simulator-${url}`];
+
+      this.sendSimulators();
     });
 
     global[`simulator-${url}`] = this.simulators[url];
@@ -65,7 +69,12 @@ class Admin {
 
   sendSimulators() {
     console.log('Sending simulator list to renderer...');
-    this.browser.webContents.send(UPDATE_SIMULATOR_LIST, this.simulators);
+
+    // Check to see that the main admin window wasn't the one closed
+    // If it was, then updating simulators is not necessary since the whole program closes
+    if (this.browser) {
+      this.browser.webContents.send(UPDATE_SIMULATOR_LIST, this.simulators);
+    }
   }
 }
 
