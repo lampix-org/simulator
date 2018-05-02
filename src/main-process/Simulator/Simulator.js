@@ -5,17 +5,9 @@ const { hexagonOutline } = require('../utils/hexagonOutline');
 const { outlineInRectangle } = require('../utils/outlineInRectangle');
 const { pointInRectangle } = require('../utils/pointInRectangle');
 const { onChange } = require('../utils/onChange');
-const { type } = require('../utils/type');
+const { parseIfString } = require('../utils/parseIfString');
 const { newWindow } = require('../utils/newWindow');
 const noop = require('lodash.noop');
-
-const parseIfString = (data) => {
-  if (type(data) === 'String') {
-    return JSON.parse(data);
-  }
-
-  return data;
-};
 
 const pluckUniqueClassifiersFromArray = (data) => [...new Set(data.map((rect) => rect.classifier))];
 
