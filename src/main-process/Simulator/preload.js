@@ -16,6 +16,12 @@ window.addEventListener('contextmenu', (event) => {
 
 window._lampix_internal = {
   registerMovement: (rectangles) => simulator.setMovementRectangles(rectangles),
-  registerSimpleClassifier: (rectangles) => simulator.setSimpleRectangles(rectangles),
-  registerPositionClassifier: (rectangles) => simulator.setPositionRectangles(rectangles)
+  registerSimpleClassifier: (rectangles) => {
+    simulator.setSimpleRectangles(rectangles);
+    simulator.sendSettingsToAdmin();
+  },
+  registerPositionClassifier: (rectangles) => {
+    simulator.setPositionRectangles(rectangles);
+    simulator.sendSettingsToAdmin();
+  }
 };

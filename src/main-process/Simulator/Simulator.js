@@ -17,22 +17,36 @@ const parseIfString = (data) => {
   return data;
 };
 
+const pluckUniqueClassifiersFromArray = (data) => [...new Set(data.map((rect) => rect.classifier))];
+
 class Simulator {
-  constructor(url, onClosed) {
+  constructor(url, {
+    onClosed = noop,
+    updateAdminUI = noop
+  }) {
     this.appUrl = url;
 
     const settings = new AppSettings(url);
     this.settings = onChange(settings, () => settings.save());
 
-    this.rectangles = {
-      movement: [],
-      simple: [],
-      position: []
+    // Registered data represents volatile information, not persisted
+    // All of this information comes strictly from the simulated application
+    // through register events
+    this.registeredData = {
+      movement: { rectangles: [] },
+      simple: {
+        rectangles: [],
+        classifiers: []
+      },
+      position: {
+        rectangles: [],
+        classifiers: []
+      }
     };
 
     this.idCounter = 0;
-
     this.createOwnBrowser(onClosed);
+    this.updateAdminUI = updateAdminUI.bind(null, this.settings);
   }
 
   createOwnBrowser(onClosed = noop) {
@@ -52,13 +66,13 @@ class Simulator {
   }
 
   handleMouseMove(mouseX, mouseY) {
-    if (!this.settings.movementDetector || this.rectangles.movement.length === 0) {
+    if (!this.settings.movementDetector || this.movement.rectangles.length === 0) {
       return;
     }
 
     const hexagon = hexagonOutline(mouseX, mouseY);
 
-    this.rectangles.movement.forEach((rectangle, i) => {
+    this.registeredData.movement.rectangles.forEach((rectangle, i) => {
       if (outlineInRectangle(hexagon, rectangle)) {
         this.browser.webContents.executeJavaScript(`onMovement(${i}, ${hexagon})`);
       }
@@ -68,7 +82,7 @@ class Simulator {
   handleSimpleClassifier(mouseX, mouseY) {
     console.log(`Handling click / simple classification at x: ${mouseX}, y: ${mouseY}`);
 
-    this.rectangles.simple.forEach((rectangle, i) => {
+    this.registeredData.simple.rectangles.forEach((rectangle, i) => {
       const { classifier, recognizedClass, metadata } = this.settings.simple;
 
       if (rectangle.classifier === classifier && pointInRectangle(rectangle, mouseX, mouseY)) {
@@ -97,7 +111,7 @@ class Simulator {
     // Lampix creates IDs iteratively, and never repeats them
     const objectId = ++this.idCounter;
 
-    this.rectangles.position.forEach((rectangle, i) => {
+    this.registeredData.position.rectangles.forEach((rectangle, i) => {
       if (rectangle.classifier !== classifier) {
         return;
       }
@@ -133,15 +147,35 @@ class Simulator {
   }
 
   setMovementRectangles(data = []) {
-    this.rectangles.movement = parseIfString(data);
+    this.registeredData.movement.rectangles = parseIfString(data);
   }
 
   setSimpleRectangles(data = []) {
-    this.rectangles.simple = parseIfString(data);
+    const parsedData = parseIfString(data);
+    this.registeredData.simple.classifiers = pluckUniqueClassifiersFromArray(parsedData);
+    this.registeredData.simple.rectangles = parsedData;
   }
 
   setPositionRectangles(data = []) {
-    this.rectangles.position = parseIfString(data);
+    const parsedData = parseIfString(data);
+    this.registeredData.position.classifiers = pluckUniqueClassifiersFromArray(parsedData);
+    this.registeredData.position.rectangles = parsedData;
+  }
+
+  logCurrentSettings() {
+    console.log(`Simple classifiers: ${JSON.stringify(this.registeredData.simple.classifiers)}`);
+    console.log(`Position classifiers: ${JSON.stringify(this.registeredData.position.classifiers)}`);
+    console.log(`Active settings: ${JSON.stringify(this.settings, null, 2)}`);
+  }
+
+  sendSettingsToAdmin() {
+    console.log('Sending settings to Admin UI via updateAdminUI:');
+
+    this.logCurrentSettings();
+    this.updateAdminUI({
+      ...this.settings,
+      ...this.registeredData
+    });
   }
 
   cleanUp() {

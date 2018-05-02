@@ -1,7 +1,10 @@
 const { Simulator } = require('../Simulator');
 const { initSimulatorSettingsListeners } = require('./ipc/initSimulatorSettingsListeners');
 const { createAdminBrowser } = require('./createAdminBrowser');
-const { UPDATE_SIMULATOR_LIST } = require('../ipcEvents');
+const {
+  UPDATE_SIMULATOR_LIST
+} = require('../ipcEvents');
+const { sendSettingsBack } = require('./ipc/sendSettingsBack');
 
 const logSimulatorNotFound = (url) => console.log(`Simulator for ${url} not found. Doing nothing.`);
 
@@ -24,11 +27,20 @@ class Admin {
 
     console.log('Creating new simulator...');
 
-    this.simulators[url] = new Simulator(url, () => {
+    const onClosed = () => {
       delete this.simulators[url];
       delete global[`simulator-${url}`];
+    };
 
-      this.sendSimulators();
+    const updateAdminUI = () => sendSettingsBack.bind(
+      null,
+      this.browser.webContents,
+      url
+    );
+
+    this.simulators[url] = new Simulator(url, {
+      onClosed,
+      updateAdminUI
     });
 
     global[`simulator-${url}`] = this.simulators[url];
