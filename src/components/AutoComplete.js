@@ -46,7 +46,7 @@ function AutoComplete({
             })}
           />
           {isOpen ? (
-            <Paper style={{ position: 'absolute', padding: '10px' }}>
+            <Paper style={{ position: 'absolute', padding: '10px', zIndex: 100 }}>
               {items
                 .filter(i =>
                   !inputValue ||
