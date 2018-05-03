@@ -73,7 +73,7 @@ class ButtonAppBar extends React.Component {
     this.setState({ open: true });
   };
 
-  handleClose = () => {
+  closeHelp = () => {
     this.setState({ open: false });
   };
 
@@ -108,7 +108,7 @@ class ButtonAppBar extends React.Component {
           >
             <AppBar>
               <Toolbar className={classes.toolbar}>
-                <IconButton color="inherit" onClick={this.handleClose} aria-label="Close">
+                <IconButton color="inherit" onClick={this.closeHelp} aria-label="Close">
                   <CloseIcon />
                 </IconButton>
                 <Typography variant="title" color="inherit" className={classes.flex}>
