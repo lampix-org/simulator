@@ -5,12 +5,15 @@ import ExpansionPanel, {
   ExpansionPanelDetails,
   ExpansionPanelActions
 } from 'material-ui/ExpansionPanel';
-import Typography from 'material-ui/Typography';
 import { Grid, Paper } from 'material-ui';
 import { withStyles } from 'material-ui/styles';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 import Button from 'material-ui/Button';
 import Divider from 'material-ui/Divider';
+import Switch from 'material-ui/Switch';
+import Select from 'material-ui/Select';
+import { MenuItem } from 'material-ui/Menu';
+import TextField from 'material-ui/TextField';
 
 import { ipcRenderer } from 'electron';
 import { UPDATE_SIMULATOR_LIST } from '../../main-process/ipcEvents';
@@ -20,7 +23,8 @@ const styles = {
     paddingLeft: 5
   },
   paperInnerContentText: {
-    paddingLeft: 10
+    paddingLeft: 10,
+    margin: 5
   },
   expansionPanelDetails: {
     display: 'block',
@@ -31,6 +35,9 @@ const styles = {
   },
   divider: {
     backgroundColor: 'white'
+  },
+  marginLeft: {
+    marginLeft: 15
   }
 };
 
@@ -39,123 +46,210 @@ class SimulatorList extends React.Component {
     super(props);
 
     this.state = {
-      simulatorList: {
-        'http://localhost:8080': {
-          movementDetector: true,
-          simple: {
-            classifier: 'book',
-            recognizedClass: '2',
-            metadata: 'What a save!'
-          },
-          position: {
-            classifier: null,
-            recognizedClass: null,
-            metadata: null
-          }
-        },
-        'http://localhost:3030': {
-          movementDetector: false,
-          simple: {
-            classifier: 'cls_loc_fin_all_small',
-            recognizedClass: '1',
-            metadata: null
-          },
-          position: {
-            classifier: 'cls_loc_cars',
-            recognizedClass: '1',
-            metadata: 'Frunza verde de ciment, foarte bine, excelent'
-          }
-        },
-        'http://localhost:2020': {
-          movementDetector: false,
-          simple: {
-            classifier: null,
-            recognizedClass: null,
-            metadata: null
-          },
-          position: {
-            classifier: null,
-            recognizedClass: null,
-            metadata: null
-          }
-        }
-      }
     };
+    ipcRenderer.on(UPDATE_SIMULATOR_LIST, (event, data) => {
+      this.setState({
+        simulatorList: data
+      });
+    });
   }
 
-updateSimulatorList = () => {
-  ipcRenderer.on(UPDATE_SIMULATOR_LIST, (event, data) => {
-    this.setState({
-      simulatorList: data
-    });
+
+handleMovementDetectorChange = (event, url) => {
+  const simulatorList = { ...this.state.simulatorList };
+  simulatorList[url].settings.movementDetector = event.target.checked;
+  this.setState({
+    simulatorList
   });
 }
 
+handleSimpleClassifierChange = (event, url) => {
+  const simulatorList = { ...this.state.simulatorList };
+  simulatorList[url].settings.simple.classifier = event.target.value;
+  this.setState({
+    simulatorList
+  });
+}
+
+handleSimpleRecognizedClassChange = (event, url) => {
+  const simulatorList = { ...this.state.simulatorList };
+  simulatorList[url].settings.simple.recognizedClass = event.target.value;
+  this.setState({
+    simulatorList
+  });
+}
+
+handleSimpleMetadataChange = (event, url) => {
+  const simulatorList = { ...this.state.simulatorList };
+  simulatorList[url].settings.simple.metadata = event.target.value;
+  this.setState({
+    simulatorList
+  });
+}
+
+handlePositionClassifierChange = (event, url) => {
+  const simulatorList = { ...this.state.simulatorList };
+  simulatorList[url].settings.position.classifier = event.target.value;
+  this.setState({
+    simulatorList
+  });
+}
+
+handlePositionRecognizedClassChange = (event, url) => {
+  const simulatorList = { ...this.state.simulatorList };
+  simulatorList[url].settings.position.recognizedClass = event.target.value;
+  this.setState({
+    simulatorList
+  });
+}
+
+handlePositionMetadataChange = (event, url) => {
+  const simulatorList = { ...this.state.simulatorList };
+  simulatorList[url].settings.position.metadata = event.target.value;
+  this.setState({
+    simulatorList
+  });
+}
+closeSimulator = (url) => window.lampix.closeSimulator(url);
+
+focusSimulator = (url) => window.lampix.focusSimulator(url);
+
 render() {
   const { classes } = this.props;
-  const simulators = Object.keys(this.state.simulatorList).map((url) => {
+  const classifierMenuItems = this.state.classifierOptions ? this.state.classifierOptions.map(classifier => (
+    <MenuItem
+      key={classifier}
+      value={classifier}
+    >
+      {classifier}
+    </MenuItem>
+  )) : null;
+  const recognizedClassMenuItems = this.state.classOption ? this.state.classOption.map(recognizedClass => (
+    <MenuItem
+      key={recognizedClass}
+      value={recognizedClass}
+    >
+      {recognizedClass}
+    </MenuItem>
+  )) : null;
+
+  const simulators = this.state.simulatorList ? Object.keys(this.state.simulatorList).map((url) => {
     const simulator = this.state.simulatorList[url];
     return (
-      <div key={url} >
+      <div key={url}>
         <ExpansionPanel >
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography > Simulator : {url} </Typography>
+            <span> Simulator : {url} </span>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails className={classes.expansionPanelDetails}>
             <Grid container spacing={24}>
               <Grid item xs={12}>
-                <Typography variant="body2" className={classes.paperInnerContentTitle}>
-                  { 'Settings' }
-                </Typography>
+                <span className={classes.paperInnerContentTitle}>
+                  Settings
+                </span>
               </Grid>
               <Grid item xs={12}>
-                <Typography className={classes.paperInnerContentText}>
-                  { `Movement detector: ${simulator.movementDetector}` }
-                </Typography>
+                <span className={classes.paperInnerContentText}>  { 'Movement detector:' } </span>
+                <Switch
+                  checked={simulator.settings.movementDetector}
+                  onChange={(evt) => this.handleMovementDetectorChange(evt, url)}
+                />
               </Grid>
               <Grid item xs={6}>
                 <Paper>
-                  <Typography variant="body2" className={classes.paperInnerContentTitle}>
-                    { 'Simple classifier:' }
-                  </Typography>
-                  <Typography className={classes.paperInnerContentText}>
-                    { `classifier: ${simulator.simple.classifier}` }
-                  </Typography>
-                  <Typography className={classes.paperInnerContentText}>
-                    { `recognized class: ${simulator.simple.recognizedClass}` }
-                  </Typography>
-                  <Typography className={classes.paperInnerContentText}>
-                    { `metadata: ${simulator.simple.metadata}` }
-                  </Typography>
+                  <div className={classes.paperInnerContentTitle}>
+                    Simple classifier:
+                  </div>
+                  <span className={classes.paperInnerContentText}>
+                    classifier:
+                  </span>
+                  <Select
+                    value={simulator.settings.simple.classifier || ''}
+                    onChange={(evt) => this.handleSimpleClassifierChange(evt, url)}
+                    className={classes.marginLeft}
+                  >
+                    { classifierMenuItems }
+                  </Select>
+                  <div className={classes.paperInnerContentText}>
+                    <span>
+                      recognized class:
+                    </span>
+                    <Select
+                      value={simulator.settings.simple.recognizedClass || ''}
+                      onChange={(evt) => this.handleSimpleRecognizedClassChange(evt, url)}
+                      className={classes.marginLeft}
+                    >
+                      { recognizedClassMenuItems }
+                    </Select>
+                  </div>
+                  <div className={classes.paperInnerContentText}>
+                    <span>
+                      metadata:
+                    </span>
+                    <TextField
+                      id={`metadata_simple_${url}`}
+                      value={simulator.settings.simple.metadata || ''}
+                      onChange={(evt) => this.handleSimpleMetadataChange(evt, url)}
+                      margin="normal"
+                      className={classes.marginLeft}
+                    />
+                  </div>
                 </Paper>
               </Grid>
               <Grid item xs={6}>
                 <Paper>
-                  <Typography variant="body2" className={classes.paperInnerContentTitle}>
-                    { 'Position classifier:' }
-                  </Typography>
-                  <Typography className={classes.paperInnerContentText}>
-                    { `classifier: ${simulator.position.classifier}` }
-                  </Typography>
-                  <Typography className={classes.paperInnerContentText}>
-                    { `recognized class: ${simulator.position.recognizedClass}`}
-                  </Typography>
-                  <Typography className={classes.paperInnerContentText}>
-                    { `metadata: ${simulator.position.metadata}`}
-                  </Typography>
+                  <div className={classes.paperInnerContentTitle}>
+                    Position classifier:
+                  </div>
+                  <div className={classes.paperInnerContentText}>
+                    <span>
+                      classifier:
+                    </span>
+                    <Select
+                      value={simulator.settings.position.classifier || ''}
+                      onChange={(evt) => this.handlePositionClassifierChange(evt, url)}
+                      className={classes.marginLeft}
+                    >
+                      { classifierMenuItems }
+                    </Select>
+                  </div>
+                  <div className={classes.paperInnerContentText}>
+                    <span>
+                      recognized class:
+                    </span>
+                    <Select
+                      value={simulator.settings.position.recognizedClass || ''}
+                      onChange={(evt) => this.handlePositionRecognizedClassChange(evt, url)}
+                      className={classes.marginLeft}
+                    >
+                      { recognizedClassMenuItems }
+                    </Select>
+                  </div>
+                  <div className={classes.paperInnerContentText}>
+                    <span>
+                      metadata:
+                    </span>
+                    <TextField
+                      id={`metadata_position_${url}`}
+                      value={simulator.settings.position.metadata || ''}
+                      onChange={(evt) => this.handlePositionMetadataChange(evt, url)}
+                      margin="normal"
+                      className={classes.marginLeft}
+                    />
+                  </div>
                 </Paper>
               </Grid>
             </Grid>
           </ExpansionPanelDetails>
           <Divider className={classes.divider} />
           <ExpansionPanelActions className={classes.darkBackground}>
-            <Button size="small" >Close simulator</Button>
-            <Button size="small" color="primary">Focus</Button>
+            <Button size="small" onClick={() => this.closeSimulator(url)}>Close simulator</Button>
+            <Button size="small" onClick={() => this.focusSimulator(url)} color="primary">Focus</Button>
           </ExpansionPanelActions>
         </ExpansionPanel>
       </div>
     );
-  });
+  }) : null;
 
   return (
     <div>
