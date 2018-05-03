@@ -97,7 +97,7 @@ class ButtonAppBar extends React.Component {
             />
             <Button onClick={this.loadApp} color="inherit">Load</Button>
             <IconButton className={classes.menuButton} onClick={this.openHelp} color="inherit" aria-label="Menu">
-              <Icon>help</Icon>
+              <Icon>help_outline</Icon>
             </IconButton>
           </Toolbar>
           <Dialog
