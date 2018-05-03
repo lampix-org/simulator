@@ -3,44 +3,51 @@ const {
   TOGGLE_MOVEMENT,
   SET_CLASSIFIER,
   SET_RECOGNIZED_CLASS,
-  SET_METADATA,
-  UPDATE_SIMULATOR_SETTINGS
+  SET_METADATA
 } = require('../../ipcEvents');
+const { sendSettingsBack } = require('./sendSettingsBack');
 
-const sendSettingsBack = (sender, url, settings) => sender.send(UPDATE_SIMULATOR_SETTINGS, {
-  url,
-  settings
-});
-
-function initSimulatorSettingsListeners() {
+function initSimulatorSettingsListeners(simulators) {
   // Data should contain the simulator URL
   // And whether the target is of type 'simple' or 'position'
   ipcMain.on(TOGGLE_MOVEMENT, (event, data) => {
-    const { settings } = this.simulators[data.url];
+    const { settings, registeredData } = simulators[data.url];
     settings.movementDetector = !settings.movementDetector;
 
-    sendSettingsBack(event.sender, data.url, settings);
+    sendSettingsBack(event.sender, data.url, Object.assign({}, {
+      settings,
+      registeredData
+    }));
   });
 
   ipcMain.on(SET_CLASSIFIER, (event, data) => {
-    const settings = this.simulators[data.url].settings[data.type];
-    settings.classifier = data.classifier;
+    const { settings, registeredData } = simulators[data.url];
+    settings[data.type].classifier = data.classifier;
 
-    sendSettingsBack(event.sender, data.url, settings);
+    sendSettingsBack(event.sender, data.url, Object.assign({}, {
+      settings,
+      registeredData
+    }));
   });
 
   ipcMain.on(SET_RECOGNIZED_CLASS, (event, data) => {
-    const settings = this.simulators[data.url].settings[data.type];
-    settings.recognizedClass = data.recognizedClass;
+    const { settings, registeredData } = simulators[data.url];
+    settings[data.type].recognizedClass = data.recognizedClass;
 
-    sendSettingsBack(event.sender, data.url, settings);
+    sendSettingsBack(event.sender, data.url, Object.assign({}, {
+      settings,
+      registeredData
+    }));
   });
 
   ipcMain.on(SET_METADATA, (event, data) => {
-    const settings = this.simulators[data.url].settings[data.type];
-    settings.metadata = data.metadata;
+    const { settings, registeredData } = simulators[data.url];
+    settings[data.type].metadata = data.metadata;
 
-    sendSettingsBack(event.sender, data.url, settings);
+    sendSettingsBack(event.sender, data.url, Object.assign({}, {
+      settings,
+      registeredData
+    }));
   });
 }
 
