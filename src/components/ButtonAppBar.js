@@ -5,7 +5,11 @@ import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
-import MenuIcon from 'material-ui-icons/Menu';
+import Icon from 'material-ui/Icon';
+import Dialog from 'material-ui/Dialog';
+import CloseIcon from 'material-ui-icons/Close';
+import Slide from 'material-ui/transitions/Slide';
+import Typography from 'material-ui/Typography';
 import AutoComplete from '../components/AutoComplete';
 
 import lampixLogo from '../img/logo.png';
@@ -38,11 +42,16 @@ const addresses = [
   'http://localhost:8580',
 ];
 
+function Transition(props) {
+  return <Slide direction="up" {...props} />;
+}
+
 class ButtonAppBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputValue: ''
+      inputValue: '',
+      open: false
     };
   }
 
@@ -59,6 +68,15 @@ class ButtonAppBar extends React.Component {
   handleSelectedItemChange = (item) => {
     this.setState({ inputValue: item });
   }
+
+  openHelp = () => {
+    this.setState({ open: true });
+  };
+
+  closeHelp = () => {
+    this.setState({ open: false });
+  };
+
   render() {
     const { classes } = this.props;
     const { inputValue } = this.state;
@@ -78,10 +96,27 @@ class ButtonAppBar extends React.Component {
               style={{ flexGrow: 1 }}
             />
             <Button onClick={this.loadApp} color="inherit">Load</Button>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-              <MenuIcon />
+            <IconButton className={classes.menuButton} onClick={this.openHelp} color="inherit" aria-label="Menu">
+              <Icon>help_outline</Icon>
             </IconButton>
           </Toolbar>
+          <Dialog
+            fullScreen
+            open={this.state.open}
+            onClose={this.handleClose}
+            transition={Transition}
+          >
+            <AppBar>
+              <Toolbar className={classes.toolbar}>
+                <IconButton color="inherit" onClick={this.closeHelp} aria-label="Close">
+                  <CloseIcon />
+                </IconButton>
+                <Typography variant="title" color="inherit" className={classes.flex}>
+                  Help
+                </Typography>
+              </Toolbar>
+            </AppBar>
+          </Dialog>
         </AppBar>
       </div>
     );
