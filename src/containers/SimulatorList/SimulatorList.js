@@ -65,7 +65,7 @@ handleMovementDetectorChange = (event, url) => {
 
 handleSimpleClassifierChange = (event, url) => {
   const simulatorList = { ...this.state.simulatorList };
-  simulatorList[url].settingssimple.classifier = event.target.value;
+  simulatorList[url].settings.simple.classifier = event.target.value;
   this.setState({
     simulatorList
   });
@@ -73,7 +73,7 @@ handleSimpleClassifierChange = (event, url) => {
 
 handleSimpleRecognizedClassChange = (event, url) => {
   const simulatorList = { ...this.state.simulatorList };
-  simulatorList[url].settingssimple.recognizedClass = event.target.value;
+  simulatorList[url].settings.simple.recognizedClass = event.target.value;
   this.setState({
     simulatorList
   });
@@ -126,7 +126,7 @@ render() {
     >
       {classifier}
     </MenuItem>
-  )) : '';
+  )) : null;
   const recognizedClassMenuItems = this.state.classOption ? this.state.classOption.map(recognizedClass => (
     <MenuItem
       key={recognizedClass}
@@ -134,7 +134,7 @@ render() {
     >
       {recognizedClass}
     </MenuItem>
-  )) : '';
+  )) : null;
 
   const simulators = this.state.simulatorList ? Object.keys(this.state.simulatorList).map((url) => {
     const simulator = this.state.simulatorList[url];
@@ -142,13 +142,13 @@ render() {
       <div key={url}>
         <ExpansionPanel >
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <span > Simulator : {url} </span>
+            <span> Simulator : {url} </span>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails className={classes.expansionPanelDetails}>
             <Grid container spacing={24}>
               <Grid item xs={12}>
                 <span className={classes.paperInnerContentTitle}>
-                  { 'Settings' }
+                  Settings
                 </span>
               </Grid>
               <Grid item xs={12}>
@@ -156,16 +156,15 @@ render() {
                 <Switch
                   checked={simulator.settings.movementDetector}
                   onChange={(evt) => this.handleMovementDetectorChange(evt, url)}
-                  value="simulator.movementDetector"
                 />
               </Grid>
               <Grid item xs={6}>
                 <Paper>
                   <div className={classes.paperInnerContentTitle}>
-                    { 'Simple classifier:' }
+                    Simple classifier:
                   </div>
                   <span className={classes.paperInnerContentText}>
-                    { 'classifier:' }
+                    classifier:
                   </span>
                   <Select
                     value={simulator.settings.simple.classifier || ''}
@@ -176,7 +175,7 @@ render() {
                   </Select>
                   <div className={classes.paperInnerContentText}>
                     <span>
-                      { 'recognized class:' }
+                      recognized class:
                     </span>
                     <Select
                       value={simulator.settings.simple.recognizedClass || ''}
@@ -188,7 +187,7 @@ render() {
                   </div>
                   <div className={classes.paperInnerContentText}>
                     <span>
-                      { 'metadata:' }
+                      metadata:
                     </span>
                     <TextField
                       id={`metadata_simple_${url}`}
@@ -203,11 +202,11 @@ render() {
               <Grid item xs={6}>
                 <Paper>
                   <div className={classes.paperInnerContentTitle}>
-                    { 'Position classifier:' }
+                    Position classifier:
                   </div>
                   <div className={classes.paperInnerContentText}>
                     <span>
-                      { 'classifier:' }
+                      classifier:
                     </span>
                     <Select
                       value={simulator.settings.position.classifier || ''}
@@ -219,7 +218,7 @@ render() {
                   </div>
                   <div className={classes.paperInnerContentText}>
                     <span>
-                      { 'recognized class:' }
+                      recognized class:
                     </span>
                     <Select
                       value={simulator.settings.position.recognizedClass || ''}
@@ -231,7 +230,7 @@ render() {
                   </div>
                   <div className={classes.paperInnerContentText}>
                     <span>
-                      { 'metadata:'}
+                      metadata:
                     </span>
                     <TextField
                       id={`metadata_position_${url}`}
@@ -253,7 +252,7 @@ render() {
         </ExpansionPanel>
       </div>
     );
-  }) : '';
+  }) : null;
 
   return (
     <div>
