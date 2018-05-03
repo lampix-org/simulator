@@ -15,7 +15,7 @@ class Admin {
       this.browser = null;
     });
 
-    initSimulatorSettingsListeners();
+    initSimulatorSettingsListeners(this.simulators);
   }
 
   loadApp(url) {

@@ -7,11 +7,11 @@ const {
 } = require('../../ipcEvents');
 const { sendSettingsBack } = require('./sendSettingsBack');
 
-function initSimulatorSettingsListeners() {
+function initSimulatorSettingsListeners(simulators) {
   // Data should contain the simulator URL
   // And whether the target is of type 'simple' or 'position'
   ipcMain.on(TOGGLE_MOVEMENT, (event, data) => {
-    const { settings, registeredData } = this.simulators[data.url];
+    const { settings, registeredData } = simulators[data.url];
     settings.movementDetector = !settings.movementDetector;
 
     sendSettingsBack(event.sender, data.url, Object.assign({}, {
@@ -21,7 +21,7 @@ function initSimulatorSettingsListeners() {
   });
 
   ipcMain.on(SET_CLASSIFIER, (event, data) => {
-    const { settings, registeredData } = this.simulators[data.url];
+    const { settings, registeredData } = simulators[data.url];
     settings[data.type].classifier = data.classifier;
 
     sendSettingsBack(event.sender, data.url, Object.assign({}, {
@@ -31,7 +31,7 @@ function initSimulatorSettingsListeners() {
   });
 
   ipcMain.on(SET_RECOGNIZED_CLASS, (event, data) => {
-    const { settings, registeredData } = this.simulators[data.url];
+    const { settings, registeredData } = simulators[data.url];
     settings[data.type].recognizedClass = data.recognizedClass;
 
     sendSettingsBack(event.sender, data.url, Object.assign({}, {
@@ -41,7 +41,7 @@ function initSimulatorSettingsListeners() {
   });
 
   ipcMain.on(SET_METADATA, (event, data) => {
-    const { settings, registeredData } = this.simulators[data.url];
+    const { settings, registeredData } = simulators[data.url];
     settings[data.type].metadata = data.metadata;
 
     sendSettingsBack(event.sender, data.url, Object.assign({}, {
