@@ -110,12 +110,9 @@ handlePositionMetadataChange = (event, url) => {
     simulatorList
   });
 }
-closeSimulator = (url) => {
-  window.lampix.closeSimulator(url);
-}
-focusSimulator = (url) => {
-  window.lampix.focusSimulator(url);
-}
+closeSimulator = (url) => window.lampix.closeSimulator(url);
+
+focusSimulator = (url) => window.lampix.focusSimulator(url);
 
 render() {
   const { classes } = this.props;
