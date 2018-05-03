@@ -2,14 +2,19 @@ const { Simulator } = require('../Simulator');
 const { initSimulatorSettingsListeners } = require('./ipc/initSimulatorSettingsListeners');
 const { createAdminBrowser } = require('./createAdminBrowser');
 const {
-  UPDATE_SIMULATOR_LIST
+  UPDATE_SIMULATOR_LIST,
+  UPDATE_URL_LIST,
+  INVALID_URL
 } = require('../ipcEvents');
+const { store } = require('../store');
 const { sendSettingsBack } = require('./ipc/sendSettingsBack');
+const { checkURL } = require('./checkURL');
 
 const logSimulatorNotFound = (url) => console.log(`Simulator for ${url} not found. Doing nothing.`);
 
 class Admin {
   constructor() {
+    this.storedURLs = new Set(store.get('urls') || []);
     this.simulators = {};
     this.browser = createAdminBrowser(() => {
       this.browser = null;
@@ -18,11 +23,20 @@ class Admin {
     initSimulatorSettingsListeners(this.simulators);
   }
 
-  loadApp(url) {
+  async loadApp(url) {
     console.log(`Admin.loadApp called with URL: ${url}`);
 
     if (this.simulators[url]) {
-      return this.simulators[url];
+      return;
+    }
+
+    const { success, error } = await checkURL(url);
+
+    if (!success) {
+      console.log(`URL check failed with message: ${error}`);
+      console.log('Aborting app loading...');
+      this.browser.webContents.send(INVALID_URL, error);
+      return;
     }
 
     console.log('Creating new simulator...');
@@ -50,9 +64,11 @@ class Admin {
     console.log(`Loading app at ${url}`);
     this.simulators[url].browser.loadURL(url, options);
 
-    this.sendSimulators();
+    this.storedURLs.add(url);
+    store.set('urls', [...this.storedURLs]);
 
-    return this.simulators[url];
+    this.sendSimulators();
+    this.updateRendererURLs();
   }
 
   closeSimulator(url) {
@@ -80,13 +96,18 @@ class Admin {
   }
 
   sendSimulators() {
-    console.log('Sending simulator list to renderer...');
-
     // Check to see that the main admin window wasn't the one closed
     // If it was, then updating simulators is not necessary since the whole program closes
     if (this.browser) {
+      console.log('Sending simulator list to renderer...');
       this.browser.webContents.send(UPDATE_SIMULATOR_LIST, this.simulators);
+    } else {
+      console.log('Application closing. Will not send simulator list.');
     }
+  }
+
+  updateRendererURLs() {
+    this.browser.webContents.send(UPDATE_URL_LIST, [...this.storedURLs]);
   }
 }
 
