@@ -7,16 +7,20 @@ import ExpansionPanel, {
 } from 'material-ui/ExpansionPanel';
 import { Grid, Paper } from 'material-ui';
 import { withStyles } from 'material-ui/styles';
-import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Button from 'material-ui/Button';
 import Divider from 'material-ui/Divider';
 import Switch from 'material-ui/Switch';
 import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
 import TextField from 'material-ui/TextField';
+import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import Collapse from 'material-ui/transitions/Collapse';
+import { ExpandLess, ExpandMore } from '@material-ui/icons';
 
 import { ipcRenderer } from 'electron';
-import { UPDATE_SIMULATOR_LIST } from '../../main-process/ipcEvents';
+import { UPDATE_SIMULATOR_LIST, UPDATE_SIMULATOR_SETTINGS } from '../../main-process/ipcEvents';
 
 const styles = {
   paperInnerContentTitle: {
@@ -38,6 +42,9 @@ const styles = {
   },
   marginLeft: {
     marginLeft: 15
+  },
+  listDivider: {
+    backgroundColor: 'black'
   }
 };
 
@@ -50,6 +57,11 @@ class SimulatorList extends React.Component {
     ipcRenderer.on(UPDATE_SIMULATOR_LIST, (event, data) => {
       this.setState({
         simulatorList: data
+      });
+    });
+    ipcRenderer.on(UPDATE_SIMULATOR_SETTINGS, (event, data) => {
+      this.setState({
+        simulatorRegisteredData: data.registeredData // eslint-disable-line
       });
     });
   }
@@ -114,6 +126,30 @@ closeSimulator = (url) => window.lampix.closeSimulator(url);
 
 focusSimulator = (url) => window.lampix.focusSimulator(url);
 
+handleMovementRegisteredAreasClick = (url) => {
+  const simulatorList = { ...this.state.simulatorList };
+  simulatorList[url].settings.movementRegisteredAreasOpen = !simulatorList[url].settings.movementRegisteredAreasOpen;
+  this.setState({
+    simulatorList
+  });
+}
+
+handleSimpleRegisteredAreasClick = (url) => {
+  const simulatorList = { ...this.state.simulatorList };
+  simulatorList[url].settings.simpleRegisteredAreasOpen = !simulatorList[url].settings.simpleRegisteredAreasOpen;
+  this.setState({
+    simulatorList
+  });
+}
+
+handlePositionRegisteredAreasClick = (url) => {
+  const simulatorList = { ...this.state.simulatorList };
+  simulatorList[url].settings.positionRegisteredAreasOpen = !simulatorList[url].settings.positionRegisteredAreasOpen;
+  this.setState({
+    simulatorList
+  });
+}
+
 render() {
   const { classes } = this.props;
   const classifierMenuItems = this.state.classifierOptions ? this.state.classifierOptions.map(classifier => (
@@ -133,8 +169,10 @@ render() {
     </MenuItem>
   )) : null;
 
+
   const simulators = this.state.simulatorList ? Object.keys(this.state.simulatorList).map((url) => {
     const simulator = this.state.simulatorList[url];
+
     return (
       <div key={url}>
         <ExpansionPanel >
@@ -240,6 +278,66 @@ render() {
                 </Paper>
               </Grid>
             </Grid>
+            <Divider className={classes.listDivider} />
+            <List
+              component="nav"
+            >
+              <ListItem button onClick={() => this.handleMovementRegisteredAreasClick(url)}>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText inset primary="Movement" />
+                { simulator.settings.movementRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
+              </ListItem>
+              <Collapse in={simulator.settings.movementRegisteredAreasOpen} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  <ListItem button className={classes.nested}>
+                    <div> X: </div>
+                    <div> Y: </div>
+                    <div> Width: </div>
+                    <div> Height: </div>
+                  </ListItem>
+                </List>
+              </Collapse>
+              <Divider className={classes.listDivider} />
+              <ListItem button onClick={() => this.handleSimpleRegisteredAreasClick(url)}>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText inset primary="Simple" />
+                { simulator.settings.simpleRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
+              </ListItem>
+              <Collapse in={simulator.settings.simpleRegisteredAreasOpen} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  <ListItem button className={classes.nested}>
+                    <div> X: </div>
+                    <div> Y: </div>
+                    <div> Width: </div>
+                    <div> Height: </div>
+                    <div> Classifier: </div>
+                  </ListItem>
+                </List>
+              </Collapse>
+              <Divider className={classes.listDivider} />
+              <ListItem button onClick={() => this.handlePositionRegisteredAreasClick(url)}>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText inset primary="Movement" />
+                { simulator.settings.positionRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
+              </ListItem>
+              <Collapse in={simulator.settings.positionRegisteredAreasOpen} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  <ListItem button className={classes.nested}>
+                    <div> X: </div>
+                    <div> Y: </div>
+                    <div> Width: </div>
+                    <div> Height: </div>
+                    <div> Classifier: </div>
+                  </ListItem>
+                </List>
+              </Collapse>
+            </List>
           </ExpansionPanelDetails>
           <Divider className={classes.divider} />
           <ExpansionPanelActions className={classes.darkBackground}>

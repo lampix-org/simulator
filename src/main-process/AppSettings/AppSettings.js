@@ -20,6 +20,9 @@ class AppSettings {
     this.movementDetector = data.movementDetector;
     this.simple = data.simple;
     this.position = data.position;
+    this.movementRegisteredAreasOpen = false;
+    this.simpleRegisteredAreasOpen = false;
+    this.positionRegisteredAreasOpen = false;
   }
 
   restoreDefaults() {
@@ -36,6 +39,9 @@ class AppSettings {
       recognizedClass: null,
       metadata: null
     };
+    this.movementRegisteredAreasOpen = false;
+    this.simpleRegisteredAreasOpen = false;
+    this.positionRegisteredAreasOpen = false;
   }
 
   save() {
