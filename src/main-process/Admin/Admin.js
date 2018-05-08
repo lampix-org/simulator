@@ -1,6 +1,10 @@
 const { Simulator } = require('../Simulator');
-const { initSimulatorSettingsListeners } = require('./ipc/initSimulatorSettingsListeners');
-const { handleAdminUIReady } = require('./ipc/handleAdminUIReady');
+const {
+  initSimulatorSettingsListeners,
+  initAppManagementListeners,
+  handleAdminUIReady,
+  sendSettingsBack
+} = require('./ipc');
 const { createAdminBrowser } = require('./createAdminBrowser');
 const {
   UPDATE_SIMULATOR_LIST,
@@ -8,7 +12,6 @@ const {
   INVALID_URL
 } = require('../ipcEvents');
 const { store } = require('../store');
-const { sendSettingsBack } = require('./ipc/sendSettingsBack');
 const { checkURL } = require('./checkURL');
 
 const logSimulatorNotFound = (url) => console.log(`Simulator for ${url} not found. Doing nothing.`);
@@ -21,8 +24,11 @@ class Admin {
       this.browser = null;
     });
 
-    initSimulatorSettingsListeners(this.simulators);
-    handleAdminUIReady(this.updateRendererURLs.bind(this));
+    handleAdminUIReady(
+      initSimulatorSettingsListeners.bind(null, this.simulators),
+      initAppManagementListeners.bind(null, this),
+      this.updateRendererURLs.bind(this)
+    );
   }
 
   async loadApp(url) {
