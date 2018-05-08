@@ -125,6 +125,8 @@
     "no-class-assign": "off",
     "class-methods-use-this": "off",
     "global-require": "off",
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "func-names": "off",
+    "space-before-function-paren": "off"
   }
 }

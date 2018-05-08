@@ -1,5 +1,6 @@
 const { Simulator } = require('../Simulator');
 const { initSimulatorSettingsListeners } = require('./ipc/initSimulatorSettingsListeners');
+const { handleAdminUIReady } = require('./ipc/handleAdminUIReady');
 const { createAdminBrowser } = require('./createAdminBrowser');
 const {
   UPDATE_SIMULATOR_LIST,
@@ -21,6 +22,7 @@ class Admin {
     });
 
     initSimulatorSettingsListeners(this.simulators);
+    handleAdminUIReady(this.updateRendererURLs.bind(this));
   }
 
   async loadApp(url) {
