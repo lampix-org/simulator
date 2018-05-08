@@ -45,13 +45,15 @@ const styles = {
   },
   listDivider: {
     backgroundColor: 'black'
+  },
+  registeredArea: {
+    display: 'block'
   }
 };
 
 class SimulatorList extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
     };
     ipcRenderer.on(UPDATE_SIMULATOR_LIST, (event, data) => {
@@ -60,8 +62,11 @@ class SimulatorList extends React.Component {
       });
     });
     ipcRenderer.on(UPDATE_SIMULATOR_SETTINGS, (event, data) => {
+      const simulatorList = { ...this.state.simulatorList };
+      simulatorList[data.url].settings = data.settings;
+      simulatorList[data.url].registeredData = data.registeredData;
       this.setState({
-        simulatorRegisteredData: data.registeredData // eslint-disable-line
+        simulatorList
       });
     });
   }
@@ -152,27 +157,83 @@ handlePositionRegisteredAreasClick = (url) => {
 
 render() {
   const { classes } = this.props;
-  const classifierMenuItems = this.state.classifierOptions ? this.state.classifierOptions.map(classifier => (
-    <MenuItem
-      key={classifier}
-      value={classifier}
-    >
-      {classifier}
-    </MenuItem>
-  )) : null;
-  const recognizedClassMenuItems = this.state.classOption ? this.state.classOption.map(recognizedClass => (
-    <MenuItem
-      key={recognizedClass}
-      value={recognizedClass}
-    >
-      {recognizedClass}
-    </MenuItem>
-  )) : null;
-
-
   const simulators = this.state.simulatorList ? Object.keys(this.state.simulatorList).map((url) => {
     const simulator = this.state.simulatorList[url];
+    const simulatorRegisteredData = simulator.registeredData;
+    const movementRectangles = simulator.registeredData.movement.rectangles;
+    const simpleRectangles = simulator.registeredData.simple.rectangles;
+    const positionRectangles = simulator.registeredData.position.rectangles;
+    const simpleClassifiers = simulator.registeredData.simple.classifiers;
+    const positionClassifiers = simulator.registeredData.position.classifiers;
+    const simpleClasses = simulator.registeredData.simple.classes;
+    const positionClasses = simulator.registeredData.position.classes;
 
+    const movementRegisteredAreas = (simulatorRegisteredData && movementRectangles) ?
+      Object.keys(movementRectangles).map((rectangle) => (
+        <ListItem button className={classes.registeredArea}>
+          <div> X: {rectangle.posX} </div>
+          <div> Y: {rectangle.posX} </div>
+          <div> Width: {rectangle.width} </div>
+          <div> Height: {rectangle.height} </div>
+        </ListItem>
+      )) : null;
+    const simpleRegisteredAreas = (simulatorRegisteredData && simpleRectangles) ?
+      Object.keys(simpleRectangles).map((rectangle) => (
+        <ListItem button className={classes.registeredArea}>
+          <div> X: {rectangle.posX} </div>
+          <div> Y: {rectangle.posX} </div>
+          <div> Width: {rectangle.width} </div>
+          <div> Height: {rectangle.height} </div>
+          <div> Classifier: {rectangle.classifier} </div>
+        </ListItem>
+      )) : null;
+
+    const positionRegisteredAreas = (simulatorRegisteredData && positionRectangles) ?
+      Object.keys(positionRectangles).map((rectangle) => (
+        <ListItem button className={classes.registeredArea}>
+          <div> X: {rectangle.posX} </div>
+          <div> Y: {rectangle.posX} </div>
+          <div> Width: {rectangle.width} </div>
+          <div> Height: {rectangle.height} </div>
+          <div> Classifier: {rectangle.classifier} </div>
+        </ListItem>
+      )) : null;
+    const classifierSimpleMenuItems = simpleClassifiers ?
+      simpleClassifiers.map(classifier => (
+        <MenuItem
+          key={classifier}
+          value={classifier}
+        >
+          {classifier}
+        </MenuItem>
+      )) : null;
+    const classifierPositionMenuItems = positionClassifiers ?
+      positionClassifiers.map(classifier => (
+        <MenuItem
+          key={classifier}
+          value={classifier}
+        >
+          {classifier}
+        </MenuItem>
+      )) : null;
+    const recognizedSimpleClassMenuItems = simpleClasses ?
+      simpleClasses.map(recognizedClass => (
+        <MenuItem
+          key={recognizedClass}
+          value={recognizedClass}
+        >
+          {recognizedClass}
+        </MenuItem>
+      )) : null;
+    const recognizedPositionClassMenuItems = positionClasses ?
+      positionClasses.map(recognizedClass => (
+        <MenuItem
+          key={recognizedClass}
+          value={recognizedClass}
+        >
+          {recognizedClass}
+        </MenuItem>
+      )) : null;
     return (
       <div key={url}>
         <ExpansionPanel >
@@ -206,7 +267,7 @@ render() {
                     onChange={(evt) => this.handleSimpleClassifierChange(evt, url)}
                     className={classes.marginLeft}
                   >
-                    { classifierMenuItems }
+                    { classifierSimpleMenuItems }
                   </Select>
                   <div className={classes.paperInnerContentText}>
                     <span>
@@ -217,7 +278,7 @@ render() {
                       onChange={(evt) => this.handleSimpleRecognizedClassChange(evt, url)}
                       className={classes.marginLeft}
                     >
-                      { recognizedClassMenuItems }
+                      { recognizedSimpleClassMenuItems }
                     </Select>
                   </div>
                   <div className={classes.paperInnerContentText}>
@@ -248,7 +309,7 @@ render() {
                       onChange={(evt) => this.handlePositionClassifierChange(evt, url)}
                       className={classes.marginLeft}
                     >
-                      { classifierMenuItems }
+                      { classifierPositionMenuItems }
                     </Select>
                   </div>
                   <div className={classes.paperInnerContentText}>
@@ -260,7 +321,7 @@ render() {
                       onChange={(evt) => this.handlePositionRecognizedClassChange(evt, url)}
                       className={classes.marginLeft}
                     >
-                      { recognizedClassMenuItems }
+                      { recognizedPositionClassMenuItems }
                     </Select>
                   </div>
                   <div className={classes.paperInnerContentText}>
@@ -279,9 +340,7 @@ render() {
               </Grid>
             </Grid>
             <Divider className={classes.listDivider} />
-            <List
-              component="nav"
-            >
+            <List component="nav">
               <ListItem button onClick={() => this.handleMovementRegisteredAreasClick(url)}>
                 <ListItemIcon>
                   <InboxIcon />
@@ -291,12 +350,7 @@ render() {
               </ListItem>
               <Collapse in={simulator.settings.movementRegisteredAreasOpen} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                  <ListItem button className={classes.nested}>
-                    <div> X: </div>
-                    <div> Y: </div>
-                    <div> Width: </div>
-                    <div> Height: </div>
-                  </ListItem>
+                  { movementRegisteredAreas }
                 </List>
               </Collapse>
               <Divider className={classes.listDivider} />
@@ -309,13 +363,7 @@ render() {
               </ListItem>
               <Collapse in={simulator.settings.simpleRegisteredAreasOpen} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                  <ListItem button className={classes.nested}>
-                    <div> X: </div>
-                    <div> Y: </div>
-                    <div> Width: </div>
-                    <div> Height: </div>
-                    <div> Classifier: </div>
-                  </ListItem>
+                  { simpleRegisteredAreas }
                 </List>
               </Collapse>
               <Divider className={classes.listDivider} />
@@ -323,18 +371,12 @@ render() {
                 <ListItemIcon>
                   <InboxIcon />
                 </ListItemIcon>
-                <ListItemText inset primary="Movement" />
+                <ListItemText inset primary="Position" />
                 { simulator.settings.positionRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
               </ListItem>
               <Collapse in={simulator.settings.positionRegisteredAreasOpen} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                  <ListItem button className={classes.nested}>
-                    <div> X: </div>
-                    <div> Y: </div>
-                    <div> Width: </div>
-                    <div> Height: </div>
-                    <div> Classifier: </div>
-                  </ListItem>
+                  { positionRegisteredAreas }
                 </List>
               </Collapse>
             </List>

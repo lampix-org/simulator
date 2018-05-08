@@ -46,6 +46,7 @@ class Admin {
     const onClosed = () => {
       delete this.simulators[url];
       delete global[`simulator-${url}`];
+      this.sendSimulators();
     };
 
     const updateAdminUI = sendSettingsBack.bind(

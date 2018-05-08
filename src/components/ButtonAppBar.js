@@ -7,7 +7,7 @@ import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import Icon from 'material-ui/Icon';
 import Dialog from 'material-ui/Dialog';
-import CloseIcon from 'material-ui-icons/Close';
+import CloseIcon from '@material-ui/icons/Close';
 import Slide from 'material-ui/transitions/Slide';
 import Typography from 'material-ui/Typography';
 import AutoComplete from '../components/AutoComplete';
