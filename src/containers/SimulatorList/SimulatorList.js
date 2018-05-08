@@ -179,7 +179,7 @@ render() {
 
     const movementRegisteredAreas = (simulatorRegisteredData && movementRectangles) ?
       movementRectangles.map((rectangle) => (
-        <ListItem key={rectangle.posX + rectangle.posY} className={classes.registeredArea}>
+        <ListItem className={classes.registeredArea}>
           <ListItemText className={classes.listItemText} primary={`X: ${rectangle.posX}`} />
           <ListItemText className={classes.listItemText} primary={`Y: ${rectangle.posX}`} />
           <ListItemText className={classes.listItemText} primary={`Width: ${rectangle.width}`} />
@@ -188,7 +188,7 @@ render() {
       )) : null;
     const simpleRegisteredAreas = (simulatorRegisteredData && simpleRectangles) ?
       simpleRectangles.map((rectangle) => (
-        <ListItem key={rectangle.posX + rectangle.posY} className={classes.registeredArea}>
+        <ListItem className={classes.registeredArea}>
           <ListItemText className={classes.listItemText} primary={`X: ${rectangle.posX}`} />
           <ListItemText className={classes.listItemText}primary={`Y: ${rectangle.posX}`} />
           <ListItemText className={classes.listItemText} primary={`Width: ${rectangle.width}`} />
@@ -199,7 +199,7 @@ render() {
 
     const positionRegisteredAreas = (simulatorRegisteredData && positionRectangles) ?
       positionRectangles.map((rectangle) => (
-        <ListItem key={rectangle.posX + rectangle.posY} className={classes.registeredArea}>
+        <ListItem className={classes.registeredArea}>
           <ListItemText className={classes.listItemText} primary={`X: ${rectangle.posX}`} />
           <ListItemText className={classes.listItemText} primary={`Y: ${rectangle.posX}`} />
           <ListItemText className={classes.listItemText} primary={`Width: ${rectangle.width}`} />
