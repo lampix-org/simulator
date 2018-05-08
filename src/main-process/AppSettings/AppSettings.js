@@ -39,9 +39,6 @@ class AppSettings {
       recognizedClass: null,
       metadata: null
     };
-    this.movementRegisteredAreasOpen = false;
-    this.simpleRegisteredAreasOpen = false;
-    this.positionRegisteredAreasOpen = false;
   }
 
   save() {

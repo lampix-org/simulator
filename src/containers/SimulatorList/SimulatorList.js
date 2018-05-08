@@ -48,6 +48,9 @@ const styles = {
   },
   registeredArea: {
     display: 'block'
+  },
+  listItemText: {
+    paddingLeft: 0
   }
 };
 
@@ -57,8 +60,14 @@ class SimulatorList extends React.Component {
     this.state = {
     };
     ipcRenderer.on(UPDATE_SIMULATOR_LIST, (event, data) => {
+      const simulatorList = data;
+      Object.keys(data).forEach((url) => {
+        simulatorList[url].settings.movementRegisteredAreasOpen = false;
+        simulatorList[url].settings.simpleRegisteredAreasOpen = false;
+        simulatorList[url].settings.positionRegisteredAreasOpen = false;
+      });
       this.setState({
-        simulatorList: data
+        simulatorList
       });
     });
     ipcRenderer.on(UPDATE_SIMULATOR_SETTINGS, (event, data) => {
@@ -169,33 +178,33 @@ render() {
     const positionClasses = simulator.registeredData.position.classes;
 
     const movementRegisteredAreas = (simulatorRegisteredData && movementRectangles) ?
-      Object.keys(movementRectangles).map((rectangle) => (
-        <ListItem button className={classes.registeredArea}>
-          <div> X: {rectangle.posX} </div>
-          <div> Y: {rectangle.posX} </div>
-          <div> Width: {rectangle.width} </div>
-          <div> Height: {rectangle.height} </div>
+      movementRectangles.map((rectangle) => (
+        <ListItem key={rectangle.posX + rectangle.posY} className={classes.registeredArea}>
+          <ListItemText className={classes.listItemText} primary={`X: ${rectangle.posX}`} />
+          <ListItemText className={classes.listItemText} primary={`Y: ${rectangle.posX}`} />
+          <ListItemText className={classes.listItemText} primary={`Width: ${rectangle.width}`} />
+          <ListItemText className={classes.listItemText} primary={`Height: ${rectangle.height}`} />
         </ListItem>
       )) : null;
     const simpleRegisteredAreas = (simulatorRegisteredData && simpleRectangles) ?
-      Object.keys(simpleRectangles).map((rectangle) => (
-        <ListItem button className={classes.registeredArea}>
-          <div> X: {rectangle.posX} </div>
-          <div> Y: {rectangle.posX} </div>
-          <div> Width: {rectangle.width} </div>
-          <div> Height: {rectangle.height} </div>
-          <div> Classifier: {rectangle.classifier} </div>
+      simpleRectangles.map((rectangle) => (
+        <ListItem key={rectangle.posX + rectangle.posY} className={classes.registeredArea}>
+          <ListItemText className={classes.listItemText} primary={`X: ${rectangle.posX}`} />
+          <ListItemText className={classes.listItemText}primary={`Y: ${rectangle.posX}`} />
+          <ListItemText className={classes.listItemText} primary={`Width: ${rectangle.width}`} />
+          <ListItemText className={classes.listItemText} primary={`Height: ${rectangle.height}`} />
+          <ListItemText className={classes.listItemText} primary={`Classifier: ${rectangle.classifier}`} />
         </ListItem>
       )) : null;
 
     const positionRegisteredAreas = (simulatorRegisteredData && positionRectangles) ?
-      Object.keys(positionRectangles).map((rectangle) => (
-        <ListItem button className={classes.registeredArea}>
-          <div> X: {rectangle.posX} </div>
-          <div> Y: {rectangle.posX} </div>
-          <div> Width: {rectangle.width} </div>
-          <div> Height: {rectangle.height} </div>
-          <div> Classifier: {rectangle.classifier} </div>
+      positionRectangles.map((rectangle) => (
+        <ListItem key={rectangle.posX + rectangle.posY} className={classes.registeredArea}>
+          <ListItemText className={classes.listItemText} primary={`X: ${rectangle.posX}`} />
+          <ListItemText className={classes.listItemText} primary={`Y: ${rectangle.posX}`} />
+          <ListItemText className={classes.listItemText} primary={`Width: ${rectangle.width}`} />
+          <ListItemText className={classes.listItemText} primary={`Height: ${rectangle.height}`} />
+          <ListItemText className={classes.listItemText} primary={`Classifier: ${rectangle.classifier}`} />
         </ListItem>
       )) : null;
     const classifierSimpleMenuItems = simpleClassifiers ?
@@ -345,7 +354,7 @@ render() {
                 <ListItemIcon>
                   <InboxIcon />
                 </ListItemIcon>
-                <ListItemText inset primary="Movement" />
+                <ListItemText primary="Movement" />
                 { simulator.settings.movementRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
               </ListItem>
               <Collapse in={simulator.settings.movementRegisteredAreasOpen} timeout="auto" unmountOnExit>
@@ -358,7 +367,7 @@ render() {
                 <ListItemIcon>
                   <InboxIcon />
                 </ListItemIcon>
-                <ListItemText inset primary="Simple" />
+                <ListItemText primary="Simple" />
                 { simulator.settings.simpleRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
               </ListItem>
               <Collapse in={simulator.settings.simpleRegisteredAreasOpen} timeout="auto" unmountOnExit>
@@ -371,7 +380,7 @@ render() {
                 <ListItemIcon>
                   <InboxIcon />
                 </ListItemIcon>
-                <ListItemText inset primary="Position" />
+                <ListItemText primary="Position" />
                 { simulator.settings.positionRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
               </ListItem>
               <Collapse in={simulator.settings.positionRegisteredAreasOpen} timeout="auto" unmountOnExit>
