@@ -52,26 +52,6 @@ const styles = {
 };
 
 class Simulator extends React.Component {
-  handleMovementRegisteredAreasClick = (url) => {
-    console.log('handleMovementRegisteredAreasClick url ', url);
-  }
-
-  handleSimpleRegisteredAreasClick = (url) => {
-    console.log('handleSimpleRegisteredAreasClick url ', url);
-  }
-
-  handlePositionRegisteredAreasClick = (url) => {
-    console.log('handlePositionRegisteredAreasClick url ', url);
-  }
-
-  closeSimulator = (url) => {
-    console.log('closeSimulator url ', url);
-  }
-
-  focusSimulator = (url) => {
-    console.log('focusSimulator url ', url);
-  }
-
   render() {
     const { classes } = this.props;
     const simulator = this.props.simulatorData;
@@ -324,7 +304,6 @@ Simulator.propTypes = {
   onMovementRegisteredAreasClick: PropTypes.func.isRequired,
   onSimpleRegisteredAreasClick: PropTypes.func.isRequired,
   onPositionRegisteredAreasClick: PropTypes.func.isRequired
-
 };
 
 export default withStyles(styles)(Simulator);
