@@ -12,8 +12,6 @@ import Slide from 'material-ui/transitions/Slide';
 import Typography from 'material-ui/Typography';
 import AutoComplete from '../components/AutoComplete';
 
-import lampixLogo from '../img/logo.png';
-
 const styles = {
   root: {
     flexGrow: 1
@@ -85,9 +83,6 @@ class ButtonAppBar extends React.Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar className={classes.toolbar}>
-            <IconButton color="inherit" aria-label="Logo">
-              <img src={lampixLogo} className={classes.logo} alt="lampix logo" />
-            </IconButton>
             <AutoComplete
               items={addresses}
               inputValue={inputValue}
