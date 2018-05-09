@@ -1,15 +1,16 @@
-const { remote, ipcRenderer } = require('electron');
+const { ipcRenderer } = require('electron');
 const {
   TOGGLE_MOVEMENT,
   SET_CLASSIFIER,
   SET_RECOGNIZED_CLASS,
-  SET_METADATA
+  SET_METADATA,
+  CLOSE_SIMULATOR,
+  FOCUS_SIMULATOR,
+  LOAD_APP
 } = require('../ipcEvents');
 
-const { admin } = remote.require('./Admin');
-
 window.lampix = {
-  loadApp: (url) => admin.loadApp(url),
+  loadApp: (url) => ipcRenderer.send(LOAD_APP, { url }),
   toggleMovement: (url) => ipcRenderer.send(TOGGLE_MOVEMENT, { url }),
   setClassifier: (url, classifier) => ipcRenderer.send(SET_CLASSIFIER, {
     url,
@@ -23,6 +24,6 @@ window.lampix = {
     url,
     metadata
   }),
-  closeSimulator: (url) => admin.closeSimulator(url),
-  focusSimulator: (url) => admin.focusSimulator(url)
+  closeSimulator: (url) => ipcRenderer.send(CLOSE_SIMULATOR, { url }),
+  focusSimulator: (url) => ipcRenderer.send(FOCUS_SIMULATOR, { url })
 };

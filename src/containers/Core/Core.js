@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { withStyles } from 'material-ui/styles';
+import { ipcRenderer } from 'electron';
+
+import { ADMIN_UI_READY } from '../../main-process/ipcEvents';
 
 import ButtonAppBar from '../../components/ButtonAppBar';
 import SimulatorList from '../SimulatorList';
@@ -13,6 +16,10 @@ const styles = {
 };
 
 class Core extends Component {
+  componentDidMount() {
+    ipcRenderer.send(ADMIN_UI_READY);
+  }
+
   render() {
     const { classes } = this.props;
     return (
