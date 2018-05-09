@@ -10,7 +10,10 @@ import Dialog from 'material-ui/Dialog';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from 'material-ui/transitions/Slide';
 import Typography from 'material-ui/Typography';
+import { ipcRenderer } from 'electron';
 import AutoComplete from '../components/AutoComplete';
+import { UPDATE_URL_LIST } from '../main-process/ipcEvents';
+
 
 const styles = {
   root: {
@@ -32,13 +35,6 @@ const styles = {
   }
 };
 
-const addresses = [
-  'http://localhost:8080',
-  'http://localhost:8081',
-  'http://localhost:8180',
-  'http://localhost:8880',
-  'http://localhost:8580',
-];
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
@@ -49,8 +45,15 @@ class ButtonAppBar extends React.Component {
     super(props);
     this.state = {
       inputValue: '',
-      open: false
+      open: false,
+      urlAddresses: []
     };
+
+    ipcRenderer.on(UPDATE_URL_LIST, (event, data) => {
+      this.setState({
+        urlAddresses: data
+      });
+    });
   }
 
   loadApp = () => {
@@ -84,7 +87,7 @@ class ButtonAppBar extends React.Component {
         <AppBar position="static">
           <Toolbar className={classes.toolbar}>
             <AutoComplete
-              items={addresses}
+              items={this.state.urlAddresses}
               inputValue={inputValue}
               onKeyDown={this.handleInputChange}
               onChange={this.handleSelectedItemChange}
