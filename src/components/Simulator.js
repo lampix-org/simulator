@@ -180,6 +180,7 @@ class Simulator extends React.Component {
                     classifier:
                   </span>
                   <Select
+                    disabled={simpleClassifiers.length === 0}
                     value={simulator.settings.simple.classifier || ''}
                     onChange={(evt) => this.props.onSimpleClassifierChange(evt, url)}
                     className={classes.marginLeft}
@@ -191,6 +192,7 @@ class Simulator extends React.Component {
                       recognized class:
                     </span>
                     <Select
+                      disabled={simpleClassifiers.length === 0}
                       value={simulator.settings.simple.recognizedClass || ''}
                       onChange={(evt) => this.props.onSimpleRecognizedClassChange(evt, url)}
                       className={classes.marginLeft}
@@ -204,6 +206,7 @@ class Simulator extends React.Component {
                     </span>
                     <TextField
                       id={`metadata_simple_${url}`}
+                      disabled={simpleClassifiers.length === 0}
                       value={simulator.settings.simple.metadata || ''}
                       onChange={(evt) => this.props.onSimpleMetadataChange(evt, url)}
                       margin="normal"
@@ -222,6 +225,7 @@ class Simulator extends React.Component {
                       classifier:
                     </span>
                     <Select
+                      disabled={positionClassifiers.length === 0}
                       value={simulator.settings.position.classifier || ''}
                       onChange={(evt) => this.props.onPositionClassifierChange(evt, url)}
                       className={classes.marginLeft}
@@ -234,6 +238,7 @@ class Simulator extends React.Component {
                       recognized class:
                     </span>
                     <Select
+                      disabled={positionClassifiers.length === 0}
                       value={simulator.settings.position.recognizedClass || ''}
                       onChange={(evt) => this.props.onPositionRecognizedClassChange(evt, url)}
                       className={classes.marginLeft}
@@ -247,6 +252,7 @@ class Simulator extends React.Component {
                     </span>
                     <TextField
                       id={`metadata_position_${url}`}
+                      disabled={positionClassifiers.length === 0}
                       value={simulator.settings.position.metadata || ''}
                       onChange={(evt) => this.props.onPositionMetadataChange(evt, url)}
                       margin="normal"
