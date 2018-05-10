@@ -1,14 +1,9 @@
 import React from 'react';
-<<<<<<< HEAD
+
 import { ipcRenderer } from 'electron';
 import { UPDATE_SIMULATOR_LIST, UPDATE_SIMULATOR_SETTINGS } from '../../main-process/ipcEvents';
 import { SIMPLE, POSITION } from './constants';
 
-=======
-import PropTypes from 'prop-types';
-import { ipcRenderer } from 'electron';
-import { UPDATE_SIMULATOR_LIST, UPDATE_SIMULATOR_SETTINGS } from '../../main-process/ipcEvents';
->>>>>>> Created Simulator Component
 import Simulator from '../../components/Simulator';
 
 class SimulatorList extends React.Component {
@@ -36,7 +31,6 @@ class SimulatorList extends React.Component {
       });
     });
   }
-
 
   handleMovementDetectorChange = (event, url) => {
     const simulatorList = { ...this.state.simulatorList };
@@ -166,9 +160,5 @@ class SimulatorList extends React.Component {
     );
   }
 }
-
-SimulatorList.propTypes = {
-  classes: PropTypes.object.isRequired // eslint-disable-line
-};
 
 export default SimulatorList;
