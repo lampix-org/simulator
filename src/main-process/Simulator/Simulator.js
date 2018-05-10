@@ -61,7 +61,7 @@ class Simulator {
   }
 
   handleMouseMove(mouseX, mouseY) {
-    if (!this.settings.movementDetector || this.movement.rectangles.length === 0) {
+    if (!this.settings.movementDetector || this.registeredData.movement.rectangles.length === 0) {
       return;
     }
 
