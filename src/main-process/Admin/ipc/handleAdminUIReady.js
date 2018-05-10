@@ -7,7 +7,7 @@ const {
 // Each uiRelatedCallback should be an asynchronous function
 // Preferably one that sends information to the simulator's browser
 function handleAdminUIReady(...uiRelatedCallbacks) {
-  ipcMain.on(ADMIN_UI_READY, () => {
+  ipcMain.once(ADMIN_UI_READY, () => {
     uiRelatedCallbacks.forEach((uiRelatedCallback) => uiRelatedCallback());
   });
 }
