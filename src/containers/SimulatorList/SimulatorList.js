@@ -21,6 +21,7 @@ import { ExpandLess, ExpandMore } from '@material-ui/icons';
 
 import { ipcRenderer } from 'electron';
 import { UPDATE_SIMULATOR_LIST, UPDATE_SIMULATOR_SETTINGS } from '../../main-process/ipcEvents';
+import { SIMPLE, POSITION } from './constants';
 
 const styles = {
   paperInnerContentTitle: {
@@ -86,54 +87,74 @@ handleMovementDetectorChange = (event, url) => {
   simulatorList[url].settings.movementDetector = event.target.checked;
   this.setState({
     simulatorList
+  }, () => {
+    window.lampix.toggleMovement(url);
   });
 }
 
 handleSimpleClassifierChange = (event, url) => {
   const simulatorList = { ...this.state.simulatorList };
-  simulatorList[url].settings.simple.classifier = event.target.value;
+  const classifier = event.target.value;
+  simulatorList[url].settings.simple.classifier = classifier;
   this.setState({
     simulatorList
+  }, () => {
+    window.lampix.setClassifier(url, SIMPLE, event.target.value);
   });
 }
 
 handleSimpleRecognizedClassChange = (event, url) => {
   const simulatorList = { ...this.state.simulatorList };
-  simulatorList[url].settings.simple.recognizedClass = event.target.value;
+  const recognizedClass = event.target.value;
+  simulatorList[url].settings.simple.recognizedClass = recognizedClass;
   this.setState({
     simulatorList
+  }, () => {
+    window.lampix.setRecognizedClass(url, SIMPLE, recognizedClass);
   });
 }
 
 handleSimpleMetadataChange = (event, url) => {
   const simulatorList = { ...this.state.simulatorList };
-  simulatorList[url].settings.simple.metadata = event.target.value;
+  const metadata = event.target.value;
+  simulatorList[url].settings.simple.metadata = metadata;
   this.setState({
     simulatorList
+  }, () => {
+    window.lampix.setMetadata(url, SIMPLE, metadata);
   });
 }
 
 handlePositionClassifierChange = (event, url) => {
   const simulatorList = { ...this.state.simulatorList };
-  simulatorList[url].settings.position.classifier = event.target.value;
+  const classifier = event.target.value;
+  simulatorList[url].settings.position.classifier = classifier;
   this.setState({
     simulatorList
+  }, () => {
+    window.lampix.setClassifier(url, POSITION, classifier);
   });
 }
 
 handlePositionRecognizedClassChange = (event, url) => {
   const simulatorList = { ...this.state.simulatorList };
-  simulatorList[url].settings.position.recognizedClass = event.target.value;
+  const recognizedClass = event.target.value;
+  simulatorList[url].settings.position.recognizedClass = recognizedClass;
   this.setState({
     simulatorList
+  }, () => {
+    window.lampix.setRecognizedClass(url, POSITION, recognizedClass);
   });
 }
 
 handlePositionMetadataChange = (event, url) => {
   const simulatorList = { ...this.state.simulatorList };
-  simulatorList[url].settings.position.metadata = event.target.value;
+  const metadata = event.target.value;
+  simulatorList[url].settings.position.metadata = metadata;
   this.setState({
     simulatorList
+  }, () => {
+    window.lampix.setMetadata(url, POSITION, metadata);
   });
 }
 closeSimulator = (url) => window.lampix.closeSimulator(url);
