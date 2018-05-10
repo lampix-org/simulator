@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
 import { UPDATE_SIMULATOR_LIST, UPDATE_SIMULATOR_SETTINGS } from '../../main-process/ipcEvents';
 import { SIMPLE, POSITION } from './constants';
@@ -128,23 +127,23 @@ class SimulatorList extends React.Component {
     });
   }
 
-  handlePositionRegisteredAreasClick = (url) => {
-    const simulatorList = { ...this.state.simulatorList };
-    simulatorList[url].settings.positionRegisteredAreasOpen = !simulatorList[url].settings.positionRegisteredAreasOpen;
-    this.setState({
-      simulatorList
-    });
-  }
-
   render() {
-    const simulators = this.state.simulatorList ?
-      Object.keys(this.state.simulatorList).map((url) => (
-        <Simulator
-          simulatorData={this.state.simulatorList[url]}
-          onMovementDetectorChange={this.handleMovementDetectorChange}
-        />
-      )) :
-      null;
+    const simulators = this.state.simulatorList ? Object.keys(this.state.simulatorList).map((url) => (<Simulator
+      key={url}
+      simulatorData={this.state.simulatorList[url]}
+      onMovementDetectorChange={this.handleMovementDetectorChange}
+      onSimpleClassifierChange={this.handleSimpleClassifierChange}
+      onSimpleRecognizedClassChange={this.handleSimpleRecognizedClassChange}
+      onSimpleMetadataChange={this.handleSimpleMetadataChange}
+      onPositionClassifierChange={this.handlePositionClassifierChange}
+      onPositionRecognizedClassChange={this.handlePositionRecognizedClassChange}
+      onPositionMetadataChange={this.handlePositionMetadataChange}
+      onCloseSimulator={this.closeSimulator}
+      onFocusSimulator={this.focusSimulator}
+      onMovementRegisteredAreasClick={this.handleMovementRegisteredAreasClick}
+      onSimpleRegisteredAreasClick={this.handleSimpleRegisteredAreasClick}
+      onPositionRegisteredAreasClick={this.handlePositionRegisteredAreasClick}
+    />)) : null;
 
     return (
       <div>
@@ -153,9 +152,5 @@ class SimulatorList extends React.Component {
     );
   }
 }
-
-SimulatorList.propTypes = {
-  classes: PropTypes.object.isRequired // eslint-disable-line
-};
 
 export default SimulatorList;

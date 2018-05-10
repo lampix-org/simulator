@@ -52,8 +52,24 @@ const styles = {
 };
 
 class Simulator extends React.Component {
-  handleMovementDetectorChange = (event) => {
-    this.props.onMovementDetectorChange(event, this.props.simulatorData.appUrl);
+  handleMovementRegisteredAreasClick = (url) => {
+    console.log('handleMovementRegisteredAreasClick url ', url);
+  }
+
+  handleSimpleRegisteredAreasClick = (url) => {
+    console.log('handleSimpleRegisteredAreasClick url ', url);
+  }
+
+  handlePositionRegisteredAreasClick = (url) => {
+    console.log('handlePositionRegisteredAreasClick url ', url);
+  }
+
+  closeSimulator = (url) => {
+    console.log('closeSimulator url ', url);
+  }
+
+  focusSimulator = (url) => {
+    console.log('focusSimulator url ', url);
   }
 
   render() {
@@ -152,7 +168,7 @@ class Simulator extends React.Component {
                 <span className={classes.paperInnerContentText}>  { 'Movement detector:' } </span>
                 <Switch
                   checked={simulator.settings.movementDetector}
-                  onChange={this.handleMovementDetectorChange(event)}
+                  onChange={(evt) => this.props.onMovementDetectorChange(evt, url)}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -165,7 +181,7 @@ class Simulator extends React.Component {
                   </span>
                   <Select
                     value={simulator.settings.simple.classifier || ''}
-                    onChange={(evt) => this.handleSimpleClassifierChange(evt, url)}
+                    onChange={(evt) => this.props.onSimpleClassifierChange(evt, url)}
                     className={classes.marginLeft}
                   >
                     { classifierSimpleMenuItems }
@@ -176,7 +192,7 @@ class Simulator extends React.Component {
                     </span>
                     <Select
                       value={simulator.settings.simple.recognizedClass || ''}
-                      onChange={(evt) => this.handleSimpleRecognizedClassChange(evt, url)}
+                      onChange={(evt) => this.props.onSimpleRecognizedClassChange(evt, url)}
                       className={classes.marginLeft}
                     >
                       { recognizedSimpleClassMenuItems }
@@ -189,7 +205,7 @@ class Simulator extends React.Component {
                     <TextField
                       id={`metadata_simple_${url}`}
                       value={simulator.settings.simple.metadata || ''}
-                      onChange={(evt) => this.handleSimpleMetadataChange(evt, url)}
+                      onChange={(evt) => this.props.onSimpleMetadataChange(evt, url)}
                       margin="normal"
                       className={classes.marginLeft}
                     />
@@ -207,7 +223,7 @@ class Simulator extends React.Component {
                     </span>
                     <Select
                       value={simulator.settings.position.classifier || ''}
-                      onChange={(evt) => this.handlePositionClassifierChange(evt, url)}
+                      onChange={(evt) => this.props.onPositionClassifierChange(evt, url)}
                       className={classes.marginLeft}
                     >
                       { classifierPositionMenuItems }
@@ -219,7 +235,7 @@ class Simulator extends React.Component {
                     </span>
                     <Select
                       value={simulator.settings.position.recognizedClass || ''}
-                      onChange={(evt) => this.handlePositionRecognizedClassChange(evt, url)}
+                      onChange={(evt) => this.props.onPositionRecognizedClassChange(evt, url)}
                       className={classes.marginLeft}
                     >
                       { recognizedPositionClassMenuItems }
@@ -232,7 +248,7 @@ class Simulator extends React.Component {
                     <TextField
                       id={`metadata_position_${url}`}
                       value={simulator.settings.position.metadata || ''}
-                      onChange={(evt) => this.handlePositionMetadataChange(evt, url)}
+                      onChange={(evt) => this.props.onPositionMetadataChange(evt, url)}
                       margin="normal"
                       className={classes.marginLeft}
                     />
@@ -242,7 +258,7 @@ class Simulator extends React.Component {
             </Grid>
             <Divider className={classes.listDivider} />
             <List component="nav">
-              <ListItem button onClick={() => this.handleMovementRegisteredAreasClick(url)}>
+              <ListItem button onClick={() => this.props.onMovementRegisteredAreasClick(url)}>
                 <ListItemIcon>
                   <InboxIcon />
                 </ListItemIcon>
@@ -255,7 +271,7 @@ class Simulator extends React.Component {
                 </List>
               </Collapse>
               <Divider className={classes.listDivider} />
-              <ListItem button onClick={() => this.handleSimpleRegisteredAreasClick(url)}>
+              <ListItem button onClick={() => this.props.onSimpleRegisteredAreasClick(url)}>
                 <ListItemIcon>
                   <InboxIcon />
                 </ListItemIcon>
@@ -268,7 +284,7 @@ class Simulator extends React.Component {
                 </List>
               </Collapse>
               <Divider className={classes.listDivider} />
-              <ListItem button onClick={() => this.handlePositionRegisteredAreasClick(url)}>
+              <ListItem button onClick={() => this.props.onPositionRegisteredAreasClick(url)}>
                 <ListItemIcon>
                   <InboxIcon />
                 </ListItemIcon>
@@ -284,8 +300,8 @@ class Simulator extends React.Component {
           </ExpansionPanelDetails>
           <Divider className={classes.divider} />
           <ExpansionPanelActions className={classes.darkBackground}>
-            <Button size="small" onClick={() => this.closeSimulator(url)}>Close simulator</Button>
-            <Button size="small" onClick={() => this.focusSimulator(url)} color="primary">Focus</Button>
+            <Button size="small" onClick={() => this.props.onCloseSimulator(url)}>Close simulator</Button>
+            <Button size="small" onClick={() => this.props.onFocusSimulator(url)} color="primary">Focus</Button>
           </ExpansionPanelActions>
         </ExpansionPanel>
       </div>
@@ -296,7 +312,19 @@ class Simulator extends React.Component {
 Simulator.propTypes = {
   simulatorData: PropTypes.object.isRequired, // eslint-disable-line
   classes: PropTypes.object.isRequired, // eslint-disable-line
-  onMovementDetectorChange: PropTypes.func.isRequired
+  onMovementDetectorChange: PropTypes.func.isRequired,
+  onSimpleClassifierChange: PropTypes.func.isRequired,
+  onSimpleRecognizedClassChange: PropTypes.func.isRequired,
+  onSimpleMetadataChange: PropTypes.func.isRequired,
+  onPositionClassifierChange: PropTypes.func.isRequired,
+  onPositionRecognizedClassChange: PropTypes.func.isRequired,
+  onPositionMetadataChange: PropTypes.func.isRequired,
+  onCloseSimulator: PropTypes.func.isRequired,
+  onFocusSimulator: PropTypes.func.isRequired,
+  onMovementRegisteredAreasClick: PropTypes.func.isRequired,
+  onSimpleRegisteredAreasClick: PropTypes.func.isRequired,
+  onPositionRegisteredAreasClick: PropTypes.func.isRequired
+
 };
 
 export default withStyles(styles)(Simulator);
