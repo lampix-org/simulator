@@ -5,51 +5,33 @@ import ExpansionPanel, {
   ExpansionPanelDetails,
   ExpansionPanelActions
 } from 'material-ui/ExpansionPanel';
-import { Grid, Paper } from 'material-ui';
+import { Grid } from 'material-ui';
 import { withStyles } from 'material-ui/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Button from 'material-ui/Button';
 import Divider from 'material-ui/Divider';
 import Switch from 'material-ui/Switch';
-import Select from 'material-ui/Select';
+import Input, { InputLabel } from 'material-ui/Input';
 import { MenuItem } from 'material-ui/Menu';
+import { FormControl, FormControlLabel } from 'material-ui/Form';
+import Select from 'material-ui/Select';
 import TextField from 'material-ui/TextField';
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
+import List, { ListItem, ListItemText } from 'material-ui/List';
 import Collapse from 'material-ui/transitions/Collapse';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
+import Typography from 'material-ui/Typography';
 
-const styles = {
-  paperInnerContentTitle: {
-    paddingLeft: 5
-  },
-  paperInnerContentText: {
-    paddingLeft: 10,
-    margin: 5
-  },
-  expansionPanelDetails: {
-    display: 'block',
-    backgroundColor: '#eeeeee'
-  },
-  darkBackground: {
-    backgroundColor: '#eeeeee'
-  },
-  divider: {
-    backgroundColor: 'white'
-  },
-  marginLeft: {
-    marginLeft: 15
-  },
-  listDivider: {
-    backgroundColor: 'black'
-  },
+const styles = () => ({
   registeredArea: {
     display: 'block'
   },
   listItemText: {
     paddingLeft: 0
+  },
+  expansionPanelDetails: {
+    flexDirection: 'column'
   }
-};
+});
 
 class Simulator extends React.Component {
   handleMovementRegisteredAreasClick = (url) => {
@@ -87,7 +69,7 @@ class Simulator extends React.Component {
 
     const movementRegisteredAreas = (simulatorRegisteredData && movementRectangles) ?
       movementRectangles.map((rectangle) => (
-        <ListItem className={classes.registeredArea}>
+        <ListItem button className={classes.registeredArea}>
           <ListItemText className={classes.listItemText} primary={`X: ${rectangle.posX}`} />
           <ListItemText className={classes.listItemText} primary={`Y: ${rectangle.posX}`} />
           <ListItemText className={classes.listItemText} primary={`Width: ${rectangle.width}`} />
@@ -96,9 +78,9 @@ class Simulator extends React.Component {
       )) : null;
     const simpleRegisteredAreas = (simulatorRegisteredData && simpleRectangles) ?
       simpleRectangles.map((rectangle) => (
-        <ListItem className={classes.registeredArea}>
+        <ListItem button className={classes.registeredArea}>
           <ListItemText className={classes.listItemText} primary={`X: ${rectangle.posX}`} />
-          <ListItemText className={classes.listItemText}primary={`Y: ${rectangle.posX}`} />
+          <ListItemText className={classes.listItemText} primary={`Y: ${rectangle.posX}`} />
           <ListItemText className={classes.listItemText} primary={`Width: ${rectangle.width}`} />
           <ListItemText className={classes.listItemText} primary={`Height: ${rectangle.height}`} />
           <ListItemText className={classes.listItemText} primary={`Classifier: ${rectangle.classifier}`} />
@@ -107,7 +89,7 @@ class Simulator extends React.Component {
 
     const positionRegisteredAreas = (simulatorRegisteredData && positionRectangles) ?
       positionRectangles.map((rectangle) => (
-        <ListItem className={classes.registeredArea}>
+        <ListItem button className={classes.registeredArea}>
           <ListItemText className={classes.listItemText} primary={`X: ${rectangle.posX}`} />
           <ListItemText className={classes.listItemText} primary={`Y: ${rectangle.posX}`} />
           <ListItemText className={classes.listItemText} primary={`Width: ${rectangle.width}`} />
@@ -115,6 +97,7 @@ class Simulator extends React.Component {
           <ListItemText className={classes.listItemText} primary={`Classifier: ${rectangle.classifier}`} />
         </ListItem>
       )) : null;
+
     const classifierSimpleMenuItems = simpleClassifiers ?
       simpleClassifiers.map(classifier => (
         <MenuItem
@@ -151,178 +134,129 @@ class Simulator extends React.Component {
           {recognizedClass}
         </MenuItem>
       )) : null;
+
     return (
-      <div key={url}>
-        <ExpansionPanel >
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <span> Simulator : {url} </span>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails className={classes.expansionPanelDetails}>
-            <Grid container spacing={24}>
-              <Grid item xs={12}>
-                <span className={classes.paperInnerContentTitle}>
-                  Settings
-                </span>
-              </Grid>
-              <Grid item xs={12}>
-                <span className={classes.paperInnerContentText}>  { 'Movement detector:' } </span>
-                <Switch
-                  checked={simulator.settings.movementDetector}
-                  onChange={(evt) => this.props.onMovementDetectorChange(evt, url)}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Paper>
-                  <div className={classes.paperInnerContentTitle}>
-                    Simple classifier:
-                  </div>
-                  <span className={classes.paperInnerContentText}>
-                    classifier:
-                  </span>
-                  <Select
-                    disabled={simpleClassifiers.length === 0}
-                    value={simulator.settings.simple.classifier || ''}
-                    onChange={(evt) => this.props.onSimpleClassifierChange(evt, url)}
-                    className={classes.marginLeft}
-                  >
-                    { classifierSimpleMenuItems }
-                  </Select>
-                  <div className={classes.paperInnerContentText}>
-                    <span>
-                      recognized class:
-                    </span>
-                    <Select
-                      disabled={simpleClassifiers.length === 0}
-                      value={simulator.settings.simple.recognizedClass || ''}
-                      onChange={(evt) => this.props.onSimpleRecognizedClassChange(evt, url)}
-                      className={classes.marginLeft}
-                    >
-                      { recognizedSimpleClassMenuItems }
-                    </Select>
-                  </div>
-                  <div className={classes.paperInnerContentText}>
-                    <span>
-                      metadata:
-                    </span>
-                    <TextField
-                      id={`metadata_simple_${url}`}
-                      disabled={simpleClassifiers.length === 0}
-                      value={simulator.settings.simple.metadata || ''}
-                      onChange={(evt) => this.props.onSimpleMetadataChange(evt, url)}
-                      margin="normal"
-                      className={classes.marginLeft}
-                    />
-                  </div>
-                </Paper>
-              </Grid>
-              <Grid item xs={6}>
-                <Paper>
-                  <div className={classes.paperInnerContentTitle}>
-                    Position classifier:
-                  </div>
-                  <div className={classes.paperInnerContentText}>
-                    <span>
-                      classifier:
-                    </span>
-                    <Select
-                      disabled={positionClassifiers.length === 0}
-                      value={simulator.settings.position.classifier || ''}
-                      onChange={(evt) => this.props.onPositionClassifierChange(evt, url)}
-                      className={classes.marginLeft}
-                    >
-                      { classifierPositionMenuItems }
-                    </Select>
-                  </div>
-                  <div className={classes.paperInnerContentText}>
-                    <span>
-                      recognized class:
-                    </span>
-                    <Select
-                      disabled={positionClassifiers.length === 0}
-                      value={simulator.settings.position.recognizedClass || ''}
-                      onChange={(evt) => this.props.onPositionRecognizedClassChange(evt, url)}
-                      className={classes.marginLeft}
-                    >
-                      { recognizedPositionClassMenuItems }
-                    </Select>
-                  </div>
-                  <div className={classes.paperInnerContentText}>
-                    <span>
-                      metadata:
-                    </span>
-                    <TextField
-                      id={`metadata_position_${url}`}
-                      disabled={positionClassifiers.length === 0}
-                      value={simulator.settings.position.metadata || ''}
-                      onChange={(evt) => this.props.onPositionMetadataChange(evt, url)}
-                      margin="normal"
-                      className={classes.marginLeft}
-                    />
-                  </div>
-                </Paper>
-              </Grid>
+      <ExpansionPanel key={url}>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography variant="subheading">Simulator {url}</Typography>
+        </ExpansionPanelSummary>
+        <Divider />
+        <ExpansionPanelDetails className={classes.expansionPanelDetails}>
+          <Grid container spacing={24}>
+            <Grid item xs={12}>
+              <FormControlLabel
+                label="Movement detector"
+                control={
+                  <Switch
+                    checked={simulator.settings.movementDetector}
+                    onChange={(evt) => this.props.onMovementDetectorChange(evt, url)}
+                  />
+                }
+              />
             </Grid>
-            <Divider className={classes.listDivider} />
-            <List component="nav">
-              <ListItem
-                button
-                onClick={() => this.props.onMovementRegisteredAreasClick(url)}
-                disabled={movementRectangles.length === 0}
-              >
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Movement" />
-                { simulator.settings.movementRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
-              </ListItem>
-              <Collapse in={simulator.settings.movementRegisteredAreasOpen} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  { movementRegisteredAreas }
-                </List>
-              </Collapse>
-              <Divider className={classes.listDivider} />
-              <ListItem
-                button
-                onClick={() => this.props.onSimpleRegisteredAreasClick(url)}
-                disabled={simpleRectangles.length === 0}
-              >
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Simple" />
-                { simulator.settings.simpleRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
-              </ListItem>
-              <Collapse in={simulator.settings.simpleRegisteredAreasOpen} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  { simpleRegisteredAreas }
-                </List>
-              </Collapse>
-              <Divider className={classes.listDivider} />
-              <ListItem
-                button
-                onClick={() => this.props.onPositionRegisteredAreasClick(url)}
-                disabled={positionRectangles.length === 0}
-              >
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Position" />
-                { simulator.settings.positionRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
-              </ListItem>
-              <Collapse in={simulator.settings.positionRegisteredAreasOpen} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  { positionRegisteredAreas }
-                </List>
-              </Collapse>
-            </List>
-          </ExpansionPanelDetails>
-          <Divider className={classes.divider} />
-          <ExpansionPanelActions className={classes.darkBackground}>
-            <Button size="small" onClick={() => this.props.onCloseSimulator(url)}>Close simulator</Button>
-            <Button size="small" onClick={() => this.props.onFocusSimulator(url)} color="primary">Focus</Button>
-          </ExpansionPanelActions>
-        </ExpansionPanel>
-      </div>
+            <Grid item xs={6}>
+              <Typography variant="title">Simple</Typography>
+              <FormControl fullWidth>
+                <InputLabel>Classifier</InputLabel>
+                <Select
+                  disabled={simpleClassifiers.length === 0}
+                  value={simulator.settings.simple.classifier || ''}
+                  onChange={(evt) => this.props.onSimpleClassifierChange(evt, url)}
+                  input={<Input fullWidth />}
+                >
+                  {classifierSimpleMenuItems}
+                </Select>
+              </FormControl>
+              <FormControl fullWidth>
+                <InputLabel>Recognized class</InputLabel>
+                <Select
+                  disabled={simpleClassifiers.length === 0}
+                  value={simulator.settings.simple.recognizedClass || ''}
+                  onChange={(evt) => this.props.onSimpleRecognizedClassChange(evt, url)}
+                  input={<Input fullWidth />}
+                >
+                  {recognizedSimpleClassMenuItems}
+                </Select>
+              </FormControl>
+              <TextField
+                disabled={simpleClassifiers.length === 0}
+                value={simulator.settings.simple.metadata || ''}
+                onChange={(evt) => this.props.onSimpleMetadataChange(evt, url)}
+                label="Metadata"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="title">Position</Typography>
+              <FormControl fullWidth>
+                <InputLabel>Classifier</InputLabel>
+                <Select
+                  disabled={positionClassifiers.length === 0}
+                  value={simulator.settings.position.classifier || ''}
+                  onChange={(evt) => this.props.onPositionClassifierChange(evt, url)}
+                  input={<Input fullWidth />}
+                >
+                  {classifierPositionMenuItems}
+                </Select>
+              </FormControl>
+              <FormControl fullWidth>
+                <InputLabel>Recognized class</InputLabel>
+                <Select
+                  disabled={positionClassifiers.length === 0}
+                  value={simulator.settings.position.recognizedClass || ''}
+                  onChange={(evt) => this.props.onPositionRecognizedClassChange(evt, url)}
+                  input={<Input fullWidth />}
+                >
+                  {recognizedPositionClassMenuItems}
+                </Select>
+              </FormControl>
+              <TextField
+                disabled={positionClassifiers.length === 0}
+                value={simulator.settings.position.metadata || ''}
+                onChange={(evt) => this.props.onPositionMetadataChange(evt, url)}
+                label="Metadata"
+                fullWidth
+              />
+            </Grid>
+          </Grid>
+          <List>
+            <ListItem button onClick={() => this.props.onMovementRegisteredAreasClick(url)}>
+              <ListItemText primary="Movement" />
+              {simulator.settings.movementRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={simulator.settings.movementRegisteredAreasOpen} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                {movementRegisteredAreas}
+              </List>
+            </Collapse>
+            <Divider />
+            <ListItem button onClick={() => this.props.onSimpleRegisteredAreasClick(url)}>
+              <ListItemText primary="Simple" />
+              {simulator.settings.simpleRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={simulator.settings.simpleRegisteredAreasOpen} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                {simpleRegisteredAreas}
+              </List>
+            </Collapse>
+            <Divider />
+            <ListItem button onClick={() => this.props.onPositionRegisteredAreasClick(url)}>
+              <ListItemText primary="Position" />
+              {simulator.settings.positionRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={simulator.settings.positionRegisteredAreasOpen} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                {positionRegisteredAreas}
+              </List>
+            </Collapse>
+          </List>
+        </ExpansionPanelDetails>
+        <Divider />
+        <ExpansionPanelActions>
+          <Button size="small" onClick={() => this.props.onCloseSimulator(url)}>Close simulator</Button>
+          <Button size="small" onClick={() => this.props.onFocusSimulator(url)} color="primary">Focus</Button>
+        </ExpansionPanelActions>
+      </ExpansionPanel>
     );
   }
 }
