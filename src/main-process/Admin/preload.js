@@ -12,17 +12,20 @@ const {
 window.lampix = {
   loadApp: (url) => ipcRenderer.send(LOAD_APP, { url }),
   toggleMovement: (url) => ipcRenderer.send(TOGGLE_MOVEMENT, { url }),
-  setClassifier: (url, classifier) => ipcRenderer.send(SET_CLASSIFIER, {
+  setClassifier: (url, type, classifier) => ipcRenderer.send(SET_CLASSIFIER, {
     url,
-    classifier
+    classifier,
+    type
   }),
-  setRecognizedClass: (url, recognizedClass) => ipcRenderer.send(SET_RECOGNIZED_CLASS, {
+  setRecognizedClass: (url, type, recognizedClass) => ipcRenderer.send(SET_RECOGNIZED_CLASS, {
     url,
-    recognizedClass
+    recognizedClass,
+    type
   }),
-  setMetadata: (url, metadata) => ipcRenderer.send(SET_METADATA, {
+  setMetadata: (url, type, metadata) => ipcRenderer.send(SET_METADATA, {
     url,
-    metadata
+    metadata,
+    type
   }),
   closeSimulator: (url) => ipcRenderer.send(CLOSE_SIMULATOR, { url }),
   focusSimulator: (url) => ipcRenderer.send(FOCUS_SIMULATOR, { url })
