@@ -99,7 +99,7 @@ handleSimpleClassifierChange = (event, url) => {
   this.setState({
     simulatorList
   }, () => {
-    window.lampix.setClassifier(url, SIMPLE, event.target.value);
+    window.lampix.setClassifier(url, SIMPLE, classifier);
   });
 }
 

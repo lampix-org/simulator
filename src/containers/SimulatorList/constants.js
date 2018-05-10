@@ -1,2 +1,2 @@
-exports.SIMPLE = 'simple';
-exports.POSITION = 'position';
+export const SIMPLE = 'simple';
+export const POSITION = 'position';
