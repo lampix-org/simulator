@@ -264,7 +264,11 @@ class Simulator extends React.Component {
             </Grid>
             <Divider className={classes.listDivider} />
             <List component="nav">
-              <ListItem button onClick={() => this.props.onMovementRegisteredAreasClick(url)}>
+              <ListItem
+                button
+                onClick={() => this.props.onMovementRegisteredAreasClick(url)}
+                disabled={movementRectangles.length === 0}
+              >
                 <ListItemIcon>
                   <InboxIcon />
                 </ListItemIcon>
@@ -277,7 +281,11 @@ class Simulator extends React.Component {
                 </List>
               </Collapse>
               <Divider className={classes.listDivider} />
-              <ListItem button onClick={() => this.props.onSimpleRegisteredAreasClick(url)}>
+              <ListItem
+                button
+                onClick={() => this.props.onSimpleRegisteredAreasClick(url)}
+                disabled={simpleRectangles.length === 0}
+              >
                 <ListItemIcon>
                   <InboxIcon />
                 </ListItemIcon>
@@ -290,7 +298,11 @@ class Simulator extends React.Component {
                 </List>
               </Collapse>
               <Divider className={classes.listDivider} />
-              <ListItem button onClick={() => this.props.onPositionRegisteredAreasClick(url)}>
+              <ListItem
+                button
+                onClick={() => this.props.onPositionRegisteredAreasClick(url)}
+                disabled={positionRectangles.length === 0}
+              >
                 <ListItemIcon>
                   <InboxIcon />
                 </ListItemIcon>
