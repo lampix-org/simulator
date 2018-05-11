@@ -11,14 +11,24 @@ import Slide from 'material-ui/transitions/Slide';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
+import Paper from 'material-ui/Paper';
 
-const styles = () => ({
+const styles = (theme) => ({
+  container: theme.mixins.gutters({
+    paddingTop: 80, // 64 to account for the app bar, 16 for inner spacing
+    paddingBottom: 16
+  }),
   toolbar: {
     background: '#222222'
   },
   flex: {
     flex: 1
-  }
+  },
+  paper: theme.mixins.gutters({
+    marginBottom: theme.spacing.unit * 2,
+    paddingTop: 16,
+    paddingBottom: 16
+  }),
 });
 
 function Transition(props) {
@@ -53,13 +63,25 @@ const HelpDialog = ({
         </Typography>
       </Toolbar>
     </AppBar>
+
+    <div className={classes.container}>
+      <Paper className={classes.paper}>
+        <Typography variant="title">Using Lampix.js</Typography>
+      </Paper>
+
+      <Paper className={classes.paper}>
+        <Typography variant="title">Using the Lampix Simulator</Typography>
+      </Paper>
+    </div>
   </Dialog>
 );
 
 HelpDialog.propTypes = {
   classes: PropTypes.shape({
     toolbar: PropTypes.string,
-    flex: PropTypes.string
+    flex: PropTypes.string,
+    container: PropTypes.string,
+    paper: PropTypes.string
   }).isRequired,
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired
