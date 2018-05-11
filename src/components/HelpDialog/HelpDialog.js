@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 // Material UI
 import { withStyles } from 'material-ui/styles';
 import Dialog from 'material-ui/Dialog';
+import Divider from 'material-ui/Divider';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from 'material-ui/Typography';
 import Slide from 'material-ui/transitions/Slide';
@@ -80,6 +81,7 @@ const HelpDialog = ({
 
       <Paper className={classes.paper}>
         <Typography variant="headline">Using the Lampix Simulator</Typography>
+        <Divider />
         <Separator spacing={20} />
 
         <Typography variant="title">Loading an application via the address bar</Typography>
