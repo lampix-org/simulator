@@ -13,6 +13,12 @@ import Toolbar from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
 import Paper from 'material-ui/Paper';
 
+// Custom components
+import Separator from '../Separator';
+
+// Assets
+import simulatorAddressBar from '../../assets/images/simulator-load-bar.png';
+
 const styles = (theme) => ({
   container: theme.mixins.gutters({
     paddingTop: 80, // 64 to account for the app bar, 16 for inner spacing
@@ -29,6 +35,9 @@ const styles = (theme) => ({
     paddingTop: 16,
     paddingBottom: 16
   }),
+  image: {
+    maxWidth: '100%'
+  }
 });
 
 function Transition(props) {
@@ -66,11 +75,34 @@ const HelpDialog = ({
 
     <div className={classes.container}>
       <Paper className={classes.paper}>
-        <Typography variant="title">Using Lampix.js 0.x</Typography>
+        <Typography variant="headline">Using Lampix.js 0.x</Typography>
       </Paper>
 
       <Paper className={classes.paper}>
-        <Typography variant="title">Using the Lampix Simulator</Typography>
+        <Typography variant="headline">Using the Lampix Simulator</Typography>
+        <Separator spacing={20} />
+
+        <Typography variant="title">Loading an application via the address bar</Typography>
+        <Separator />
+
+        <img
+          className={classes.image}
+          src={simulatorAddressBar}
+          alt="Simulator address bar"
+        />
+
+        <Separator />
+        <Typography variant="body1">
+          You only have to enter the URL address for a web application and press the load button.
+          Addresses can be local or remote. <br />
+          Example addresses that will work, provided they point to a web application: <br />
+        </Typography>
+
+        <ul>
+          <li><code>file://home/username/path/to/index.html</code></li>
+          <li><code>http://localhost:1313</code></li>
+          <li><code>https://some.remotesite.com</code></li>
+        </ul>
       </Paper>
     </div>
   </Dialog>
