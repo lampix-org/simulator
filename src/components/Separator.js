@@ -1,22 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Separator = ({ spacing }) => (
-  <div
-    style={{
-      marginTop: spacing,
-      marginBottom: spacing
-    }}
-  >
-  </div>
+// Material UI
+import Divider from 'material-ui/Divider';
+
+const styles = {
+  padding: (spacing) => ({
+    paddingTop: spacing,
+    paddingBottom: spacing
+  }),
+  margin: (spacing) => ({
+    marginTop: spacing,
+    marginBottom: spacing
+  })
+};
+
+const Separator = ({ spacing, divider }) => (
+  divider ?
+    <Divider style={styles.margin(spacing)} /> :
+    <div style={styles.padding(spacing)}></div>
 );
 
 Separator.defaultProps = {
-  spacing: 10
+  spacing: 10,
+  divider: false
 };
 
 Separator.propTypes = {
-  spacing: PropTypes.number
+  spacing: PropTypes.number,
+  divider: PropTypes.bool
 };
+
 
 export default Separator;
