@@ -66,7 +66,7 @@ const HelpDialog = ({
 
     <div className={classes.container}>
       <Paper className={classes.paper}>
-        <Typography variant="title">Using Lampix.js</Typography>
+        <Typography variant="title">Using Lampix.js 0.x</Typography>
       </Paper>
 
       <Paper className={classes.paper}>
