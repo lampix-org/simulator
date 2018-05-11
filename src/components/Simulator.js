@@ -20,10 +20,17 @@ import List, { ListItem, ListItemText } from 'material-ui/List';
 import Collapse from 'material-ui/transitions/Collapse';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import Typography from 'material-ui/Typography';
+import Card, { CardContent } from 'material-ui/Card';
+
+import Separator from './Separator';
 
 const styles = () => ({
+  registeredAreaContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
   registeredArea: {
-    display: 'block'
+    margin: 10
   },
   listItemText: {
     paddingLeft: 0
@@ -34,25 +41,23 @@ const styles = () => ({
 });
 
 class Simulator extends React.Component {
-  handleMovementRegisteredAreasClick = (url) => {
-    console.log('handleMovementRegisteredAreasClick url ', url);
-  }
-
-  handleSimpleRegisteredAreasClick = (url) => {
-    console.log('handleSimpleRegisteredAreasClick url ', url);
-  }
-
-  handlePositionRegisteredAreasClick = (url) => {
-    console.log('handlePositionRegisteredAreasClick url ', url);
-  }
-
-  closeSimulator = (url) => {
-    console.log('closeSimulator url ', url);
-  }
-
-  focusSimulator = (url) => {
-    console.log('focusSimulator url ', url);
-  }
+  renderRegisteredArea = (rectangle) => (
+    <Card
+      key={`${rectangle.posX}/${rectangle.posY}`}
+      className={this.props.classes.registeredArea}
+    >
+      <CardContent>
+        <Typography variant="body1">X: {rectangle.posX}</Typography>
+        <Typography variant="body1">Y: {rectangle.posY}</Typography>
+        <Typography variant="body1">Width: {rectangle.width}</Typography>
+        <Typography variant="body1">Height: {rectangle.height}</Typography>
+        {
+          rectangle.classifier &&
+          <Typography variant="body1">Classifier: {rectangle.classifier}</Typography>
+        }
+      </CardContent>
+    </Card>
+  );
 
   render() {
     const { classes } = this.props;
@@ -68,35 +73,12 @@ class Simulator extends React.Component {
     const positionClasses = simulator.registeredData.position.classes;
 
     const movementRegisteredAreas = (simulatorRegisteredData && movementRectangles) ?
-      movementRectangles.map((rectangle) => (
-        <ListItem button className={classes.registeredArea}>
-          <ListItemText className={classes.listItemText} primary={`X: ${rectangle.posX}`} />
-          <ListItemText className={classes.listItemText} primary={`Y: ${rectangle.posX}`} />
-          <ListItemText className={classes.listItemText} primary={`Width: ${rectangle.width}`} />
-          <ListItemText className={classes.listItemText} primary={`Height: ${rectangle.height}`} />
-        </ListItem>
-      )) : null;
+      movementRectangles.map(this.renderRegisteredArea) : null;
     const simpleRegisteredAreas = (simulatorRegisteredData && simpleRectangles) ?
-      simpleRectangles.map((rectangle) => (
-        <ListItem button className={classes.registeredArea}>
-          <ListItemText className={classes.listItemText} primary={`X: ${rectangle.posX}`} />
-          <ListItemText className={classes.listItemText} primary={`Y: ${rectangle.posX}`} />
-          <ListItemText className={classes.listItemText} primary={`Width: ${rectangle.width}`} />
-          <ListItemText className={classes.listItemText} primary={`Height: ${rectangle.height}`} />
-          <ListItemText className={classes.listItemText} primary={`Classifier: ${rectangle.classifier}`} />
-        </ListItem>
-      )) : null;
+      simpleRectangles.map(this.renderRegisteredArea) : null;
 
     const positionRegisteredAreas = (simulatorRegisteredData && positionRectangles) ?
-      positionRectangles.map((rectangle) => (
-        <ListItem button className={classes.registeredArea}>
-          <ListItemText className={classes.listItemText} primary={`X: ${rectangle.posX}`} />
-          <ListItemText className={classes.listItemText} primary={`Y: ${rectangle.posX}`} />
-          <ListItemText className={classes.listItemText} primary={`Width: ${rectangle.width}`} />
-          <ListItemText className={classes.listItemText} primary={`Height: ${rectangle.height}`} />
-          <ListItemText className={classes.listItemText} primary={`Classifier: ${rectangle.classifier}`} />
-        </ListItem>
-      )) : null;
+      positionRectangles.map(this.renderRegisteredArea) : null;
 
     const classifierSimpleMenuItems = simpleClassifiers ?
       simpleClassifiers.map(classifier => (
@@ -156,6 +138,8 @@ class Simulator extends React.Component {
             </Grid>
             <Grid item xs={6}>
               <Typography variant="title">Simple</Typography>
+              <Separator />
+
               <FormControl fullWidth>
                 <InputLabel>Classifier</InputLabel>
                 <Select
@@ -188,6 +172,8 @@ class Simulator extends React.Component {
             </Grid>
             <Grid item xs={6}>
               <Typography variant="title">Position</Typography>
+              <Separator />
+
               <FormControl fullWidth>
                 <InputLabel>Classifier</InputLabel>
                 <Select
@@ -219,35 +205,51 @@ class Simulator extends React.Component {
               />
             </Grid>
           </Grid>
+
+          <Separator />
+
+          <Typography variant="title">Registered areas by type</Typography>
           <List>
-            <ListItem button onClick={() => this.props.onMovementRegisteredAreasClick(url)}>
+            <ListItem
+              button
+              onClick={() => this.props.onMovementRegisteredAreasClick(url)}
+              disabled={!movementRectangles.length}
+            >
               <ListItemText primary="Movement" />
               {simulator.settings.movementRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
             <Collapse in={simulator.settings.movementRegisteredAreasOpen} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
+              <div className={classes.registeredAreaContainer}>
                 {movementRegisteredAreas}
-              </List>
+              </div>
             </Collapse>
             <Divider />
-            <ListItem button onClick={() => this.props.onSimpleRegisteredAreasClick(url)}>
+            <ListItem
+              button
+              onClick={() => this.props.onSimpleRegisteredAreasClick(url)}
+              disabled={!simpleRectangles.length}
+            >
               <ListItemText primary="Simple" />
               {simulator.settings.simpleRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
             <Collapse in={simulator.settings.simpleRegisteredAreasOpen} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
+              <div className={classes.registeredAreaContainer}>
                 {simpleRegisteredAreas}
-              </List>
+              </div>
             </Collapse>
             <Divider />
-            <ListItem button onClick={() => this.props.onPositionRegisteredAreasClick(url)}>
+            <ListItem
+              button
+              onClick={() => this.props.onPositionRegisteredAreasClick(url)}
+              disabled={!positionRectangles.length}
+            >
               <ListItemText primary="Position" />
               {simulator.settings.positionRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
             <Collapse in={simulator.settings.positionRegisteredAreasOpen} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
+              <div className={classes.registeredAreaContainer}>
                 {positionRegisteredAreas}
-              </List>
+              </div>
             </Collapse>
           </List>
         </ExpansionPanelDetails>
