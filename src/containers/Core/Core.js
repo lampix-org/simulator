@@ -7,13 +7,12 @@ import { ADMIN_UI_READY } from '../../main-process/ipcEvents';
 import ButtonAppBar from '../../components/ButtonAppBar';
 import SimulatorList from '../SimulatorList';
 
-const styles = {
-  rootDiv: {
-    backgroundColor: '#fafafa',
-    height: '100vh',
-    width: '100vw'
-  },
-};
+const styles = (theme) => ({
+  simulatorListContainer: theme.mixins.gutters({
+    paddingTop: 16,
+    paddingBottom: 16
+  })
+});
 
 class Core extends Component {
   componentDidMount() {
@@ -23,10 +22,13 @@ class Core extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <div className={classes.rootDiv}>
+      <React.Fragment>
         <ButtonAppBar />
-        <SimulatorList />
-      </div>
+
+        <div className={classes.simulatorListContainer}>
+          <SimulatorList />
+        </div>
+      </React.Fragment>
     );
   }
 }

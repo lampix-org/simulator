@@ -107,9 +107,6 @@ class SimulatorList extends React.Component {
       window.lampix.setMetadata(url, POSITION, metadata);
     });
   }
-  closeSimulator = (url) => window.lampix.closeSimulator(url);
-
-  focusSimulator = (url) => window.lampix.focusSimulator(url);
 
   handleMovementRegisteredAreasClick = (url) => {
     const simulatorList = { ...this.state.simulatorList };
@@ -135,29 +132,30 @@ class SimulatorList extends React.Component {
     });
   }
 
-  render() {
-    const simulators = this.state.simulatorList ? Object.keys(this.state.simulatorList).map((url) => (<Simulator
-      key={url}
-      simulatorData={this.state.simulatorList[url]}
-      onMovementDetectorChange={this.handleMovementDetectorChange}
-      onSimpleClassifierChange={this.handleSimpleClassifierChange}
-      onSimpleRecognizedClassChange={this.handleSimpleRecognizedClassChange}
-      onSimpleMetadataChange={this.handleSimpleMetadataChange}
-      onPositionClassifierChange={this.handlePositionClassifierChange}
-      onPositionRecognizedClassChange={this.handlePositionRecognizedClassChange}
-      onPositionMetadataChange={this.handlePositionMetadataChange}
-      onCloseSimulator={this.closeSimulator}
-      onFocusSimulator={this.focusSimulator}
-      onMovementRegisteredAreasClick={this.handleMovementRegisteredAreasClick}
-      onSimpleRegisteredAreasClick={this.handleSimpleRegisteredAreasClick}
-      onPositionRegisteredAreasClick={this.handlePositionRegisteredAreasClick}
-    />)) : null;
+  closeSimulator = (url) => window.lampix.closeSimulator(url);
+  focusSimulator = (url) => window.lampix.focusSimulator(url);
 
-    return (
-      <div>
-        <div> {simulators} </div>
-      </div>
-    );
+  render() {
+    const simulators = this.state.simulatorList ? Object.keys(this.state.simulatorList).map((url) => (
+      <Simulator
+        key={url}
+        simulatorData={this.state.simulatorList[url]}
+        onMovementDetectorChange={this.handleMovementDetectorChange}
+        onSimpleClassifierChange={this.handleSimpleClassifierChange}
+        onSimpleRecognizedClassChange={this.handleSimpleRecognizedClassChange}
+        onSimpleMetadataChange={this.handleSimpleMetadataChange}
+        onPositionClassifierChange={this.handlePositionClassifierChange}
+        onPositionRecognizedClassChange={this.handlePositionRecognizedClassChange}
+        onPositionMetadataChange={this.handlePositionMetadataChange}
+        onCloseSimulator={this.closeSimulator}
+        onFocusSimulator={this.focusSimulator}
+        onMovementRegisteredAreasClick={this.handleMovementRegisteredAreasClick}
+        onSimpleRegisteredAreasClick={this.handleSimpleRegisteredAreasClick}
+        onPositionRegisteredAreasClick={this.handlePositionRegisteredAreasClick}
+      />
+    )) : null;
+
+    return simulators;
   }
 }
 
