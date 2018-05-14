@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 // Material UI
 import { withStyles } from 'material-ui/styles';
 import Dialog from 'material-ui/Dialog';
-import Divider from 'material-ui/Divider';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from 'material-ui/Typography';
 import Slide from 'material-ui/transitions/Slide';
@@ -19,6 +18,7 @@ import Separator from '../Separator';
 
 // Assets
 import simulatorAddressBar from '../../assets/images/simulator-load-bar.png';
+import simulatorList from '../../assets/images/simulator-list.png';
 
 const styles = (theme) => ({
   container: theme.mixins.gutters({
@@ -81,11 +81,10 @@ const HelpDialog = ({
 
       <Paper className={classes.paper}>
         <Typography variant="headline">Using the Lampix Simulator</Typography>
-        <Divider />
-        <Separator spacing={20} />
+        <Separator spacing={15} />
 
         <Typography variant="title">Loading an application via the address bar</Typography>
-        <Separator />
+        <Separator divider />
 
         <img
           className={classes.image}
@@ -105,6 +104,26 @@ const HelpDialog = ({
           <li><code>http://localhost:1313</code></li>
           <li><code>https://some.remotesite.com</code></li>
         </ul>
+
+        <Typography variant="title">Changing simulator settings</Typography>
+        <Separator divider />
+
+        <Typography variant="body1">
+          We will refer to the window opened by pressing the load button as a <i>simulator</i>. <br />
+          If we had three simulators open at the same time, the list would look like this:
+        </Typography>
+
+        <Separator />
+        <img
+          className={classes.image}
+          src={simulatorList}
+          alt="Simulator list"
+        />
+        <Separator />
+
+        <Typography variant="body1">
+
+        </Typography>
       </Paper>
     </div>
   </Dialog>
