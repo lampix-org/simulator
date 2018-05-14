@@ -76,10 +76,6 @@ const HelpDialog = ({
 
     <div className={classes.container}>
       <Paper className={classes.paper}>
-        <Typography variant="headline">Using Lampix.js 0.x</Typography>
-      </Paper>
-
-      <Paper className={classes.paper}>
         <Typography variant="headline">Using the Lampix Simulator</Typography>
         <Separator spacing={15} />
 
