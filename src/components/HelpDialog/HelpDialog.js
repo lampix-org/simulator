@@ -83,6 +83,22 @@ const HelpDialog = ({
         <Typography variant="headline">Using the Lampix Simulator</Typography>
         <Separator spacing={15} />
 
+        <Typography variant="title">What is a simulator?</Typography>
+        <Separator divider />
+
+        <Typography variant="body1">
+          A simulator is a window that renders the specified web application. <br />
+          It provides handlers for the API calls in <code>lampix.js</code> to allow developers to
+          work out the logic of their application on their own computer before trying it out on
+          a Lampix device.
+
+          <br />
+          <br />
+
+          In short, a simulator is one of the environments where <code>lampix.js</code> can be used, the other one
+          being a Lampix device.
+        </Typography>
+
         <Typography variant="title">Loading an application via the address bar</Typography>
         <Separator divider />
 
@@ -120,10 +136,6 @@ const HelpDialog = ({
           alt="Simulator list"
         />
         <Separator />
-
-        <Typography variant="body1">
-
-        </Typography>
       </Paper>
     </div>
   </Dialog>
