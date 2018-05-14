@@ -122,7 +122,6 @@ const HelpDialog = ({
         <Separator divider />
 
         <Typography variant="body1">
-          We will refer to the window opened by pressing the load button as a <i>simulator</i>. <br />
           If we had three simulators open at the same time, the list would look like this:
         </Typography>
 
@@ -132,6 +131,38 @@ const HelpDialog = ({
           src={simulatorList}
           alt="Simulator list"
         />
+        <Separator />
+
+        <Typography variant="body1">
+          Expanding a simulator opens up the available settings:
+        </Typography>
+
+        <ul>
+          <li>Movement detector</li>
+          <li>Classifier</li>
+          <li>Recognized class</li>
+          <li>Metadata</li>
+        </ul>
+
+        <Typography variant="body1">
+          <strong>Note</strong> how <i>classifier</i>, <i>recognized class</i> and <i>metadata</i>
+          &nbsp;are available in two categories: <i>simple</i> and <i>position</i>. <br />
+          These represent the types of classification Lampix can do. <br /><br />
+
+          Simple classification will inform you whether a recognized object has appeared in a specified area,
+          &nbsp;and what class the object belongs to, and it expects to have only one object in that area.<br />
+
+          Position classification, on the other hand, works in two steps.
+
+          First, it provides the outline of the detected object(s) as a preliminary
+          &nbsp;step before classification is complete.
+
+          Then, when classification is done (per object), the device returns an array
+          &nbsp;of JSON objects describing what the device detected and recognized.
+          These JSON objects provide information about the outline (and therefore position)
+          &nbsp;and the recognized class of the detected objects.
+        </Typography>
+
         <Separator />
       </Paper>
     </div>
