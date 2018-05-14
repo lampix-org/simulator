@@ -8,6 +8,7 @@ const { onChange } = require('../utils/onChange');
 const { parseIfString } = require('../utils/parseIfString');
 const { newWindow } = require('../utils/newWindow');
 const { DEFAULT_CLASSES } = require('../constants');
+const { simulator } = require('../config');
 const noop = require('lodash.noop');
 
 const pluckUniqueClassifiersFromArray = (data) => [...new Set(data.map((rect) => rect.classifier))];
@@ -56,7 +57,9 @@ class Simulator {
           preload: path.join(__dirname, 'preload.js'),
           // nodeIntegration: false
         }
-      }
+      },
+      width: simulator.viewport.width,
+      height: simulator.viewport.height
     });
   }
 
