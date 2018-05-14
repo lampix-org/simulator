@@ -76,9 +76,6 @@ const HelpDialog = ({
 
     <div className={classes.container}>
       <Paper className={classes.paper}>
-        <Typography variant="headline">Using the Lampix Simulator</Typography>
-        <Separator spacing={15} />
-
         <Typography variant="title">What is a simulator?</Typography>
         <Separator divider />
 
@@ -94,7 +91,9 @@ const HelpDialog = ({
           In short, a simulator is one of the environments where <code>lampix.js</code> can be used, the other one
           being a Lampix device.
         </Typography>
+      </Paper>
 
+      <Paper className={classes.paper}>
         <Typography variant="title">Loading an application via the address bar</Typography>
         <Separator divider />
 
@@ -116,7 +115,9 @@ const HelpDialog = ({
           <li><code>http://localhost:1313</code></li>
           <li><code>https://some.remotesite.com</code></li>
         </ul>
+      </Paper>
 
+      <Paper className={classes.paper}>
         <Typography variant="title">Changing simulator settings</Typography>
         <Separator divider />
 
