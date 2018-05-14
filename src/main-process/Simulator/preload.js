@@ -26,5 +26,6 @@ window._lampix_internal = {
   registerPositionClassifier: (rectangles) => {
     simulator.setPositionRectangles(rectangles);
     simulator.sendSettingsToAdmin();
-  }
+  },
+  getLampixInfo: () => simulator.getLampixInfo()
 };
