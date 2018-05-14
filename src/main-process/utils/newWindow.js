@@ -7,14 +7,16 @@ const {
   DEFAULT_WINDOW_WIDTH
 } = require('../constants');
 
+const { app } = electron;
 
 const BrowserWindow = electron.BrowserWindow || electron.remote.BrowserWindow;
 
 const { nativeImage } = electron;
-const pathToLogo = path.join(__dirname, '../', '../', '/img', 'logo.png');
-const lampixLogo = nativeImage.createFromPath(pathToLogo);// __ '../../img/icon.png');
-console.log('lampixLogo ', lampixLogo);
-console.log('image.isEmpty() ', lampixLogo.isEmpty());
+const appPath = process.env.NODE_ENV === 'production' ? app.getAppPath() : __dirname;
+const pathToLogo = path.join(appPath, '../', '../', '/img', 'logo.png');
+console.log('app.getAppPath() ', app.getAppPath());
+console.log('pathToLogo ', pathToLogo);
+const lampixLogo = nativeImage.createFromPath(pathToLogo);
 
 const newWindow = ({
   width = DEFAULT_WINDOW_WIDTH,
@@ -33,8 +35,6 @@ const newWindow = ({
     icon,
     useContentSize: true
   });
-  console.log('windowOptions ', windowOptions);
-  console.log('lampixLogo ', lampixLogo);
   const window = new BrowserWindow(windowOptions);
 
   // Emitted when the window is closed.
