@@ -14,8 +14,6 @@ const BrowserWindow = electron.BrowserWindow || electron.remote.BrowserWindow;
 const { nativeImage } = electron;
 const appPath = process.env.NODE_ENV === 'production' ? app.getAppPath() : __dirname;
 const pathToLogo = path.join(appPath, '../', '../', '/img', 'logo.png');
-console.log('app.getAppPath() ', app.getAppPath());
-console.log('pathToLogo ', pathToLogo);
 const lampixLogo = nativeImage.createFromPath(pathToLogo);
 
 const newWindow = ({
