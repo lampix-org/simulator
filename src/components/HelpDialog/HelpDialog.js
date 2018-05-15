@@ -221,6 +221,15 @@ const HelpDialog = ({
           This is by design, as most classifiers only have classes between 0-10, and the values of some QR codes
           &nbsp;we have used are between 100-110.
         </Typography>
+
+        <Typography variant="subheading">Actually using simple and position classification</Typography>
+        <Separator />
+
+        <Typography variant="body1">
+          <strong>Left click</strong> for simple classification. <br />
+          <strong>Right click</strong> for position classification. <br />
+          <br />
+        </Typography>
       </Paper>
     </div>
   </Dialog>
