@@ -79,6 +79,17 @@ const HelpDialog = ({
 
     <div className={classes.container}>
       <Paper className={classes.paper}>
+        <Typography variant="title">TL;DR</Typography>
+        <Separator divider />
+
+        <Typography variant="body1">
+          <strong>Left click</strong> for simple classification. <br />
+          <strong>Right click</strong> for position classification. <br />
+          <br />
+        </Typography>
+      </Paper>
+
+      <Paper className={classes.paper}>
         <Typography variant="title">What is a simulator?</Typography>
         <Separator divider />
 
@@ -221,6 +232,7 @@ const HelpDialog = ({
           This is by design, as most classifiers only have classes between 0-10, and the values of some QR codes
           &nbsp;we have used are between 100-110.
         </Typography>
+        <Separator />
 
         <Typography variant="subheading">Actually using simple and position classification</Typography>
         <Separator />
