@@ -10,3 +10,13 @@ exports.ADMIN_UI_READY = 'lx/simulator/IPC/ADMIN_UI_READY';
 exports.CLOSE_SIMULATOR = 'lx/simulator/IPC/CLOSE_SIMULATOR';
 exports.FOCUS_SIMULATOR = 'lx/simulator/IPC/FOCUS_SIMULATOR';
 exports.LOAD_APP = 'lx/simulator/IPC/LOAD_APP';
+
+// Simulated app events
+exports.MOUSE_MOVE = 'lx/simulator/IPC/MOUSE_MOVE';
+exports.CLICK = 'lx/simulator/IPC/CLICK';
+exports.RIGHT_CLICK = 'lx/simulator/IPC/RIGHT_CLICK';
+
+// Simulator settings
+exports.REGISTER_MOVEMENT = 'lx/simulator/IPC/REGISTER_MOVEMENT';
+exports.REGISTER_SIMPLE = 'lx/simulator/IPC/REGISTER_SIMPLE';
+exports.REGISTER_POSITION = 'lx/simulator/IPC/REGISTER_POSITION';

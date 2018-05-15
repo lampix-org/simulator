@@ -1,30 +1,44 @@
-const { remote } = require('electron');
+const { ipcRenderer } = require('electron');
+const {
+  MOUSE_MOVE,
+  CLICK,
+  RIGHT_CLICK,
+  REGISTER_MOVEMENT,
+  REGISTER_SIMPLE,
+  REGISTER_POSITION
+} = require('../ipcEvents');
 
-const simulator = remote.getGlobal(`simulator-${global.location.origin}`);
+const createClientEventPayload = (event) => ({
+  url: global.location.origin,
+  mouseX: event.clientX,
+  mouseY: event.clientY
+});
+
+const createRegisterPayload = (rectangles) => ({
+  url: global.location.origin,
+  rectangles
+});
 
 window.addEventListener('mousemove', (event) => {
-  simulator.handleMouseMove(event.clientX, event.clientY);
+  ipcRenderer.send(MOUSE_MOVE, createClientEventPayload(event));
 });
 
 window.addEventListener('click', (event) => {
-  simulator.handleSimpleClassifier(event.clientX, event.clientY);
+  ipcRenderer.send(CLICK, createClientEventPayload(event));
 });
 
 window.addEventListener('contextmenu', (event) => {
-  simulator.handlePositionClassifier(event.clientX, event.clientY);
+  ipcRenderer.send(RIGHT_CLICK, createClientEventPayload(event));
 });
 
 window._lampix_internal = {
   registerMovement: (rectangles) => {
-    simulator.setMovementRectangles(rectangles);
-    simulator.sendSettingsToAdmin();
+    ipcRenderer.send(REGISTER_MOVEMENT, createRegisterPayload(rectangles));
   },
   registerSimpleClassifier: (rectangles) => {
-    simulator.setSimpleRectangles(rectangles);
-    simulator.sendSettingsToAdmin();
+    ipcRenderer.send(REGISTER_SIMPLE, createRegisterPayload(rectangles));
   },
   registerPositionClassifier: (rectangles) => {
-    simulator.setPositionRectangles(rectangles);
-    simulator.sendSettingsToAdmin();
+    ipcRenderer.send(REGISTER_POSITION, createRegisterPayload(rectangles));
   }
 };

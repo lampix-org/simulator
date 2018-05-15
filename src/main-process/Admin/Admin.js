@@ -2,6 +2,8 @@ const { Simulator } = require('../Simulator');
 const {
   initSimulatorSettingsListeners,
   initAppManagementListeners,
+  initSimulatorClientEventListeners,
+  initSimulatorLampixListeners,
   handleAdminUIReady,
   sendSettingsBack
 } = require('./ipc');
@@ -27,6 +29,8 @@ class Admin {
     handleAdminUIReady(
       initSimulatorSettingsListeners.bind(null, this.simulators),
       initAppManagementListeners.bind(null, this),
+      initSimulatorClientEventListeners.bind(null, this.simulators),
+      initSimulatorLampixListeners.bind(null, this.simulators),
       this.updateRendererURLs.bind(this)
     );
   }
