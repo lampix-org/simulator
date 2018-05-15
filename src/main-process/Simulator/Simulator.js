@@ -175,12 +175,15 @@ class Simulator {
   }
 
   getLampixInfo() {
-    return {
+    const info = {
       version: '0.1',
       id: this.id,
       isSimulator: true,
       pix
     };
+
+    this.browser.webContents
+      .executeJavaScript(`onLampixInfo(${JSON.stringify(info)})`);
   }
 }
 
