@@ -1,8 +1,8 @@
 const { ipcMain } = require('electron');
 const {
   MOUSE_MOVE,
-  CLICK,
-  RIGHT_CLICK,
+  SIMPLE_CLICK,
+  POSITION_CLICK,
 } = require('../../ipcEvents');
 
 function initSimulatorClientEventListeners(simulators) {
@@ -11,11 +11,11 @@ function initSimulatorClientEventListeners(simulators) {
     simulators[data.url].handleMouseMove(data.mouseX, data.mouseY);
   });
 
-  ipcMain.on(CLICK, (event, data) => {
+  ipcMain.on(SIMPLE_CLICK, (event, data) => {
     simulators[data.url].handleSimpleClassifier(data.mouseX, data.mouseY);
   });
 
-  ipcMain.on(RIGHT_CLICK, (event, data) => {
+  ipcMain.on(POSITION_CLICK, (event, data) => {
     simulators[data.url].handlePositionClassifier(data.mouseX, data.mouseY);
   });
 }

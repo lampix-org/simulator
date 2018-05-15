@@ -1,8 +1,8 @@
 const { ipcRenderer } = require('electron');
 const {
   MOUSE_MOVE,
-  CLICK,
-  RIGHT_CLICK,
+  SIMPLE_CLICK,
+  POSITION_CLICK,
   REGISTER_MOVEMENT,
   REGISTER_SIMPLE,
   REGISTER_POSITION
@@ -24,11 +24,11 @@ window.addEventListener('mousemove', (event) => {
 });
 
 window.addEventListener('click', (event) => {
-  ipcRenderer.send(CLICK, createClientEventPayload(event));
+  ipcRenderer.send(SIMPLE_CLICK, createClientEventPayload(event));
 });
 
 window.addEventListener('contextmenu', (event) => {
-  ipcRenderer.send(RIGHT_CLICK, createClientEventPayload(event));
+  ipcRenderer.send(POSITION_CLICK, createClientEventPayload(event));
 });
 
 window._lampix_internal = {

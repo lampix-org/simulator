@@ -13,8 +13,8 @@ exports.LOAD_APP = 'lx/simulator/IPC/LOAD_APP';
 
 // Simulated app events
 exports.MOUSE_MOVE = 'lx/simulator/IPC/MOUSE_MOVE';
-exports.CLICK = 'lx/simulator/IPC/CLICK';
-exports.RIGHT_CLICK = 'lx/simulator/IPC/RIGHT_CLICK';
+exports.SIMPLE_CLICK = 'lx/simulator/IPC/SIMPLE_CLICK';
+exports.POSITION_CLICK = 'lx/simulator/IPC/POSITION_CLICK';
 
 // Simulator settings
 exports.REGISTER_MOVEMENT = 'lx/simulator/IPC/REGISTER_MOVEMENT';
