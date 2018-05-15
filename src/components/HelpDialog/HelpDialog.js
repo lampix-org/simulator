@@ -170,8 +170,19 @@ const HelpDialog = ({
           These JSON objects provide information about the outline (and therefore position)
           &nbsp;and the recognized class of the detected objects.
         </Typography>
-
         <Separator />
+      </Paper>
+
+      <Paper className={classes.paper}>
+        <Typography variant="title">Registered areas</Typography>
+        <Separator divider />
+
+        <Typography variant="body1">
+          Provided you used one of the <code>registerMovement</code>,
+          &nbsp;<code>registerSimpleClassifier</code> or <code>registerPositionClassifier</code> methods
+          &nbsp;via <code>@lampix/core</code>, one (or more) of the registered area sections will become
+          &nbsp;available. Their contents will represent the registered areas that the simulator knows about.
+        </Typography>
       </Paper>
     </div>
   </Dialog>
