@@ -60,17 +60,15 @@ class Simulator extends React.Component {
   );
 
   render() {
-    const { classes } = this.props;
-    const simulator = this.props.simulatorData;
-    const url = simulator.appUrl;
-    const simulatorRegisteredData = simulator.registeredData;
-    const movementRectangles = simulator.registeredData.movement.rectangles;
-    const simpleRectangles = simulator.registeredData.simple.rectangles;
-    const positionRectangles = simulator.registeredData.position.rectangles;
-    const simpleClassifiers = simulator.registeredData.simple.classifiers;
-    const positionClassifiers = simulator.registeredData.position.classifiers;
-    const simpleClasses = simulator.registeredData.simple.classes;
-    const positionClasses = simulator.registeredData.position.classes;
+    const { classes, url, simulatorData } = this.props;
+    const simulatorRegisteredData = simulatorData.registeredData;
+    const movementRectangles = simulatorData.registeredData.movement.rectangles;
+    const simpleRectangles = simulatorData.registeredData.simple.rectangles;
+    const positionRectangles = simulatorData.registeredData.position.rectangles;
+    const simpleClassifiers = simulatorData.registeredData.simple.classifiers;
+    const positionClassifiers = simulatorData.registeredData.position.classifiers;
+    const simpleClasses = simulatorData.registeredData.simple.classes;
+    const positionClasses = simulatorData.registeredData.position.classes;
 
     const movementRegisteredAreas = (simulatorRegisteredData && movementRectangles) ?
       movementRectangles.map(this.renderRegisteredArea) : null;
@@ -130,7 +128,7 @@ class Simulator extends React.Component {
                 label="Movement detector"
                 control={
                   <Switch
-                    checked={simulator.settings.movementDetector}
+                    checked={simulatorData.settings.movementDetector}
                     onChange={(evt) => this.props.onMovementDetectorChange(evt, url)}
                   />
                 }
@@ -144,7 +142,7 @@ class Simulator extends React.Component {
                 <InputLabel>Classifier</InputLabel>
                 <Select
                   disabled={simpleClassifiers.length === 0}
-                  value={simulator.settings.simple.classifier || ''}
+                  value={simulatorData.settings.simple.classifier || ''}
                   onChange={(evt) => this.props.onSimpleClassifierChange(evt, url)}
                   input={<Input fullWidth />}
                 >
@@ -155,7 +153,7 @@ class Simulator extends React.Component {
                 <InputLabel>Recognized class</InputLabel>
                 <Select
                   disabled={simpleClassifiers.length === 0}
-                  value={simulator.settings.simple.recognizedClass || ''}
+                  value={simulatorData.settings.simple.recognizedClass || ''}
                   onChange={(evt) => this.props.onSimpleRecognizedClassChange(evt, url)}
                   input={<Input fullWidth />}
                 >
@@ -164,7 +162,7 @@ class Simulator extends React.Component {
               </FormControl>
               <TextField
                 disabled={simpleClassifiers.length === 0}
-                value={simulator.settings.simple.metadata || ''}
+                value={simulatorData.settings.simple.metadata || ''}
                 onChange={(evt) => this.props.onSimpleMetadataChange(evt, url)}
                 label="Metadata"
                 fullWidth
@@ -178,7 +176,7 @@ class Simulator extends React.Component {
                 <InputLabel>Classifier</InputLabel>
                 <Select
                   disabled={positionClassifiers.length === 0}
-                  value={simulator.settings.position.classifier || ''}
+                  value={simulatorData.settings.position.classifier || ''}
                   onChange={(evt) => this.props.onPositionClassifierChange(evt, url)}
                   input={<Input fullWidth />}
                 >
@@ -189,7 +187,7 @@ class Simulator extends React.Component {
                 <InputLabel>Recognized class</InputLabel>
                 <Select
                   disabled={positionClassifiers.length === 0}
-                  value={simulator.settings.position.recognizedClass || ''}
+                  value={simulatorData.settings.position.recognizedClass || ''}
                   onChange={(evt) => this.props.onPositionRecognizedClassChange(evt, url)}
                   input={<Input fullWidth />}
                 >
@@ -198,7 +196,7 @@ class Simulator extends React.Component {
               </FormControl>
               <TextField
                 disabled={positionClassifiers.length === 0}
-                value={simulator.settings.position.metadata || ''}
+                value={simulatorData.settings.position.metadata || ''}
                 onChange={(evt) => this.props.onPositionMetadataChange(evt, url)}
                 label="Metadata"
                 fullWidth
@@ -216,9 +214,9 @@ class Simulator extends React.Component {
               disabled={!movementRectangles.length}
             >
               <ListItemText primary="Movement" />
-              {simulator.settings.movementRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
+              {simulatorData.settings.movementRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
-            <Collapse in={simulator.settings.movementRegisteredAreasOpen} timeout="auto" unmountOnExit>
+            <Collapse in={simulatorData.settings.movementRegisteredAreasOpen} timeout="auto" unmountOnExit>
               <div className={classes.registeredAreaContainer}>
                 {movementRegisteredAreas}
               </div>
@@ -230,9 +228,9 @@ class Simulator extends React.Component {
               disabled={!simpleRectangles.length}
             >
               <ListItemText primary="Simple" />
-              {simulator.settings.simpleRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
+              {simulatorData.settings.simpleRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
-            <Collapse in={simulator.settings.simpleRegisteredAreasOpen} timeout="auto" unmountOnExit>
+            <Collapse in={simulatorData.settings.simpleRegisteredAreasOpen} timeout="auto" unmountOnExit>
               <div className={classes.registeredAreaContainer}>
                 {simpleRegisteredAreas}
               </div>
@@ -244,9 +242,9 @@ class Simulator extends React.Component {
               disabled={!positionRectangles.length}
             >
               <ListItemText primary="Position" />
-              {simulator.settings.positionRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
+              {simulatorData.settings.positionRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
-            <Collapse in={simulator.settings.positionRegisteredAreasOpen} timeout="auto" unmountOnExit>
+            <Collapse in={simulatorData.settings.positionRegisteredAreasOpen} timeout="auto" unmountOnExit>
               <div className={classes.registeredAreaContainer}>
                 {positionRegisteredAreas}
               </div>
@@ -266,6 +264,7 @@ class Simulator extends React.Component {
 Simulator.propTypes = {
   simulatorData: PropTypes.object.isRequired, // eslint-disable-line
   classes: PropTypes.object.isRequired, // eslint-disable-line
+  url: PropTypes.string.isRequired,
   onMovementDetectorChange: PropTypes.func.isRequired,
   onSimpleClassifierChange: PropTypes.func.isRequired,
   onSimpleRecognizedClassChange: PropTypes.func.isRequired,

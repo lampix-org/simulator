@@ -23,16 +23,21 @@ class SimulatorList extends React.Component {
       });
     });
     ipcRenderer.on(UPDATE_SIMULATOR_SETTINGS, (event, data) => {
-      const simulatorList = JSON.parse(JSON.stringify(this.state.simulatorList));
-      const { movementRegisteredAreasOpen, simpleRegisteredAreasOpen, positionRegisteredAreasOpen } =
-        this.state.simulatorList[data.url].settings;
-      simulatorList[data.url].settings = data.settings;
-      simulatorList[data.url].registeredData = data.registeredData;
-      simulatorList[data.url].settings.movementRegisteredAreasOpen = movementRegisteredAreasOpen;
-      simulatorList[data.url].settings.simpleRegisteredAreasOpen = simpleRegisteredAreasOpen;
-      simulatorList[data.url].settings.positionRegisteredAreasOpen = positionRegisteredAreasOpen;
+      const {
+        movementRegisteredAreasOpen,
+        simpleRegisteredAreasOpen,
+        positionRegisteredAreasOpen
+      } = this.state.simulatorList[data.url].settings;
+
+      data.settings.movementRegisteredAreasOpen = movementRegisteredAreasOpen;
+      data.settings.simpleRegisteredAreasOpen = simpleRegisteredAreasOpen;
+      data.settings.positionRegisteredAreasOpen = positionRegisteredAreasOpen;
+
       this.setState({
-        simulatorList
+        simulatorList: {
+          ...this.state.simulatorList,
+          [data.url]: data
+        }
       });
     });
   }
@@ -144,6 +149,7 @@ class SimulatorList extends React.Component {
     const simulators = this.state.simulatorList ? Object.keys(this.state.simulatorList).map((url) => (
       <Simulator
         key={url}
+        url={url}
         simulatorData={this.state.simulatorList[url]}
         onMovementDetectorChange={this.handleMovementDetectorChange}
         onSimpleClassifierChange={this.handleSimpleClassifierChange}
