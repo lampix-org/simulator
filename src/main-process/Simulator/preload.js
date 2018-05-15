@@ -5,7 +5,8 @@ const {
   POSITION_CLICK,
   REGISTER_MOVEMENT,
   REGISTER_SIMPLE,
-  REGISTER_POSITION
+  REGISTER_POSITION,
+  GET_LAMPIX_INFO
 } = require('../ipcEvents');
 
 const createClientEventPayload = (event) => ({
@@ -40,5 +41,6 @@ window._lampix_internal = {
   },
   registerPositionClassifier: (rectangles) => {
     ipcRenderer.send(REGISTER_POSITION, createRegisterPayload(rectangles));
-  }
+  },
+  getLampixInfo: () => ipcRenderer.send(GET_LAMPIX_INFO)
 };
