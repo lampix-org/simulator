@@ -17,7 +17,6 @@ class Simulator {
     onClosed = noop,
     updateAdminUI = noop
   }) {
-    this.appUrl = url;
     this.updateAdminUI = updateAdminUI;
 
     const settings = new AppSettings(url);
