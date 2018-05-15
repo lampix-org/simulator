@@ -23,9 +23,14 @@ class SimulatorList extends React.Component {
       });
     });
     ipcRenderer.on(UPDATE_SIMULATOR_SETTINGS, (event, data) => {
-      const simulatorList = { ...this.state.simulatorList };
+      const simulatorList = JSON.parse(JSON.stringify(this.state.simulatorList));
+      const { movementRegisteredAreasOpen, simpleRegisteredAreasOpen, positionRegisteredAreasOpen } =
+        this.state.simulatorList[data.url].settings;
       simulatorList[data.url].settings = data.settings;
       simulatorList[data.url].registeredData = data.registeredData;
+      simulatorList[data.url].settings.movementRegisteredAreasOpen = movementRegisteredAreasOpen;
+      simulatorList[data.url].settings.simpleRegisteredAreasOpen = simpleRegisteredAreasOpen;
+      simulatorList[data.url].settings.positionRegisteredAreasOpen = positionRegisteredAreasOpen;
       this.setState({
         simulatorList
       });
