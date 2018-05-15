@@ -2,7 +2,8 @@ const { ipcMain } = require('electron');
 const {
   REGISTER_MOVEMENT,
   REGISTER_SIMPLE,
-  REGISTER_POSITION
+  REGISTER_POSITION,
+  GET_LAMPIX_INFO
 } = require('../../ipcEvents');
 
 function initSimulatorLampixListeners(simulators) {
@@ -23,6 +24,11 @@ function initSimulatorLampixListeners(simulators) {
     const simulator = simulators[data.url];
     simulator.setPositionRectangles(data.rectangles);
     simulator.sendSettingsToAdmin();
+  });
+
+  ipcMain.on(GET_LAMPIX_INFO, (event, data) => {
+    const simulator = simulators[data.url];
+    simulator.sendLampixInfo();
   });
 }
 

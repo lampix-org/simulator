@@ -174,7 +174,7 @@ class Simulator {
     this.browser = null;
   }
 
-  getLampixInfo() {
+  sendLampixInfo() {
     const info = {
       version: '0.1',
       id: this.id,

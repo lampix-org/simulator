@@ -42,5 +42,7 @@ window._lampix_internal = {
   registerPositionClassifier: (rectangles) => {
     ipcRenderer.send(REGISTER_POSITION, createRegisterPayload(rectangles));
   },
-  getLampixInfo: () => ipcRenderer.send(GET_LAMPIX_INFO)
+  getLampixInfo: () => ipcRenderer.send(GET_LAMPIX_INFO, {
+    url: global.location.origin
+  })
 };
