@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 // Material UI
 import { withStyles } from 'material-ui/styles';
+import grey from 'material-ui/colors/grey';
 import Dialog from 'material-ui/Dialog';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from 'material-ui/Typography';
@@ -19,6 +20,7 @@ import Separator from '../Separator';
 // Assets
 import simulatorAddressBar from '../../assets/images/simulator-load-bar.png';
 import simulatorList from '../../assets/images/simulator-list.png';
+import simulatorSettings from '../../assets/images/simulator-settings.png';
 
 const styles = (theme) => ({
   container: theme.mixins.gutters({
@@ -26,7 +28,7 @@ const styles = (theme) => ({
     paddingBottom: 16
   }),
   toolbar: {
-    background: '#222222'
+    background: grey['900']
   },
   flex: {
     flex: 1
@@ -37,7 +39,8 @@ const styles = (theme) => ({
     paddingBottom: 16
   }),
   image: {
-    maxWidth: '100%'
+    maxWidth: '100%',
+    border: `1px solid ${grey['100']}`
   }
 });
 
@@ -118,7 +121,7 @@ const HelpDialog = ({
       </Paper>
 
       <Paper className={classes.paper}>
-        <Typography variant="title">Changing simulator settings</Typography>
+        <Typography variant="title">Simulator settings</Typography>
         <Separator divider />
 
         <Typography variant="body1">
@@ -134,19 +137,24 @@ const HelpDialog = ({
         <Separator />
 
         <Typography variant="body1">
-          Expanding a simulator opens up the available settings:
+          Expanding a simulator opens up the available settings, as seen in the following image:
         </Typography>
 
-        <ul>
-          <li>Movement detector</li>
-          <li>Classifier</li>
-          <li>Recognized class</li>
-          <li>Metadata</li>
-        </ul>
+        <Separator />
+        <img
+          className={classes.image}
+          src={simulatorSettings}
+          alt="Simulator settings"
+        />
+        <Separator />
 
         <Typography variant="body1">
-          <strong>Note</strong> how <i>classifier</i>, <i>recognized class</i> and <i>metadata</i>
-          &nbsp;are available in two categories: <i>simple</i> and <i>position</i>. <br />
+          <strong>
+          Note how <i>classifier</i>, <i>recognized class</i> and <i>metadata</i>
+          &nbsp;are available in two categories: <i>simple</i> and <i>position</i>.
+          </strong>
+          <br />
+
           These represent the types of classification Lampix can do. <br /><br />
 
           Simple classification will inform you whether a recognized object has appeared in a specified area,
