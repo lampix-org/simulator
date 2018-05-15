@@ -1,4 +1,6 @@
 const path = require('path');
+const noop = require('lodash.noop');
+
 const { AppSettings } = require('../AppSettings');
 const { paperOutline } = require('../utils/paperOutline');
 const { hexagonOutline } = require('../utils/hexagonOutline');
@@ -8,7 +10,8 @@ const { onChange } = require('../utils/onChange');
 const { parseIfString } = require('../utils/parseIfString');
 const { newWindow } = require('../utils/newWindow');
 const { DEFAULT_CLASSES } = require('../constants');
-const noop = require('lodash.noop');
+const { simulator, pix } = require('../config');
+const { naiveIDGenerator } = require('../utils/naiveIDGenerator');
 
 const pluckUniqueClassifiersFromArray = (data) => [...new Set(data.map((rect) => rect.classifier))];
 
@@ -18,6 +21,7 @@ class Simulator {
     updateAdminUI = noop
   }) {
     this.updateAdminUI = updateAdminUI;
+    this.id = naiveIDGenerator();
 
     const settings = new AppSettings(url);
     this.settings = onChange(settings, () => settings.save());
@@ -55,7 +59,9 @@ class Simulator {
           preload: path.join(__dirname, 'preload.js'),
           // nodeIntegration: false
         }
-      }
+      },
+      width: simulator.viewport.width,
+      height: simulator.viewport.height
     });
   }
 
@@ -166,6 +172,15 @@ class Simulator {
 
   cleanUp() {
     this.browser = null;
+  }
+
+  getLampixInfo() {
+    return {
+      version: '0.1',
+      id: this.id,
+      isSimulator: true,
+      pix
+    };
   }
 }
 
