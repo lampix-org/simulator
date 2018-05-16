@@ -63,5 +63,6 @@ module.exports = (options) => ({
     new webpack.LoaderOptionsPlugin({
       debug: true
     })
-  ])
+  ]),
+  devServer: options.devServer
 });
