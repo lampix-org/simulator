@@ -10,7 +10,12 @@ import SimulatorList from '../SimulatorList';
 const styles = (theme) => ({
   simulatorListContainer: theme.mixins.gutters({
     paddingTop: 16,
-    paddingBottom: 16
+    paddingBottom: 16,
+    minHeight: 'calc(100% - 64px)',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
   })
 });
 
