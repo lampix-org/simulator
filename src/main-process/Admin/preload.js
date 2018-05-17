@@ -9,6 +9,8 @@ const {
   LOAD_APP
 } = require('../ipcEvents');
 
+window.ipcRenderer = ipcRenderer;
+
 window.lampix = {
   loadApp: (url) => ipcRenderer.send(LOAD_APP, { url }),
   toggleMovement: (url) => ipcRenderer.send(TOGGLE_MOVEMENT, { url }),

@@ -9,6 +9,8 @@ const {
   GET_LAMPIX_INFO
 } = require('../ipcEvents');
 
+window.ipcRenderer = ipcRenderer;
+
 const createClientEventPayload = (event) => ({
   url: global.location.origin,
   mouseX: event.clientX,
