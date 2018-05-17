@@ -9,7 +9,7 @@ const spawnOptions = {
 
 const env = Object.create(process.env);
 
-const startRendererPort = process.env.PORT || 3000;
+const startRendererPort = +process.env.PORT || 3000;
 const client = new net.Socket();
 let electronStarted = false;
 
