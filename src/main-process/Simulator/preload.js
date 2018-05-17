@@ -9,16 +9,20 @@ const {
   GET_LAMPIX_INFO
 } = require('../ipcEvents');
 
+
 window.ipcRenderer = ipcRenderer;
 
+const urlQueryParams = new URLSearchParams(global.location.search);
+const appUrl = urlQueryParams.get('url');
+
 const createClientEventPayload = (event) => ({
-  url: global.location.origin,
+  url: appUrl,
   mouseX: event.clientX,
   mouseY: event.clientY
 });
 
 const createRegisterPayload = (rectangles) => ({
-  url: global.location.origin,
+  url: appUrl,
   rectangles
 });
 
@@ -45,6 +49,6 @@ window._lampix_internal = {
     ipcRenderer.send(REGISTER_POSITION, createRegisterPayload(rectangles));
   },
   getLampixInfo: () => ipcRenderer.send(GET_LAMPIX_INFO, {
-    url: global.location.origin
+    url: appUrl
   })
 };

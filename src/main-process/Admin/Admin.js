@@ -75,7 +75,7 @@ class Admin {
     const options = process.env.NODE_ENV === 'development' ? { extraHeaders: 'pragma: no-cache\n' } : {};
 
     console.log(`Loading app at ${url}`);
-    this.simulators[url].browser.loadURL(url, options);
+    this.simulators[url].browser.loadURL(`${url}?url=${url}`, options);
 
     this.storedURLs.add(url);
     store.set('urls', [...this.storedURLs]);

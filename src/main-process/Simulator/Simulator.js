@@ -58,7 +58,7 @@ class Simulator {
         webPreferences: {
           preload: path.join(__dirname, 'preload.js'),
           webviewTag: false,
-          nodeIntegration: false
+          nodeIntegration: false,
         }
       },
       width: simulator.viewport.width,
