@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { ipcRenderer } from 'electron';
 import { UPDATE_SIMULATOR_LIST, UPDATE_SIMULATOR_SETTINGS } from '../../main-process/ipcEvents';
 import { SIMPLE, POSITION } from './constants';
 
@@ -11,7 +10,7 @@ class SimulatorList extends React.Component {
     super(props);
     this.state = {
     };
-    ipcRenderer.on(UPDATE_SIMULATOR_LIST, (event, data) => {
+    window.ipcRenderer.on(UPDATE_SIMULATOR_LIST, (event, data) => {
       const simulatorList = data;
       Object.keys(data).forEach((url) => {
         simulatorList[url].settings.movementRegisteredAreasOpen = false;
@@ -22,7 +21,7 @@ class SimulatorList extends React.Component {
         simulatorList
       });
     });
-    ipcRenderer.on(UPDATE_SIMULATOR_SETTINGS, (event, data) => {
+    window.ipcRenderer.on(UPDATE_SIMULATOR_SETTINGS, (event, data) => {
       const {
         movementRegisteredAreasOpen,
         simpleRegisteredAreasOpen,

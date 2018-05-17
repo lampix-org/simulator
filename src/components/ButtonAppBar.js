@@ -6,7 +6,6 @@ import Toolbar from 'material-ui/Toolbar';
 import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import Icon from 'material-ui/Icon';
-import { ipcRenderer } from 'electron';
 import { UPDATE_URL_LIST } from '../main-process/ipcEvents';
 
 import AutoComplete from '../components/AutoComplete';
@@ -39,7 +38,7 @@ class ButtonAppBar extends React.Component {
       urlAddresses: []
     };
 
-    ipcRenderer.on(UPDATE_URL_LIST, (event, data) => {
+    window.ipcRenderer.on(UPDATE_URL_LIST, (event, data) => {
       this.setState({
         urlAddresses: data
       });
