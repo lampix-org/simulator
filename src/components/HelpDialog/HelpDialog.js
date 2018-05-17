@@ -16,6 +16,7 @@ import Paper from 'material-ui/Paper';
 
 // Custom components
 import Separator from '../Separator';
+import InlineCode from '../InlineCode';
 
 // Assets
 import simulatorAddressBar from '../../assets/images/simulator-load-bar.png';
@@ -95,14 +96,15 @@ const HelpDialog = ({
 
         <Typography variant="body1">
           A simulator is a window that renders the specified web application. <br />
-          It provides handlers for the API calls in <code>lampix.js</code> to allow developers to
+          It provides handlers for the API calls in <InlineCode>lampix.js</InlineCode> to allow developers to
           work out the logic of their application on their own computer before trying it out on
           a Lampix device.
 
           <br />
           <br />
 
-          In short, a simulator is one of the environments where <code>lampix.js</code> can be used, the other one
+          In short, a simulator is one of the environments where
+          &nbsp;<InlineCode>lampix.js</InlineCode> can be used, the other one
           being a Lampix device.
         </Typography>
       </Paper>
@@ -125,9 +127,9 @@ const HelpDialog = ({
         </Typography>
 
         <ul>
-          <li><code>file://home/username/path/to/index.html</code></li>
-          <li><code>http://localhost:1313</code></li>
-          <li><code>https://some.remotesite.com</code></li>
+          <li><InlineCode>file://home/username/path/to/index.html</InlineCode></li>
+          <li><InlineCode>http://localhost:1313</InlineCode></li>
+          <li><InlineCode>https://some.remotesite.com</InlineCode></li>
         </ul>
       </Paper>
 
@@ -189,9 +191,10 @@ const HelpDialog = ({
         <Separator divider />
 
         <Typography variant="body1">
-          Provided you used one of the <code>registerMovement</code>,
-          &nbsp;<code>registerSimpleClassifier</code> or <code>registerPositionClassifier</code> methods
-          &nbsp;via <code>@lampix/core</code>, one (or more) of the registered area sections will become
+          Provided you used one of the <InlineCode>registerMovement</InlineCode>,
+          &nbsp;<InlineCode>registerSimpleClassifier</InlineCode> or
+          &nbsp;<InlineCode>registerPositionClassifier</InlineCode> methods
+          &nbsp;via <InlineCode>@lampix/core</InlineCode>, one (or more) of the registered area sections will become
           &nbsp;available. Their contents will represent the registered areas that the simulator knows about.
         </Typography>
       </Paper>
@@ -205,21 +208,21 @@ const HelpDialog = ({
 
         <Typography variant="body1">
           Movement is fairly simple and straightforward. You only need to register areas with
-          &nbsp;<code>registerMovement</code> and activate the movement detector seen in
+          &nbsp;<InlineCode>registerMovement</InlineCode> and activate the movement detector seen in
           &nbsp;the settings image, then move your mouse through the rectangles you registered.
-
-          <Separator />
-
-          Note that this functionality is not yet available on the device. <br />
         </Typography>
+
+        <Separator />
+        <Typography variant="body1">Note that this functionality is not yet available on the device.</Typography>
+
         <Separator />
 
         <Typography variant="subheading">Simple and position classification</Typography>
         <Separator />
 
         <Typography variant="body1">
-          Using <code>registerSimpleClassifier</code> or <code>registerPositionClassifier</code>
-          &nbsp;will make the simulator go through the <code>classifier</code>
+          Using <InlineCode>registerSimpleClassifier</InlineCode> or <InlineCode>registerPositionClassifier</InlineCode>
+          &nbsp;will make the simulator go through the <InlineCode>classifier</InlineCode>
           &nbsp;property of each registered rectangle and provide them to you in the <strong>Classifier</strong>
           &nbsp;select field in either the <strong>simple</strong> or <strong>position</strong>
           &nbsp;categories.
