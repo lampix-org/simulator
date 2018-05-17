@@ -15,16 +15,16 @@ const styles = {
 };
 
 function AutoComplete({
-  items, onChange, onKeyDown, classes
+  items, onChange, onKeyDown, classes, inputValue
 }) {
   return (
     <Downshift
+      inputValue={inputValue}
       onChange={onChange}
       render={({
         getInputProps,
         getItemProps,
         isOpen,
-        inputValue,
         selectedItem,
         highlightedIndex
       }) => (
@@ -80,7 +80,8 @@ AutoComplete.propTypes = {
   items: PropTypes.array.isRequired, // eslint-disable-line
   onChange: PropTypes.func,
   onKeyDown: PropTypes.func,
-  classes: PropTypes.object.isRequired // eslint-disable-line
+  classes: PropTypes.object.isRequired, // eslint-disable-line
+  inputValue: PropTypes.string.isRequired
 };
 
 export default withStyles(styles)(AutoComplete);
