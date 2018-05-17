@@ -39,5 +39,8 @@ module.exports = baseConfig({
     new HtmlWebpackPlugin({
       template: path.join(cwd, 'src', 'index.html')
     })
-  ]
+  ],
+  devServer: {
+    port: process.env.PORT
+  }
 });

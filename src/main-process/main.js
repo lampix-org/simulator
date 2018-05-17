@@ -26,7 +26,7 @@ async function createWindow() {
 
   // Create the admin window and load the index.html of the app.
   const { admin } = require('./Admin'); // eslint-disable-line
-  admin.browser.loadURL('http://localhost:8080');
+  admin.browser.loadURL(`http://localhost:${process.env.PORT}`);
 }
 
 // This method will be called when Electron has finished
