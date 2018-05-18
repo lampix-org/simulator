@@ -1,7 +1,7 @@
 {
-  "name": "lampix-app-starter",
+  "name": "lampix-simulator",
   "version": "0.1.0",
-  "description": "Boilerplate for starting Lampix apps",
+  "description": "Lampix apps simulator, used to develop an application for the Lampix platform without a device",
   "main": "index.js",
   "scripts": {
     "build-renderer": "webpack --config internals/webpack.prod.js --progress --colors",
