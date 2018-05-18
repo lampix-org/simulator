@@ -186,6 +186,14 @@ class Simulator {
     this.browser.webContents
       .executeJavaScript(`onLampixInfo(${JSON.stringify(info)})`);
   }
+
+  transformCoordinates(rect) {
+    const parsedData = parseIfString(rect);
+    delete parsedData.camera;
+
+    this.browser.webContents
+      .executeJavaScript(`onTransformCoordinates(${JSON.stringify(parsedData)})`);
+  }
 }
 
 exports.Simulator = Simulator;

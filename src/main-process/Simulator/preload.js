@@ -6,7 +6,8 @@ const {
   REGISTER_MOVEMENT,
   REGISTER_SIMPLE,
   REGISTER_POSITION,
-  GET_LAMPIX_INFO
+  GET_LAMPIX_INFO,
+  TRANSFORM_COORDINATES
 } = require('../ipcEvents');
 
 
@@ -50,5 +51,9 @@ window._lampix_internal = {
   },
   getLampixInfo: () => ipcRenderer.send(GET_LAMPIX_INFO, {
     url: appUrl
+  }),
+  transformCoordinates: (rect) => ipcRenderer.send(TRANSFORM_COORDINATES, {
+    url: appUrl,
+    rect
   })
 };

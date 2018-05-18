@@ -17,7 +17,8 @@ exports.MOUSE_MOVE = 'lx/simulator/IPC/MOUSE_MOVE';
 exports.SIMPLE_CLICK = 'lx/simulator/IPC/SIMPLE_CLICK';
 exports.POSITION_CLICK = 'lx/simulator/IPC/POSITION_CLICK';
 
-// Simulator settings
+// Simulator actions
 exports.REGISTER_MOVEMENT = 'lx/simulator/IPC/REGISTER_MOVEMENT';
 exports.REGISTER_SIMPLE = 'lx/simulator/IPC/REGISTER_SIMPLE';
 exports.REGISTER_POSITION = 'lx/simulator/IPC/REGISTER_POSITION';
+exports.TRANSFORM_COORDINATES = 'lx/simulator/IPC/TRANSFORM_COORDINATES';
