@@ -67,6 +67,12 @@ class ButtonAppBar extends React.Component {
     this.setState({ open: false });
   };
 
+  handleKeyDown = (e) => {
+    if (e.key === 'Enter' && this.state.inputValue) {
+      window.lampix.loadApp(this.state.inputValue);
+    }
+  }
+
   render() {
     const { classes } = this.props;
     const { inputValue } = this.state;
@@ -78,8 +84,9 @@ class ButtonAppBar extends React.Component {
             <AutoComplete
               items={this.state.urlAddresses}
               inputValue={inputValue}
-              onKeyDown={this.handleInputChange}
-              onChange={this.handleSelectedItemChange}
+              onSelectedItemChange={this.handleSelectedItemChange}
+              onChange={this.handleInputChange}
+              onKeyDown={this.handleKeyDown}
               style={{ flexGrow: 1 }}
             />
             <Button onClick={this.loadApp} color="inherit">Load</Button>
