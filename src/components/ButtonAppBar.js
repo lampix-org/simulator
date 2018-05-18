@@ -95,9 +95,9 @@ class ButtonAppBar extends React.Component {
             <AutoComplete
               items={this.state.urlAddresses}
               inputValue={inputValue}
-              onKeyDown={this.handleInputChange}
-              onChange={this.handleSelectedItemChange}
-              onKeyboardDown={this.handleKeyDown}
+              onSelectedItemChange={this.handleSelectedItemChange}
+              onChange={this.handleInputChange}
+              onKeyDown={this.handleKeyDown}
               style={{ flexGrow: 1 }}
             />
             <Button onClick={this.loadApp} color="inherit">Load</Button>
