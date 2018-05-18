@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Typography from '@material-ui/core/Typography';
+import Typography from 'material-ui/Typography';
 
 import { UPDATE_SIMULATOR_LIST, UPDATE_SIMULATOR_SETTINGS } from '../../main-process/ipcEvents';
 import { SIMPLE, POSITION } from './constants';
