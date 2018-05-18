@@ -12,6 +12,7 @@ const { newWindow } = require('../utils/newWindow');
 const { DEFAULT_CLASSES } = require('../constants');
 const { simulator, pix } = require('../config');
 const { naiveIDGenerator } = require('../utils/naiveIDGenerator');
+const { simulator: simulatorConfig } = require('../config');
 
 const pluckUniqueClassifiersFromArray = (data) => [...new Set(data.map((rect) => rect.classifier))];
 
@@ -190,6 +191,11 @@ class Simulator {
   transformCoordinates(rect) {
     const parsedData = parseIfString(rect);
     delete parsedData.camera;
+
+    parsedData.posX *= simulatorConfig.coordinateConversion.scaleFactor;
+    parsedData.posY *= simulatorConfig.coordinateConversion.scaleFactor;
+    parsedData.width *= simulatorConfig.coordinateConversion.scaleFactor;
+    parsedData.height *= simulatorConfig.coordinateConversion.scaleFactor;
 
     this.browser.webContents
       .executeJavaScript(`onTransformCoordinates(${JSON.stringify(parsedData)})`);
