@@ -20,7 +20,7 @@ async function checkURL(inputURL) {
     console.log('Connection check passed, assuming valid URL');
     return respond(true);
   } catch (err) {
-    return respond(false, err.toString());
+    return respond(false, err.message);
   }
 }
 
