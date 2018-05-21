@@ -10,7 +10,7 @@ const styles = (theme) => ({
   simulatorListContainer: theme.mixins.gutters({
     paddingTop: 16,
     paddingBottom: 16,
-    minHeight: 'calc(100% - 64px)',
+    minHeight: 'calc(100% - 85px)',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
