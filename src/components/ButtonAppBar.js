@@ -6,7 +6,7 @@ import Toolbar from 'material-ui/Toolbar';
 import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import Icon from 'material-ui/Icon';
-import { UPDATE_URL_LIST } from '../main-process/ipcEvents';
+import { UPDATE_URL_LIST, INVALID_URL } from '../main-process/ipcEvents';
 
 import AutoComplete from '../components/AutoComplete';
 import HelpDialog from '../components/HelpDialog';
@@ -24,7 +24,8 @@ const styles = {
     height: 30
   },
   toolbar: {
-    background: '#222222'
+    background: '#222222',
+    height: 85
   }
 };
 
@@ -35,12 +36,20 @@ class ButtonAppBar extends React.Component {
     this.state = {
       inputValue: '',
       open: false,
-      urlAddresses: []
+      error: false,
+      urlAddresses: [],
+      helperText: ''
     };
 
     window.ipcRenderer.on(UPDATE_URL_LIST, (event, data) => {
       this.setState({
         urlAddresses: data
+      });
+    });
+    window.ipcRenderer.on(INVALID_URL, (event, data) => {
+      this.setState({
+        error: true,
+        helperText: data
       });
     });
   }
@@ -49,6 +58,10 @@ class ButtonAppBar extends React.Component {
     if (this.state.inputValue) {
       window.lampix.loadApp(this.state.inputValue);
     }
+    this.setState({
+      error: false,
+      helperText: ''
+    });
   }
 
   handleInputChange = (event) => {
@@ -69,7 +82,7 @@ class ButtonAppBar extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { inputValue } = this.state;
+    const { inputValue, error, helperText } = this.state;
 
     return (
       <div className={classes.root}>
@@ -79,8 +92,10 @@ class ButtonAppBar extends React.Component {
               items={this.state.urlAddresses}
               inputValue={inputValue}
               onKeyDown={this.handleInputChange}
+              error={error}
               onChange={this.handleSelectedItemChange}
               style={{ flexGrow: 1 }}
+              helperText={helperText}
             />
             <Button onClick={this.loadApp} color="inherit">Load</Button>
             <IconButton className={classes.menuButton} onClick={this.openHelp} color="inherit" aria-label="Menu">
