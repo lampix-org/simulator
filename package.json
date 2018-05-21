@@ -2,6 +2,10 @@
   "name": "lampix-simulator",
   "version": "1.0.0-beta.0",
   "description": "Lampix apps simulator, used to develop an application for the Lampix platform without a device",
+  "author": {
+    "email": "support@lampix.co",
+    "name": "Lampix Inc."
+  },
   "main": "index.js",
   "scripts": {
     "build-renderer": "webpack --config internals/webpack.prod.js --progress --colors",
