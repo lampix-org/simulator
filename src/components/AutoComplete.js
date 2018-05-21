@@ -15,12 +15,19 @@ const styles = {
 };
 
 function AutoComplete({
-  items, onChange, onKeyDown, classes, inputValue, error, helperText
+  items,
+  onChange,
+  onKeyDown,
+  classes,
+  inputValue,
+  error,
+  helperText,
+  onSelectedItemChange
 }) {
   return (
     <Downshift
       inputValue={inputValue}
-      onChange={onChange}
+      onChange={onSelectedItemChange}
       render={({
         getInputProps,
         getItemProps,
@@ -47,7 +54,8 @@ function AutoComplete({
             error={error}
             helperText={helperText}
             {...getInputProps({
-              onChange: onKeyDown
+              onChange,
+              onKeyDown
             })}
           />
           {isOpen ? (
@@ -79,7 +87,8 @@ function AutoComplete({
 AutoComplete.defaultProps = {
   onChange: noop,
   onKeyDown: noop,
-  helperText: ''
+  helperText: '',
+  onSelectedItemChange: noop
 };
 
 AutoComplete.propTypes = {
@@ -89,7 +98,8 @@ AutoComplete.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line
   inputValue: PropTypes.string.isRequired,
   error: PropTypes.bool.isRequired,
-  helperText: PropTypes.string
+  helperText: PropTypes.string,
+  onSelectedItemChange: PropTypes.func
 };
 
 export default withStyles(styles)(AutoComplete);
