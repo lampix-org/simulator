@@ -3,7 +3,8 @@ const {
   REGISTER_MOVEMENT,
   REGISTER_SIMPLE,
   REGISTER_POSITION,
-  GET_LAMPIX_INFO
+  GET_LAMPIX_INFO,
+  TRANSFORM_COORDINATES
 } = require('../../ipcEvents');
 
 function initSimulatorLampixListeners(simulators) {
@@ -29,6 +30,11 @@ function initSimulatorLampixListeners(simulators) {
   ipcMain.on(GET_LAMPIX_INFO, (event, data) => {
     const simulator = simulators[data.url];
     simulator.sendLampixInfo();
+  });
+
+  ipcMain.on(TRANSFORM_COORDINATES, (event, data) => {
+    const simulator = simulators[data.url];
+    simulator.transformCoordinates(data.rect);
   });
 }
 

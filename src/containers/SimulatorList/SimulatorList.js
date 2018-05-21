@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Typography from 'material-ui/Typography';
+
 import { UPDATE_SIMULATOR_LIST, UPDATE_SIMULATOR_SETTINGS } from '../../main-process/ipcEvents';
 import { SIMPLE, POSITION } from './constants';
 
@@ -163,7 +165,16 @@ class SimulatorList extends React.Component {
         onSimpleRegisteredAreasClick={this.handleSimpleRegisteredAreasClick}
         onPositionRegisteredAreasClick={this.handlePositionRegisteredAreasClick}
       />
-    )) : null;
+    )) : (
+      <div>
+        <Typography variant="display1">
+          { 'Looks like you haven\'t loaded any simulators :( '}
+        </Typography>
+        <Typography variant="body1">
+          { 'You can do that by entering a URL in the field above and pressing the load button! '}
+        </Typography>
+      </div>
+    );
 
     return simulators;
   }
