@@ -6,19 +6,47 @@
     "email": "support@lampix.co",
     "name": "Lampix Inc."
   },
-  "main": "index.js",
+  "main": "./src/main-process/main.js",
   "scripts": {
-    "build-renderer": "webpack --config internals/webpack.prod.js --progress --colors",
+    "copy-admin-preload": "shx cp ./src/main-process/Admin/preload.js ./dist/preload-admin.js",
+    "copy-simulator-preload": "shx cp ./src/main-process/Simulator/preload.js ./dist/preload-simulator.js",
+    "build": "shx rm -rf ./dist; shx mkdir ./dist; npm run copy-admin-preload; npm run copy-simulator-preload; concurrently \"npm run build-main\" \"npm run build-renderer\"",
+    "build-renderer": "cross-env NODE_ENV=production webpack --config internals/webpack.prod.js --progress --colors",
+    "build-main": "cross-env NODE_ENV=production webpack --config internals/webpack.main.prod.js --progress --colors",
+    "build:linux": "build -c.extraMetadata.main=dist/main.prod.js --linux",
     "start": "node internals/scripts/startApp.js",
-    "start-renderer": "webpack-dev-server -d --inline --hot --config internals/webpack.dev.js",
+    "start-renderer": "cross-env NODE_ENV=development webpack-dev-server -d --inline --hot --config internals/webpack.dev.js",
     "start-main": "cross-env NODE_ENV=development electron --inspect=5858 src/main-process/main.js",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "postinstall": "electron-builder install-app-deps"
   },
   "lint-staged": {
     "*.js": [
       "eslint --fix --ignore-pattern internals/",
       "git add"
     ]
+  },
+  "build": {
+    "asar": false,
+    "productName": "Simulator",
+    "appId": "org.lampix.Simulator",
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Development"
+    },
+    "files": [
+      "dist/",
+      "node_modules/",
+      "main.prod.js",
+      "main.prod.map.js",
+      "package.json"
+    ],
+    "directories": {
+      "output": "release",
+      "buildResources": "resources"
+    }
   },
   "license": "ISC",
   "dependencies": {
@@ -45,10 +73,12 @@
     "babel-loader": "^8.0.0-beta.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.13",
     "clean-webpack-plugin": "^0.1.18",
+    "concurrently": "^3.5.1",
     "cross-env": "^5.1.4",
     "css-loader": "^0.28.9",
     "dotenv": "^5.0.0",
     "electron": "^1.8.4",
+    "electron-builder": "^20.13.4",
     "electron-devtools-installer": "^2.2.3",
     "eslint": "^4.17.0",
     "eslint-config-airbnb": "^16.1.0",
@@ -64,6 +94,7 @@
     "lint-staged": "^6.1.0",
     "node-sass": "^4.7.2",
     "sass-loader": "^6.0.7",
+    "shx": "^0.2.2",
     "style-loader": "^0.20.1",
     "uglifyjs-webpack-plugin": "^1.1.8",
     "webpack": "^3.10.0",
