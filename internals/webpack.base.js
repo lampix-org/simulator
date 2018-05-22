@@ -4,7 +4,6 @@ const path = require('path');
 const cwd = process.cwd();
 
 module.exports = (options) => ({
-  target: 'electron',
   entry: Object.assign({
     app: path.join(cwd, 'src', 'index.js')
   }, options.entry),
