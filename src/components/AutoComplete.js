@@ -55,7 +55,7 @@ function AutoComplete({
             helperText={helperText}
             {...getInputProps({
               onChange,
-              onKeyDown
+              onKeyDown: (event) => onKeyDown(event, isOpen)
             })}
           />
           {isOpen ? (
