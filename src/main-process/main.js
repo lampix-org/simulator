@@ -1,5 +1,4 @@
 // Module to control application life.
-// Module to create native browser window.
 const { app } = require('electron');
 const url = require('url');
 const path = require('path');
@@ -29,7 +28,7 @@ async function createWindow() {
   }
 
   const appURL = devMode ? `http://localhost:${process.env.PORT}` : url.format({
-    pathname: path.join(__dirname, '..', '..', 'dist', 'index.html'),
+    pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
     slashes: true
   });
