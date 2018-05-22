@@ -54,8 +54,8 @@ class ButtonAppBar extends React.Component {
     });
   }
 
-  loadApp = (e) => {
-    if (e.key === 'Enter' && this.state.inputValue) {
+  loadApp = () => {
+    if (this.state.inputValue) {
       window.lampix.loadApp(this.state.inputValue);
     }
     this.setState({
@@ -81,8 +81,8 @@ class ButtonAppBar extends React.Component {
   };
 
   handleKeyDown = (e, isOpen) => {
-    if (!isOpen) {
-      this.loadApp(e);
+    if (!isOpen && e.key === 'Enter') {
+      this.loadApp();
     }
   }
 
