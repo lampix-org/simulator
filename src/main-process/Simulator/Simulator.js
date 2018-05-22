@@ -13,8 +13,10 @@ const { DEFAULT_CLASSES } = require('../constants');
 const { simulator, pix } = require('../config');
 const { naiveIDGenerator } = require('../utils/naiveIDGenerator');
 const { simulator: simulatorConfig } = require('../config');
+const { isDev } = require('../utils/envCheck');
 
 const pluckUniqueClassifiersFromArray = (data) => [...new Set(data.map((rect) => rect.classifier))];
+const preloadName = isDev ? 'preload.js' : 'preload-admin.js';
 
 class Simulator {
   constructor(url, {
@@ -57,7 +59,7 @@ class Simulator {
       options: {
         resizable: false,
         webPreferences: {
-          preload: path.join(__dirname, 'preload.js'),
+          preload: path.join(__dirname, preloadName),
           webviewTag: false,
           nodeIntegration: false,
         }
