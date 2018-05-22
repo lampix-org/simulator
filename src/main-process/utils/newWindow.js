@@ -6,22 +6,23 @@ const {
   DEFAULT_WINDOW_HEIGHT,
   DEFAULT_WINDOW_WIDTH
 } = require('../constants');
-
-const { app } = electron;
+const { isDev } = require('./envCheck');
 
 const BrowserWindow = electron.BrowserWindow || electron.remote.BrowserWindow;
 
-const { nativeImage } = electron;
-const appPath = process.env.NODE_ENV === 'production' ? app.getAppPath() : __dirname;
-const pathToLogo = path.join(appPath, '../', '../', '/img', 'logo.png');
-const lampixLogo = nativeImage.createFromPath(pathToLogo);
+let lampixLogo = null;
+
+if (isDev) {
+  const { nativeImage } = electron;
+  const pathToLogo = path.resolve(__dirname, '../../../', 'resources', 'icon.png');
+  lampixLogo = nativeImage.createFromPath(pathToLogo);
+}
 
 const newWindow = ({
   width = DEFAULT_WINDOW_WIDTH,
   height = DEFAULT_WINDOW_HEIGHT,
   options = {},
-  onClosed = noop,
-  icon = lampixLogo
+  onClosed = noop
 } = {}) => {
   const { x, y } = mainDisplayCenterCoords(width, height);
 
@@ -30,7 +31,7 @@ const newWindow = ({
     height,
     x,
     y,
-    icon,
+    icon: isDev ? lampixLogo : undefined,
     useContentSize: true
   });
   const window = new BrowserWindow(windowOptions);
