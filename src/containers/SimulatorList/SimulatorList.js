@@ -11,6 +11,7 @@ class SimulatorList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      simulatorList: {}
     };
     window.ipcRenderer.on(UPDATE_SIMULATOR_LIST, (event, data) => {
       const simulatorList = data;
@@ -147,7 +148,7 @@ class SimulatorList extends React.Component {
   focusSimulator = (url) => window.lampix.focusSimulator(url);
 
   render() {
-    const simulatorListArr = this.state.simulatorList ? Object.values(this.state.simulatorList) : [];
+    const simulatorListArr = Object.values(this.state.simulatorList);
     const simulators = simulatorListArr.length > 0 ?
       Object.keys(this.state.simulatorList).map((url) => (
         <Simulator
