@@ -11,6 +11,7 @@ class SimulatorList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      simulatorList: {}
     };
     window.ipcRenderer.on(UPDATE_SIMULATOR_LIST, (event, data) => {
       const simulatorList = data;
@@ -148,35 +149,37 @@ class SimulatorList extends React.Component {
   openDevTools = (url) => window.lampix.openDevTools(url);
 
   render() {
-    const simulators = this.state.simulatorList ? Object.keys(this.state.simulatorList).map((url) => (
-      <Simulator
-        key={url}
-        url={url}
-        simulatorData={this.state.simulatorList[url]}
-        onMovementDetectorChange={this.handleMovementDetectorChange}
-        onSimpleClassifierChange={this.handleSimpleClassifierChange}
-        onSimpleRecognizedClassChange={this.handleSimpleRecognizedClassChange}
-        onSimpleMetadataChange={this.handleSimpleMetadataChange}
-        onPositionClassifierChange={this.handlePositionClassifierChange}
-        onPositionRecognizedClassChange={this.handlePositionRecognizedClassChange}
-        onPositionMetadataChange={this.handlePositionMetadataChange}
-        onCloseSimulator={this.closeSimulator}
-        onFocusSimulator={this.focusSimulator}
-        onMovementRegisteredAreasClick={this.handleMovementRegisteredAreasClick}
-        onSimpleRegisteredAreasClick={this.handleSimpleRegisteredAreasClick}
-        onPositionRegisteredAreasClick={this.handlePositionRegisteredAreasClick}
-        openDevTools={this.openDevTools}
-      />
-    )) : (
-      <div>
-        <Typography variant="display1">
-          { 'Looks like you haven\'t loaded any simulators :( '}
-        </Typography>
-        <Typography variant="body1">
-          { 'You can do that by entering a URL in the field above and pressing the load button! '}
-        </Typography>
-      </div>
-    );
+    const simulatorListArr = Object.values(this.state.simulatorList);
+    const simulators = simulatorListArr.length > 0 ?
+      Object.keys(this.state.simulatorList).map((url) => (
+        <Simulator
+          key={url}
+          url={url}
+          simulatorData={this.state.simulatorList[url]}
+          onMovementDetectorChange={this.handleMovementDetectorChange}
+          onSimpleClassifierChange={this.handleSimpleClassifierChange}
+          onSimpleRecognizedClassChange={this.handleSimpleRecognizedClassChange}
+          onSimpleMetadataChange={this.handleSimpleMetadataChange}
+          onPositionClassifierChange={this.handlePositionClassifierChange}
+          onPositionRecognizedClassChange={this.handlePositionRecognizedClassChange}
+          onPositionMetadataChange={this.handlePositionMetadataChange}
+          onCloseSimulator={this.closeSimulator}
+          onFocusSimulator={this.focusSimulator}
+          onMovementRegisteredAreasClick={this.handleMovementRegisteredAreasClick}
+          onSimpleRegisteredAreasClick={this.handleSimpleRegisteredAreasClick}
+          onPositionRegisteredAreasClick={this.handlePositionRegisteredAreasClick}
+          openDevTools={this.openDevTools}
+        />
+      )) : (
+        <React.Fragment>
+          <Typography variant="display1">
+            { 'Looks like you haven\'t loaded any simulators :( '}
+          </Typography>
+          <Typography variant="body1">
+            { 'You can do that by entering a URL in the field above and pressing the load button! '}
+          </Typography>
+        </React.Fragment>
+      );
 
     return simulators;
   }
