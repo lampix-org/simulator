@@ -6,7 +6,8 @@ const {
   SET_METADATA,
   CLOSE_SIMULATOR,
   FOCUS_SIMULATOR,
-  LOAD_APP
+  LOAD_APP,
+  OPEN_DEV_TOOLS
 } = require('../ipcEvents');
 
 window.ipcRenderer = ipcRenderer;
@@ -30,5 +31,6 @@ window.lampix = {
     type
   }),
   closeSimulator: (url) => ipcRenderer.send(CLOSE_SIMULATOR, { url }),
-  focusSimulator: (url) => ipcRenderer.send(FOCUS_SIMULATOR, { url })
+  focusSimulator: (url) => ipcRenderer.send(FOCUS_SIMULATOR, { url }),
+  openDevTools: (url) => ipcRenderer.send(OPEN_DEV_TOOLS, { url })
 };

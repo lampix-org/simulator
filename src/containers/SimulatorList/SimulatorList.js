@@ -145,6 +145,7 @@ class SimulatorList extends React.Component {
 
   closeSimulator = (url) => window.lampix.closeSimulator(url);
   focusSimulator = (url) => window.lampix.focusSimulator(url);
+  openDevTools = (url) => window.lampix.openDevTools(url);
 
   render() {
     const simulators = this.state.simulatorList ? Object.keys(this.state.simulatorList).map((url) => (
@@ -164,6 +165,7 @@ class SimulatorList extends React.Component {
         onMovementRegisteredAreasClick={this.handleMovementRegisteredAreasClick}
         onSimpleRegisteredAreasClick={this.handleSimpleRegisteredAreasClick}
         onPositionRegisteredAreasClick={this.handlePositionRegisteredAreasClick}
+        openDevTools={this.openDevTools}
       />
     )) : (
       <div>
