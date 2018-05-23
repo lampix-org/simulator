@@ -8,9 +8,7 @@
   },
   "main": "./src/main-process/main.js",
   "scripts": {
-    "copy-admin-preload": "shx cp ./src/main-process/Admin/preload.js ./dist/preload-admin.js",
-    "copy-simulator-preload": "shx cp ./src/main-process/Simulator/preload.js ./dist/preload-simulator.js",
-    "build": "shx rm -rf ./dist; shx mkdir ./dist; npm run copy-admin-preload; npm run copy-simulator-preload; concurrently \"npm run build-main\" \"npm run build-renderer\"",
+    "build": "shx rm -rf ./dist; shx mkdir ./dist; concurrently \"npm run build-main\" \"npm run build-renderer\"",
     "build-renderer": "cross-env NODE_ENV=production webpack --config internals/webpack.prod.js --progress --colors",
     "build-main": "cross-env NODE_ENV=production webpack --config internals/webpack.main.prod.js --progress --colors",
     "build:linux": "build -c.extraMetadata.main=dist/main.js --linux",
