@@ -18,7 +18,7 @@ module.exports = baseConfig({
     vendor: vendors
   },
   output: {
-    filename: 'app.[chunkhash].js',
+    filename: '[name].js',
     path: path.join(cwd, 'dist')
   },
   module: {

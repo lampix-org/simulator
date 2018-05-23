@@ -11,10 +11,14 @@ const cwd = process.cwd();
 module.exports = {
   devtool: 'source-map',
   target: 'electron-main',
-  entry: path.join(cwd, 'src', 'main-process', 'main.js'),
+  entry: {
+    main: path.join(cwd, 'src', 'main-process', 'main.js'),
+    'preload-simulator': path.resolve(cwd, 'src/main-process/Simulator/preload.js'),
+    'preload-admin': path.resolve(cwd, 'src/main-process/Admin/preload.js')
+  },
   output: {
-    path: cwd,
-    filename: './dist/main.prod.js'
+    path: path.join(cwd, 'dist'),
+    filename: '[name].js'
   },
   plugins: [
     new UglifyJSPlugin({

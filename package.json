@@ -13,7 +13,7 @@
     "build": "shx rm -rf ./dist; shx mkdir ./dist; npm run copy-admin-preload; npm run copy-simulator-preload; concurrently \"npm run build-main\" \"npm run build-renderer\"",
     "build-renderer": "cross-env NODE_ENV=production webpack --config internals/webpack.prod.js --progress --colors",
     "build-main": "cross-env NODE_ENV=production webpack --config internals/webpack.main.prod.js --progress --colors",
-    "build:linux": "build -c.extraMetadata.main=dist/main.prod.js --linux",
+    "build:linux": "build -c.extraMetadata.main=dist/main.js --linux",
     "start": "node internals/scripts/startApp.js",
     "start-renderer": "cross-env NODE_ENV=development webpack-dev-server -d --inline --hot --config internals/webpack.dev.js",
     "start-main": "cross-env NODE_ENV=development electron --inspect=5858 src/main-process/main.js",
@@ -39,8 +39,12 @@
     "files": [
       "dist/",
       "node_modules/",
-      "main.prod.js",
-      "main.prod.map.js",
+      "main.js",
+      "main.map.js",
+      "preload-admin.js",
+      "preload-admin.js.map",
+      "preload-simulator.js",
+      "preload-simulator.js.map",
       "package.json"
     ],
     "directories": {

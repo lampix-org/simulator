@@ -16,7 +16,7 @@ const { simulator: simulatorConfig } = require('../config');
 const { isDev } = require('../utils/envCheck');
 
 const pluckUniqueClassifiersFromArray = (data) => [...new Set(data.map((rect) => rect.classifier))];
-const preloadName = isDev ? 'preload.js' : 'preload-admin.js';
+const preloadName = isDev ? 'preload.js' : 'preload-simulator.js';
 
 class Simulator {
   constructor(url, {
