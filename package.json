@@ -27,7 +27,6 @@
     ]
   },
   "build": {
-    "asar": false,
     "productName": "Simulator",
     "appId": "org.lampix.Simulator",
     "linux": {
