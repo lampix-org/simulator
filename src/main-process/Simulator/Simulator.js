@@ -194,15 +194,18 @@ class Simulator {
       .executeJavaScript(`onLampixInfo(${JSON.stringify(info)})`);
   }
 
-  transformCoordinates(rect) {
-    const { simulator } = this.generalConfig;
-    const parsedData = parseIfString(rect);
-    delete parsedData.camera;
+  transformCoordinates(rectangles = []) {
+    const parsedData = parseIfString(rectangles);
 
-    parsedData.posX *= simulator.coordinateConversion.scaleFactor;
-    parsedData.posY *= simulator.coordinateConversion.scaleFactor;
-    parsedData.width *= simulator.coordinateConversion.scaleFactor;
-    parsedData.height *= simulator.coordinateConversion.scaleFactor;
+    const { simulator } = this.generalConfig;
+
+    parsedData.forEach((rect) => {
+      rect.posX *= simulator.coordinateConversion.scaleFactor;
+      rect.posY *= simulator.coordinateConversion.scaleFactor;
+      rect.width *= simulator.coordinateConversion.scaleFactor;
+      rect.height *= simulator.coordinateConversion.scaleFactor;
+      rect.type = rect.type === 'camera' ? 'projector' : 'camera';
+    });
 
     this.browser.webContents
       .executeJavaScript(`onTransformCoordinates(${JSON.stringify(parsedData)})`);
