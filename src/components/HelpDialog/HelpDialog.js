@@ -12,11 +12,6 @@ import Slide from 'material-ui/transitions/Slide';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
-import Paper from 'material-ui/Paper';
-
-// Custom components
-import Separator from '../Separator';
-import InlineCode from '../InlineCode';
 
 // Help sections
 import Tldr from './help-sections/Tldr';
@@ -24,6 +19,7 @@ import WhatIsASimulator from './help-sections/WhatIsASimulator';
 import LoadingAnApp from './help-sections/LoadingAnApp';
 import SimulatorSettings from './help-sections/SimulatorSettings';
 import RegisteredAreas from './help-sections/RegisteredAreas';
+import UsingTheSimulator from './help-sections/UsingTheSimulator';
 
 const styles = (theme) => ({
   container: theme.mixins.gutters({
@@ -92,54 +88,7 @@ const HelpDialog = ({
         imageClass={classes.image}
       />
       <RegisteredAreas className={classes.paper} />
-
-      <Paper className={classes.paper}>
-        <Typography variant="title">How to use the simulator?</Typography>
-        <Separator divider />
-
-        <Typography variant="subheading">Movement</Typography>
-        <Separator />
-
-        <Typography variant="body1">
-          Movement is fairly simple and straightforward. You only need to register areas with
-          &nbsp;<InlineCode>registerMovement</InlineCode> and activate the movement detector seen in
-          &nbsp;the settings image, then move your mouse through the rectangles you registered.
-        </Typography>
-
-        <Separator />
-        <Typography variant="body1">Note that this functionality is not yet available on the device.</Typography>
-
-        <Separator />
-
-        <Typography variant="subheading">Simple and position classification</Typography>
-        <Separator />
-
-        <Typography variant="body1">
-          Using <InlineCode>registerSimpleClassifier</InlineCode> or <InlineCode>registerPositionClassifier</InlineCode>
-          &nbsp;will make the simulator go through the <InlineCode>classifier</InlineCode>
-          &nbsp;property of each registered rectangle and provide them to you in the <strong>Classifier</strong>
-          &nbsp;select field in either the <strong>simple</strong> or <strong>position</strong>
-          &nbsp;categories.
-
-          <br />
-          <br />
-
-          The <strong>Recognized class</strong> select field in both categories
-          &nbsp;will show values from 0-10 and 100-110, by default.<br />
-          This is by design, as most classifiers only have classes between 0-10, and the values of some QR codes
-          &nbsp;we have used are between 100-110.
-        </Typography>
-        <Separator />
-
-        <Typography variant="subheading">Actually using simple and position classification</Typography>
-        <Separator />
-
-        <Typography variant="body1">
-          <strong>Left click</strong> for simple classification. <br />
-          <strong>Right click</strong> for position classification. <br />
-          <br />
-        </Typography>
-      </Paper>
+      <UsingTheSimulator className={classes.paper} />
     </div>
   </Dialog>
 );
