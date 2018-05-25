@@ -23,6 +23,7 @@ import Tldr from './help-sections/Tldr';
 import WhatIsASimulator from './help-sections/WhatIsASimulator';
 import LoadingAnApp from './help-sections/LoadingAnApp';
 import SimulatorSettings from './help-sections/SimulatorSettings';
+import RegisteredAreas from './help-sections/RegisteredAreas';
 
 const styles = (theme) => ({
   container: theme.mixins.gutters({
@@ -86,24 +87,11 @@ const HelpDialog = ({
         className={classes.paper}
         imageClass={classes.image}
       />
-
       <SimulatorSettings
         className={classes.paper}
         imageClass={classes.image}
       />
-
-      <Paper className={classes.paper}>
-        <Typography variant="title">Registered areas</Typography>
-        <Separator divider />
-
-        <Typography variant="body1">
-          Provided you used one of the <InlineCode>registerMovement</InlineCode>,
-          &nbsp;<InlineCode>registerSimpleClassifier</InlineCode> or
-          &nbsp;<InlineCode>registerPositionClassifier</InlineCode> methods
-          &nbsp;via <InlineCode>@lampix/core</InlineCode>, one (or more) of the registered area sections will become
-          &nbsp;available. Their contents will represent the registered areas that the simulator knows about.
-        </Typography>
-      </Paper>
+      <RegisteredAreas className={classes.paper} />
 
       <Paper className={classes.paper}>
         <Typography variant="title">How to use the simulator?</Typography>
