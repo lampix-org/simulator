@@ -9,16 +9,16 @@ const cwd = process.cwd();
 
 // Plugins
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = baseConfig({
+  target: 'electron-renderer',
   entry: {
     vendor: vendors
   },
   output: {
-    filename: 'app.[chunkhash].js',
+    filename: '[name].js',
     path: path.join(cwd, 'dist')
   },
   module: {
@@ -47,7 +47,6 @@ module.exports = baseConfig({
     ]
   },
   plugins: [
-    new CleanWebpackPlugin([path.join(cwd, 'dist')], { root: cwd }),
     new ExtractTextPlugin({
       filename: '[name].[chunkhash].css'
     }),
@@ -68,6 +67,10 @@ module.exports = baseConfig({
     // Extract app code to own file
     new HtmlWebpackPlugin({
       template: path.join(cwd, 'src', 'index.html')
+    }),
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'production',
+      DEBUG_PROD: process.env.DEBUG_PROD || 'false'
     })
   ]
 });

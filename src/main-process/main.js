@@ -1,6 +1,8 @@
 // Module to control application life.
-// Module to create native browser window.
 const { app } = require('electron');
+const url = require('url');
+const path = require('path');
+const { isDev, isDebuggingProd } = require('./utils/envCheck');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -20,13 +22,19 @@ const installExtensions = async () => {
 };
 
 async function createWindow() {
-  if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
+  if (isDev || isDebuggingProd) {
     await installExtensions();
   }
 
+  const appURL = isDev ? `http://localhost:${process.env.PORT}` : url.format({
+    pathname: path.join(__dirname, 'index.html'),
+    protocol: 'file:',
+    slashes: true
+  });
+
   // Create the admin window and load the index.html of the app.
   const { admin } = require('./Admin'); // eslint-disable-line
-  admin.browser.loadURL(`http://localhost:${process.env.PORT}`);
+  admin.browser.loadURL(appURL);
 }
 
 // This method will be called when Electron has finished

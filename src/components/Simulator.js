@@ -253,6 +253,7 @@ class Simulator extends React.Component {
         </ExpansionPanelDetails>
         <Divider />
         <ExpansionPanelActions>
+          <Button size="small" onClick={() => this.props.openDevTools(url)}>Dev tools</Button>
           <Button size="small" onClick={() => this.props.onCloseSimulator(url)}>Close simulator</Button>
           <Button size="small" onClick={() => this.props.onFocusSimulator(url)} color="primary">Focus</Button>
         </ExpansionPanelActions>
@@ -276,7 +277,8 @@ Simulator.propTypes = {
   onFocusSimulator: PropTypes.func.isRequired,
   onMovementRegisteredAreasClick: PropTypes.func.isRequired,
   onSimpleRegisteredAreasClick: PropTypes.func.isRequired,
-  onPositionRegisteredAreasClick: PropTypes.func.isRequired
+  onPositionRegisteredAreasClick: PropTypes.func.isRequired,
+  openDevTools: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(Simulator);

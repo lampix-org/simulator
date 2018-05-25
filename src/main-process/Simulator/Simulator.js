@@ -10,11 +10,12 @@ const { onChange } = require('../utils/onChange');
 const { parseIfString } = require('../utils/parseIfString');
 const { newWindow } = require('../utils/newWindow');
 const { DEFAULT_CLASSES } = require('../constants');
-const { simulator, pix } = require('../config');
 const { naiveIDGenerator } = require('../utils/naiveIDGenerator');
-const { simulator: simulatorConfig } = require('../config');
+const { configStore } = require('../config');
+const { isDev } = require('../utils/envCheck');
 
 const pluckUniqueClassifiersFromArray = (data) => [...new Set(data.map((rect) => rect.classifier))];
+const preloadName = isDev ? 'preload.js' : 'preload-simulator.js';
 
 class Simulator {
   constructor(url, {
@@ -44,11 +45,15 @@ class Simulator {
       }
     };
 
+    this.generalConfig = configStore.store;
+
     this.idCounter = 0;
     this.createOwnBrowser(onClosed);
   }
 
   createOwnBrowser(onClosed = noop) {
+    const { simulator } = this.generalConfig;
+
     this.browser = newWindow({
       onClosed: () => {
         this.cleanUp();
@@ -57,7 +62,7 @@ class Simulator {
       options: {
         resizable: false,
         webPreferences: {
-          preload: path.join(__dirname, 'preload.js'),
+          preload: path.join(__dirname, preloadName),
           webviewTag: false,
           nodeIntegration: false,
         }
@@ -177,6 +182,7 @@ class Simulator {
   }
 
   sendLampixInfo() {
+    const { pix } = this.generalConfig;
     const info = {
       version: '0.1',
       id: this.id,
@@ -189,13 +195,14 @@ class Simulator {
   }
 
   transformCoordinates(rect) {
+    const { simulator } = this.generalConfig;
     const parsedData = parseIfString(rect);
     delete parsedData.camera;
 
-    parsedData.posX *= simulatorConfig.coordinateConversion.scaleFactor;
-    parsedData.posY *= simulatorConfig.coordinateConversion.scaleFactor;
-    parsedData.width *= simulatorConfig.coordinateConversion.scaleFactor;
-    parsedData.height *= simulatorConfig.coordinateConversion.scaleFactor;
+    parsedData.posX *= simulator.coordinateConversion.scaleFactor;
+    parsedData.posY *= simulator.coordinateConversion.scaleFactor;
+    parsedData.width *= simulator.coordinateConversion.scaleFactor;
+    parsedData.height *= simulator.coordinateConversion.scaleFactor;
 
     this.browser.webContents
       .executeJavaScript(`onTransformCoordinates(${JSON.stringify(parsedData)})`);
