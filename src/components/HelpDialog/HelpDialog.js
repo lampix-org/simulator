@@ -23,6 +23,9 @@ import simulatorAddressBar from '../../assets/images/simulator-load-bar.png';
 import simulatorList from '../../assets/images/simulator-list.png';
 import simulatorSettings from '../../assets/images/simulator-settings.png';
 
+// Help sections
+import Tldr from './help-sections/Tldr';
+
 const styles = (theme) => ({
   container: theme.mixins.gutters({
     paddingTop: 80, // 64 to account for the app bar, 16 for inner spacing
@@ -79,16 +82,7 @@ const HelpDialog = ({
     </AppBar>
 
     <div className={classes.container}>
-      <Paper className={classes.paper}>
-        <Typography variant="title">TL;DR</Typography>
-        <Separator divider />
-
-        <Typography variant="body1">
-          <strong>Left click</strong> for simple classification. <br />
-          <strong>Right click</strong> for position classification. <br />
-          <br />
-        </Typography>
-      </Paper>
+      <Tldr className={classes.paper} />
 
       <Paper className={classes.paper}>
         <Typography variant="title">What is a simulator?</Typography>
