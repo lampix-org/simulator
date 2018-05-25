@@ -9,6 +9,7 @@ exports.INVALID_URL = 'lx-simulator/IPC/INVALID_URL';
 exports.ADMIN_UI_READY = 'lx/simulator/IPC/ADMIN_UI_READY';
 exports.CLOSE_SIMULATOR = 'lx/simulator/IPC/CLOSE_SIMULATOR';
 exports.FOCUS_SIMULATOR = 'lx/simulator/IPC/FOCUS_SIMULATOR';
+exports.OPEN_DEV_TOOLS = 'lx/simulator/IPC/OPEN_DEV_TOOLS';
 exports.LOAD_APP = 'lx/simulator/IPC/LOAD_APP';
 exports.GET_LAMPIX_INFO = 'lx/simulator/IPC/GET_LAMPIX_INFO';
 

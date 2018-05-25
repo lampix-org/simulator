@@ -1,6 +1,5 @@
 .env
 node_modules/
-dist/
 **/*.css.d.ts
 
 # Created by https://www.gitignore.io/api/webstorm,visualstudiocode
@@ -76,5 +75,8 @@ fabric.properties
 # Sonarlint plugin
 .idea/sonarlint
 
+main.prod.js
+main.prod.js.map
+release/
 
 # End of https://www.gitignore.io/api/webstorm,visualstudiocode

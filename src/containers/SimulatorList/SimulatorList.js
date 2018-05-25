@@ -146,6 +146,7 @@ class SimulatorList extends React.Component {
 
   closeSimulator = (url) => window.lampix.closeSimulator(url);
   focusSimulator = (url) => window.lampix.focusSimulator(url);
+  openDevTools = (url) => window.lampix.openDevTools(url);
 
   render() {
     const simulatorListArr = Object.values(this.state.simulatorList);
@@ -167,16 +168,17 @@ class SimulatorList extends React.Component {
           onMovementRegisteredAreasClick={this.handleMovementRegisteredAreasClick}
           onSimpleRegisteredAreasClick={this.handleSimpleRegisteredAreasClick}
           onPositionRegisteredAreasClick={this.handlePositionRegisteredAreasClick}
+          openDevTools={this.openDevTools}
         />
       )) : (
-        <div>
+        <React.Fragment>
           <Typography variant="display1">
             { 'Looks like you haven\'t loaded any simulators :( '}
           </Typography>
           <Typography variant="body1">
             { 'You can do that by entering a URL in the field above and pressing the load button! '}
           </Typography>
-        </div>
+        </React.Fragment>
       );
 
     return simulators;

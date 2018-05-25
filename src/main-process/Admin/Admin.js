@@ -108,6 +108,18 @@ class Admin {
     logSimulatorNotFound(url);
   }
 
+  openDevTools(url) {
+    console.log(`Attempting to open dev tools for ${url}...`);
+
+    if (this.simulators[url]) {
+      console.log('Simulator found. Opening dev tools');
+      this.simulators[url].browser.webContents.openDevTools();
+      return;
+    }
+
+    logSimulatorNotFound(url);
+  }
+
   sendSimulators() {
     // Check to see that the main admin window wasn't the one closed
     // If it was, then updating simulators is not necessary since the whole program closes
