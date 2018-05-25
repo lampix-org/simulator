@@ -1,6 +1,6 @@
 {
   "name": "lampix-simulator",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "Lampix apps simulator, used to develop an application for the Lampix platform without a device",
   "author": {
     "email": "support@lampix.co",
