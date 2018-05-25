@@ -1,9 +1,9 @@
 const { app } = require('electron');
 const path = require('path');
 const noop = require('lodash.noop');
-const { isDev } = require('../utils/envCheck');
+const { isDev, isDebuggingProd } = require('../utils/envCheck');
 
-const devToolsEnabled = isDev || process.env.DEBUG_PROD === 'true';
+const devToolsEnabled = isDev || isDebuggingProd;
 const preloadName = isDev ? 'preload.js' : 'preload-admin.js';
 
 exports.createAdminBrowser = (onClosed = noop) => {

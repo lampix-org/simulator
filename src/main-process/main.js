@@ -2,8 +2,7 @@
 const { app } = require('electron');
 const url = require('url');
 const path = require('path');
-
-const devMode = process.env.NODE_ENV === 'development';
+const { isDev, isDebuggingProd } = require('./utils/envCheck');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -23,11 +22,11 @@ const installExtensions = async () => {
 };
 
 async function createWindow() {
-  if (devMode || process.env.DEBUG_PROD === 'true') {
+  if (isDev || isDebuggingProd) {
     await installExtensions();
   }
 
-  const appURL = devMode ? `http://localhost:${process.env.PORT}` : url.format({
+  const appURL = isDev ? `http://localhost:${process.env.PORT}` : url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
     slashes: true
