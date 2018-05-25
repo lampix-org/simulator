@@ -19,13 +19,13 @@ import Separator from '../Separator';
 import InlineCode from '../InlineCode';
 
 // Assets
-import simulatorAddressBar from '../../assets/images/simulator-load-bar.png';
 import simulatorList from '../../assets/images/simulator-list.png';
 import simulatorSettings from '../../assets/images/simulator-settings.png';
 
 // Help sections
 import Tldr from './help-sections/Tldr';
 import WhatIsASimulator from './help-sections/WhatIsASimulator';
+import LoadingAnApp from './help-sections/LoadingAnApp';
 
 const styles = (theme) => ({
   container: theme.mixins.gutters({
@@ -85,30 +85,10 @@ const HelpDialog = ({
     <div className={classes.container}>
       <Tldr className={classes.paper} />
       <WhatIsASimulator className={classes.paper} />
-
-      <Paper className={classes.paper}>
-        <Typography variant="title">Loading an application via the address bar</Typography>
-        <Separator divider />
-
-        <img
-          className={classes.image}
-          src={simulatorAddressBar}
-          alt="Simulator address bar"
-        />
-
-        <Separator />
-        <Typography variant="body1">
-          You only have to enter the URL address for a web application and press the load button.
-          Addresses can be local or remote. <br />
-          Example addresses that will work, provided they point to a web application: <br />
-        </Typography>
-
-        <ul>
-          <li><InlineCode>file://home/username/path/to/index.html</InlineCode></li>
-          <li><InlineCode>http://localhost:1313</InlineCode></li>
-          <li><InlineCode>https://some.remotesite.com</InlineCode></li>
-        </ul>
-      </Paper>
+      <LoadingAnApp
+        className={classes.paper}
+        imageClass={classes.image}
+      />
 
       <Paper className={classes.paper}>
         <Typography variant="title">Simulator settings</Typography>
