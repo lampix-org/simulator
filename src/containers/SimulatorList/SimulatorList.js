@@ -3,7 +3,7 @@ import React from 'react';
 import Typography from 'material-ui/Typography';
 
 import { UPDATE_SIMULATOR_LIST, UPDATE_SIMULATOR_SETTINGS } from '../../main-process/ipcEvents';
-import { SIMPLE, POSITION } from './constants';
+import { SIMPLE, POSITION } from '../../common/constants';
 
 import Simulator from '../../components/Simulator';
 
@@ -38,7 +38,10 @@ class SimulatorList extends React.Component {
       this.setState({
         simulatorList: {
           ...this.state.simulatorList,
-          [data.url]: data
+          [data.url]: {
+            ...this.state.simulatorList[data.url],
+            ...data
+          }
         }
       });
     });
@@ -144,6 +147,10 @@ class SimulatorList extends React.Component {
     });
   }
 
+  handleRegisteredAreaClick = (url, category, classifier) => {
+    window.lampix.changeCategoryClassifier(url, category, classifier);
+  };
+
   closeSimulator = (url) => window.lampix.closeSimulator(url);
   focusSimulator = (url) => window.lampix.focusSimulator(url);
   openDevTools = (url) => window.lampix.openDevTools(url);
@@ -169,6 +176,7 @@ class SimulatorList extends React.Component {
           onSimpleRegisteredAreasClick={this.handleSimpleRegisteredAreasClick}
           onPositionRegisteredAreasClick={this.handlePositionRegisteredAreasClick}
           openDevTools={this.openDevTools}
+          handleRegisteredAreaClick={this.handleRegisteredAreaClick}
         />
       )) : (
         <React.Fragment>

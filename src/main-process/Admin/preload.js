@@ -7,7 +7,8 @@ const {
   CLOSE_SIMULATOR,
   FOCUS_SIMULATOR,
   LOAD_APP,
-  OPEN_DEV_TOOLS
+  OPEN_DEV_TOOLS,
+  CHANGE_CATEGORY_SETTINGS
 } = require('../ipcEvents');
 
 window.ipcRenderer = ipcRenderer;
@@ -32,5 +33,10 @@ window.lampix = {
   }),
   closeSimulator: (url) => ipcRenderer.send(CLOSE_SIMULATOR, { url }),
   focusSimulator: (url) => ipcRenderer.send(FOCUS_SIMULATOR, { url }),
-  openDevTools: (url) => ipcRenderer.send(OPEN_DEV_TOOLS, { url })
+  openDevTools: (url) => ipcRenderer.send(OPEN_DEV_TOOLS, { url }),
+  changeCategoryClassifier: (url, category, classifier) => ipcRenderer.send(CHANGE_CATEGORY_SETTINGS, {
+    url,
+    category,
+    classifier
+  })
 };
