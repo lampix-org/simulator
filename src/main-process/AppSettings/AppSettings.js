@@ -39,21 +39,13 @@ class AppSettings {
   }
 
   save() {
-    const data = {
-      movementDetector: this.movementDetector,
-      simple: {
-        classifier: null,
-        recognizedClass: null,
-        metadata: null
-      },
-      position: {
-        classifier: null,
-        recognizedClass: null,
-        metadata: null
-      }
-    };
+    const { movementDetector, simple, position } = this;
 
-    store.set(this.storeLocation, data);
+    store.set(this.storeLocation, {
+      movementDetector,
+      simple,
+      position
+    });
   }
 }
 
