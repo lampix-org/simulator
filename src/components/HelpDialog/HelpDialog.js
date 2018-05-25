@@ -25,6 +25,7 @@ import simulatorSettings from '../../assets/images/simulator-settings.png';
 
 // Help sections
 import Tldr from './help-sections/Tldr';
+import WhatIsASimulator from './help-sections/WhatIsASimulator';
 
 const styles = (theme) => ({
   container: theme.mixins.gutters({
@@ -83,25 +84,7 @@ const HelpDialog = ({
 
     <div className={classes.container}>
       <Tldr className={classes.paper} />
-
-      <Paper className={classes.paper}>
-        <Typography variant="title">What is a simulator?</Typography>
-        <Separator divider />
-
-        <Typography variant="body1">
-          A simulator is a window that renders the specified web application. <br />
-          It provides handlers for the API calls in <InlineCode>lampix.js</InlineCode> to allow developers to
-          work out the logic of their application on their own computer before trying it out on
-          a Lampix device.
-
-          <br />
-          <br />
-
-          In short, a simulator is one of the environments where
-          &nbsp;<InlineCode>lampix.js</InlineCode> can be used, the other one
-          being a Lampix device.
-        </Typography>
-      </Paper>
+      <WhatIsASimulator className={classes.paper} />
 
       <Paper className={classes.paper}>
         <Typography variant="title">Loading an application via the address bar</Typography>
