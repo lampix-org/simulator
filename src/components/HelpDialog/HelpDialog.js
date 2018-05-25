@@ -20,6 +20,7 @@ import LoadingAnApp from './help-sections/LoadingAnApp';
 import SimulatorSettings from './help-sections/SimulatorSettings';
 import RegisteredAreas from './help-sections/RegisteredAreas';
 import UsingTheSimulator from './help-sections/UsingTheSimulator';
+import DevTools from './help-sections/DevTools';
 
 const styles = (theme) => ({
   container: theme.mixins.gutters({
@@ -89,6 +90,7 @@ const HelpDialog = ({
       />
       <RegisteredAreas className={classes.paper} />
       <UsingTheSimulator className={classes.paper} />
+      <DevTools className={classes.paper} />
     </div>
   </Dialog>
 );

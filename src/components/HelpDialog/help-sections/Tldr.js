@@ -17,7 +17,12 @@ const Tldr = ({ className }) => (
     <Typography variant="body1">
       <strong>Left click</strong> for simple classification. <br />
       <strong>Right click</strong> for position classification. <br />
-      <br />
+    </Typography>
+
+    <Separator />
+
+    <Typography variant="body1">
+      <strong>Dev tools</strong>: expand simulator settings, click <i>DEV TOOLS</i>.
     </Typography>
   </Paper>
 );
