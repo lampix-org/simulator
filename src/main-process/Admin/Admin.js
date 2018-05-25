@@ -77,9 +77,7 @@ class Admin {
     console.log(`Loading app at ${url}`);
     this.simulators[url].browser.loadURL(`${url}?url=${url}`, options);
 
-    this.storedURLs.add(url);
-    store.set('urls', [...this.storedURLs]);
-
+    this.updateURLListOrder(url);
     this.sendSimulators();
     this.updateRendererURLs();
   }
@@ -133,6 +131,14 @@ class Admin {
 
   updateRendererURLs() {
     this.browser.webContents.send(UPDATE_URL_LIST, [...this.storedURLs]);
+  }
+
+  updateURLListOrder(newFirstURL) {
+    const newList = ([...this.storedURLs]).filter((url) => url !== newFirstURL);
+    newList.unshift(newFirstURL);
+
+    store.set('urls', newList);
+    this.storedURLs = new Set(newList);
   }
 }
 
