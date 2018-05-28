@@ -24,6 +24,12 @@ import Card, { CardContent } from 'material-ui/Card';
 
 import Separator from './Separator';
 
+import {
+  SIMPLE,
+  POSITION,
+  MOVEMENT
+} from '../common/constants';
+
 const styles = () => ({
   registeredAreaContainer: {
     display: 'flex',
@@ -32,32 +38,49 @@ const styles = () => ({
   registeredArea: {
     margin: 10
   },
-  listItemText: {
-    paddingLeft: 0
-  },
   expansionPanelDetails: {
     flexDirection: 'column'
+  },
+  clickableCard: {
+    cursor: 'pointer',
+    transition: 'transform 200ms ease',
+    '&:hover': {
+      transform: 'scale(1.05)'
+    }
   }
 });
 
+const emptyStringIfNil = (value) => {
+  if (value == null) {
+    return '';
+  }
+
+  return value;
+};
+
 class Simulator extends React.Component {
-  renderRegisteredArea = (rectangle) => (
-    <Card
-      key={`${rectangle.posX}/${rectangle.posY}`}
-      className={this.props.classes.registeredArea}
-    >
-      <CardContent>
-        <Typography variant="body1">X: {rectangle.posX}</Typography>
-        <Typography variant="body1">Y: {rectangle.posY}</Typography>
-        <Typography variant="body1">Width: {rectangle.width}</Typography>
-        <Typography variant="body1">Height: {rectangle.height}</Typography>
-        {
-          rectangle.classifier &&
-          <Typography variant="body1">Classifier: {rectangle.classifier}</Typography>
-        }
-      </CardContent>
-    </Card>
-  );
+  renderRegisteredArea = (rect, category) => {
+    const { handleRegisteredAreaClick, url, classes } = this.props;
+
+    return (
+      <Card
+        key={`${rect.posX}/${rect.posY}`}
+        className={`${classes.registeredArea} ${classes.clickableCard}`}
+        onClick={() => handleRegisteredAreaClick(url, category, rect.classifier)}
+      >
+        <CardContent>
+          <Typography variant="body1">X: {rect.posX}</Typography>
+          <Typography variant="body1">Y: {rect.posY}</Typography>
+          <Typography variant="body1">Width: {rect.width}</Typography>
+          <Typography variant="body1">Height: {rect.height}</Typography>
+          {
+            rect.classifier &&
+            <Typography variant="body1">Classifier: {rect.classifier}</Typography>
+          }
+        </CardContent>
+      </Card>
+    );
+  };
 
   render() {
     const { classes, url, simulatorData } = this.props;
@@ -71,12 +94,12 @@ class Simulator extends React.Component {
     const positionClasses = simulatorData.registeredData.position.classes;
 
     const movementRegisteredAreas = (simulatorRegisteredData && movementRectangles) ?
-      movementRectangles.map(this.renderRegisteredArea) : null;
+      movementRectangles.map((rect) => this.renderRegisteredArea(rect, MOVEMENT)) : null;
     const simpleRegisteredAreas = (simulatorRegisteredData && simpleRectangles) ?
-      simpleRectangles.map(this.renderRegisteredArea) : null;
+      simpleRectangles.map((rect) => this.renderRegisteredArea(rect, SIMPLE)) : null;
 
     const positionRegisteredAreas = (simulatorRegisteredData && positionRectangles) ?
-      positionRectangles.map(this.renderRegisteredArea) : null;
+      positionRectangles.map((rect) => this.renderRegisteredArea(rect, POSITION)) : null;
 
     const classifierSimpleMenuItems = simpleClassifiers ?
       simpleClassifiers.map(classifier => (
@@ -142,7 +165,7 @@ class Simulator extends React.Component {
                 <InputLabel>Classifier</InputLabel>
                 <Select
                   disabled={simpleClassifiers.length === 0}
-                  value={simulatorData.settings.simple.classifier || ''}
+                  value={emptyStringIfNil(simulatorData.settings.simple.classifier)}
                   onChange={(evt) => this.props.onSimpleClassifierChange(evt, url)}
                   input={<Input fullWidth />}
                 >
@@ -153,7 +176,7 @@ class Simulator extends React.Component {
                 <InputLabel>Recognized class</InputLabel>
                 <Select
                   disabled={simpleClassifiers.length === 0}
-                  value={simulatorData.settings.simple.recognizedClass || ''}
+                  value={emptyStringIfNil(simulatorData.settings.simple.recognizedClass)}
                   onChange={(evt) => this.props.onSimpleRecognizedClassChange(evt, url)}
                   input={<Input fullWidth />}
                 >
@@ -162,7 +185,7 @@ class Simulator extends React.Component {
               </FormControl>
               <TextField
                 disabled={simpleClassifiers.length === 0}
-                value={simulatorData.settings.simple.metadata || ''}
+                value={emptyStringIfNil(simulatorData.settings.simple.metadata)}
                 onChange={(evt) => this.props.onSimpleMetadataChange(evt, url)}
                 label="Metadata"
                 fullWidth
@@ -176,7 +199,7 @@ class Simulator extends React.Component {
                 <InputLabel>Classifier</InputLabel>
                 <Select
                   disabled={positionClassifiers.length === 0}
-                  value={simulatorData.settings.position.classifier || ''}
+                  value={emptyStringIfNil(simulatorData.settings.position.classifier)}
                   onChange={(evt) => this.props.onPositionClassifierChange(evt, url)}
                   input={<Input fullWidth />}
                 >
@@ -187,7 +210,7 @@ class Simulator extends React.Component {
                 <InputLabel>Recognized class</InputLabel>
                 <Select
                   disabled={positionClassifiers.length === 0}
-                  value={simulatorData.settings.position.recognizedClass || ''}
+                  value={emptyStringIfNil(simulatorData.settings.position.recognizedClass)}
                   onChange={(evt) => this.props.onPositionRecognizedClassChange(evt, url)}
                   input={<Input fullWidth />}
                 >
@@ -196,7 +219,7 @@ class Simulator extends React.Component {
               </FormControl>
               <TextField
                 disabled={positionClassifiers.length === 0}
-                value={simulatorData.settings.position.metadata || ''}
+                value={emptyStringIfNil(simulatorData.settings.position.metadata)}
                 onChange={(evt) => this.props.onPositionMetadataChange(evt, url)}
                 label="Metadata"
                 fullWidth
@@ -264,7 +287,12 @@ class Simulator extends React.Component {
 
 Simulator.propTypes = {
   simulatorData: PropTypes.object.isRequired, // eslint-disable-line
-  classes: PropTypes.object.isRequired, // eslint-disable-line
+  classes: PropTypes.shape({
+    clickableCard: PropTypes.string,
+    registeredArea: PropTypes.string,
+    registeredAreaContainer: PropTypes.string,
+    expansionPanelDetails: PropTypes.string
+  }).isRequired,
   url: PropTypes.string.isRequired,
   onMovementDetectorChange: PropTypes.func.isRequired,
   onSimpleClassifierChange: PropTypes.func.isRequired,
@@ -278,7 +306,8 @@ Simulator.propTypes = {
   onMovementRegisteredAreasClick: PropTypes.func.isRequired,
   onSimpleRegisteredAreasClick: PropTypes.func.isRequired,
   onPositionRegisteredAreasClick: PropTypes.func.isRequired,
-  openDevTools: PropTypes.func.isRequired
+  openDevTools: PropTypes.func.isRequired,
+  handleRegisteredAreaClick: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(Simulator);
