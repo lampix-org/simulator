@@ -129,18 +129,14 @@ class Simulator extends React.Component {
         </MenuItem>
       )) : null;
     const recognizedPositionClassMenuItems = positionClasses ?
-      positionClasses.map(recognizedClass => {
-        console.log(recognizedClass);
-
-        return (
-          <MenuItem
-            key={recognizedClass}
-            value={recognizedClass}
-          >
-            {recognizedClass}
-          </MenuItem>
-        );
-      }) : null;
+      positionClasses.map(recognizedClass => (
+        <MenuItem
+          key={recognizedClass}
+          value={recognizedClass}
+        >
+          {recognizedClass}
+        </MenuItem>
+      )) : null;
 
     return (
       <ExpansionPanel key={url}>
