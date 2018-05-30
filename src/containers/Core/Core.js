@@ -6,6 +6,8 @@ import ButtonAppBar from '../../components/ButtonAppBar';
 import SimulatorList from '../SimulatorList';
 import SimulatorListContainer from '../SimulatorList/SimulatorListContainer';
 
+import Notifications from '../Notifications';
+
 class Core extends Component {
   componentDidMount() {
     window.ipcRenderer.send(ADMIN_UI_READY);
@@ -19,6 +21,8 @@ class Core extends Component {
         <SimulatorListContainer>
           <SimulatorList />
         </SimulatorListContainer>
+
+        <Notifications />
       </React.Fragment>
     );
   }

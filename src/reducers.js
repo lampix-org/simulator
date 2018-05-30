@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 
 // Reducers
-import app from './containers/App/reducer';
+import notifications from './containers/Notifications/reducer';
 
 const appReducer = combineReducers({
-  app
+  notifications
 });
 
 const rootReducer = (state, action) => {
