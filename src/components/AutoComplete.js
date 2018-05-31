@@ -21,10 +21,6 @@ class AutoComplete extends React.Component {
     return result;
   }
 
-  handleDownshiftStateChange = (changes) => {
-    console.log(changes);
-  }
-
   renderSuggestion({
     item,
     index,

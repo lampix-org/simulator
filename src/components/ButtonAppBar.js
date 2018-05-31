@@ -86,10 +86,6 @@ class ButtonAppBar extends React.Component {
     }
   }
 
-  handleDownshiftStateChange = (changes) => {
-    console.log(changes);
-  }
-
   render() {
     const { classes } = this.props;
     const { inputValue, error, helperText } = this.state;
