@@ -21,6 +21,10 @@ class AutoComplete extends React.Component {
     return result;
   }
 
+  dropdownOpen(isOpen, filteredItems) {
+    return isOpen && filteredItems.length > 0;
+  }
+
   renderSuggestion({
     item,
     index,
@@ -47,14 +51,13 @@ class AutoComplete extends React.Component {
   }
 
   renderDropdown({
-    inputValue,
+    filteredItems,
     getItemProps,
     highlightedIndex,
     selectedItem,
     isOpen
   }) {
-    const filteredItems = this.filter(inputValue);
-    const shouldBeOpen = isOpen && filteredItems.length > 0;
+    const shouldBeOpen = this.dropdownOpen(isOpen, filteredItems);
 
     if (!shouldBeOpen) {
       return null;
@@ -86,6 +89,8 @@ class AutoComplete extends React.Component {
       helperText,
       onSelectedItemChange
     } = this.props;
+
+    const filteredItems = this.filter(inputValue);
 
     return (
       <Downshift
@@ -119,11 +124,11 @@ class AutoComplete extends React.Component {
                 helperText={helperText}
                 {...getInputProps({
                   onChange,
-                  onKeyDown: (event) => onKeyDown(event, isOpen)
+                  onKeyDown: (event) => onKeyDown(event, this.dropdownOpen(isOpen, filteredItems))
                 })}
               />
               {this.renderDropdown({
-                inputValue,
+                filteredItems,
                 getItemProps,
                 selectedItem,
                 highlightedIndex,
