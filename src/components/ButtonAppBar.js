@@ -35,10 +35,10 @@ class ButtonAppBar extends React.Component {
     super(props);
     this.state = {
       inputValue: '',
-      open: false,
       error: false,
       urlAddresses: [],
-      helperText: ''
+      helperText: '',
+      helpDialogOpen: false
     };
 
     window.ipcRenderer.on(UPDATE_URL_LIST, (event, data) => {
@@ -73,11 +73,11 @@ class ButtonAppBar extends React.Component {
   }
 
   openHelp = () => {
-    this.setState({ open: true });
+    this.setState({ helpDialogOpen: true });
   };
 
   closeHelp = () => {
-    this.setState({ open: false });
+    this.setState({ helpDialogOpen: false });
   };
 
   handleKeyDown = (e, isOpen) => {
@@ -103,6 +103,7 @@ class ButtonAppBar extends React.Component {
               error={error}
               style={{ flexGrow: 1 }}
               helperText={helperText}
+              onStateChange={this.handleDownshiftStateChange}
             />
             <Button onClick={this.loadApp} color="inherit">Load</Button>
             <IconButton className={classes.menuButton} onClick={this.openHelp} color="inherit" aria-label="Menu">
@@ -110,7 +111,7 @@ class ButtonAppBar extends React.Component {
             </IconButton>
           </Toolbar>
           <HelpDialog
-            open={this.state.open}
+            open={this.state.helpDialogOpen}
             handleClose={this.closeHelp}
           />
         </AppBar>
