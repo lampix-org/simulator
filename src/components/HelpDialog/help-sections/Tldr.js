@@ -24,6 +24,13 @@ const Tldr = ({ className }) => (
     <Typography variant="body1">
       <strong>Dev tools</strong>: expand simulator settings, click <i>DEV TOOLS</i>.
     </Typography>
+
+    <Separator />
+
+    <Typography variant="body1">
+      Click on a registered area card (in the simulator settings) to automatically
+      &nbsp;choose the settings for it. The <i>recognized class</i> may differ, if applicable.
+    </Typography>
   </Paper>
 );
 

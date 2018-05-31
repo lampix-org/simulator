@@ -22,6 +22,13 @@ const RegisteredAreas = ({ className }) => (
       &nbsp;via <InlineCode>@lampix/core</InlineCode>, one (or more) of the registered area sections will become
       &nbsp;available. Their contents will represent the registered areas that the simulator knows about.
     </Typography>
+
+    <Separator />
+
+    <Typography variant="body1">
+      Clicking on them will choose the settings that match the data available
+      &nbsp;for that rectangle. The recognized classes may differ.
+    </Typography>
   </Paper>
 );
 
