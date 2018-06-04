@@ -1,10 +1,10 @@
 {
   "name": "lampix-simulator",
   "version": "1.0.0-master",
-  "description": "Lampix apps simulator, used to develop an application for the Lampix platform without a device",
+  "description": "Create apps for Lampix on your own workstation",
   "author": {
     "email": "support@lampix.co",
-    "name": "Lampix Inc."
+    "name": "Smart Lamp, Inc."
   },
   "main": "./src/main-process/main.js",
   "scripts": {
