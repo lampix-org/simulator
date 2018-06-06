@@ -11,7 +11,6 @@ const checkHTTPConnection = (url) => new Promise((resolve, reject) => {
 
   request(url, options, (err, res) => {
     if (err) {
-      // console.log(`Attempt to reach server at ${url} failed`);
       MAIN_PROCESS_ERROR_LOG_OBJ.message = `Attempt to reach server at ${url} failed`;
       Logger.log(MAIN_PROCESS_ERROR_LOG_OBJ);
       reject(err);

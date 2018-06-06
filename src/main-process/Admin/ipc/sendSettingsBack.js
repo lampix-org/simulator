@@ -5,10 +5,8 @@ const {
 } = require('../../constants');
 
 function sendSettingsBack(sender, url, settings) {
-  // console.log('Sending following settings to Admin UI:');
   MAIN_PROCESS_INFO_LOG_OBJ.message = 'Sending following settings to Admin UI:';
   Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
-  // console.log(JSON.stringify(settings, null, 2));
   MAIN_PROCESS_INFO_LOG_OBJ.message = JSON.stringify(settings, null, 2);
   Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
 

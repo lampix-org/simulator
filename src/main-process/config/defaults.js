@@ -11,5 +11,6 @@ module.exports = {
   pix: {
     endpoint: '',
     token: ''
-  }
+  },
+  logLevel: 'info'
 };

@@ -46,7 +46,6 @@ class Admin {
   }
 
   async loadApp(url) {
-    // console.log(`Admin.loadApp called with URL: ${url}`);
     MAIN_PROCESS_INFO_LOG_OBJ.message = `Admin.loadApp called with URL: ${url}`;
     Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
 
@@ -57,8 +56,6 @@ class Admin {
     const { success, error } = await checkURL(url);
 
     if (!success) {
-      // console.log(`URL check failed with message: ${error}`);
-      // console.log('Aborting app loading...');
       MAIN_PROCESS_ERROR_LOG_OBJ.message = `URL check failed with message: ${error}`;
       Logger.log(MAIN_PROCESS_ERROR_LOG_OBJ);
       MAIN_PROCESS_ERROR_LOG_OBJ.message = 'Aborting app loading...';
@@ -67,8 +64,6 @@ class Admin {
       return;
     }
 
-    // console.log('Creating new simulator...');
-    // Logger.log('info', 'Creating new simulator...');
     MAIN_PROCESS_INFO_LOG_OBJ.message = 'Creating new simulator...';
     Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
 
@@ -93,7 +88,6 @@ class Admin {
 
     const options = process.env.NODE_ENV === 'development' ? { extraHeaders: 'pragma: no-cache\n' } : {};
 
-    // console.log(`Loading app at ${url}`);
     MAIN_PROCESS_INFO_LOG_OBJ.message = `Loading app at ${url}`;
     Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
     this.simulators[url].browser.loadURL(`${url}?url=${url}`, options);
@@ -104,13 +98,9 @@ class Admin {
   }
 
   closeSimulator(url) {
-    // console.log(`Attempting to close simulator for ${url}...`);
-    // Logger.log('info', `Attempting to close simulator for ${url}...`);
     MAIN_PROCESS_INFO_LOG_OBJ.message = `Attempting to close simulator for ${url}...`;
     Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
     if (this.simulators[url]) {
-      // console.log('Simulator found. Closing... ');
-      // Logger.log('info', 'Simulator found. Closing... ');
       MAIN_PROCESS_INFO_LOG_OBJ.message = 'Simulator found. Closing... ';
       Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
       this.simulators[url].browser.close();
@@ -121,12 +111,9 @@ class Admin {
   }
 
   focusSimulator(url) {
-    // console.log(`Attempting to focus simulator for ${url}...`);
-    // Logger.log('info', `Attempting to focus simulator for ${url}...`);
     MAIN_PROCESS_INFO_LOG_OBJ.message = `Attempting to focus simulator for ${url}...`;
     Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
     if (this.simulators[url]) {
-      // console.log('Simulator found. Focusing... ');
       MAIN_PROCESS_INFO_LOG_OBJ.message = 'Simulator found. Focusing... ';
       Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
       this.simulators[url].browser.focus();
@@ -137,11 +124,9 @@ class Admin {
   }
 
   openDevTools(url) {
-    // console.log(`Attempting to open dev tools for ${url}...`);
     MAIN_PROCESS_INFO_LOG_OBJ.message = `Attempting to open dev tools for ${url}...`;
     Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
     if (this.simulators[url]) {
-      // console.log('Simulator found. Opening dev tools');
       MAIN_PROCESS_INFO_LOG_OBJ.message = 'Simulator found. Opening dev tools';
       Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
       this.simulators[url].browser.webContents.openDevTools();
@@ -155,12 +140,10 @@ class Admin {
     // Check to see that the main admin window wasn't the one closed
     // If it was, then updating simulators is not necessary since the whole program closes
     if (this.browser) {
-      // console.log('Sending simulator list to renderer...');
       MAIN_PROCESS_INFO_LOG_OBJ.message = 'Sending simulator list to renderer...';
       Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
       this.browser.webContents.send(UPDATE_SIMULATOR_LIST, this.simulators);
     } else {
-      // console.log('Application closing. Will not send simulator list.');
       MAIN_PROCESS_INFO_LOG_OBJ.message = 'Application closing. Will not send simulator list.';
       Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
     }

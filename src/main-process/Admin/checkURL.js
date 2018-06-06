@@ -16,16 +16,13 @@ async function checkURL(inputURL) {
 
     // If the file is server locally, then assume everything's good
     if (url.protocol === 'file:') {
-      // console.log('File protocol, not doing extra checks, assuming valid URL')
       MAIN_PROCESS_INFO_LOG_OBJ.message = 'File protocol, not doing extra checks, assuming valid URL';
       Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
       return respond(true);
     }
-    // console.log(`Attempting to connect to ${url.href}`);
     MAIN_PROCESS_INFO_LOG_OBJ.message = `Attempting to connect to ${url.href}`;
     Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
     await checkHTTPConnection(url.href);
-    // console.log('Connection check passed, assuming valid URL');
     MAIN_PROCESS_INFO_LOG_OBJ.message = 'Connection check passed, assuming valid URL';
     Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
     return respond(true);
