@@ -62,9 +62,7 @@ class Simulator {
       options: {
         resizable: false,
         webPreferences: {
-          preload: path.join(__dirname, preloadName),
-          webviewTag: false,
-          nodeIntegration: false,
+          preload: path.join(__dirname, preloadName)
         }
       },
       width: simulator.viewport.width,
