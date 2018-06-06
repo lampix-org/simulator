@@ -7,6 +7,7 @@ import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import Icon from 'material-ui/Icon';
 import { UPDATE_URL_LIST, INVALID_URL } from '../main-process/ipcEvents';
+import { RENDERER_INFO_LOG_OBJ } from '../main-process/constants';
 
 import AutoComplete from '../components/AutoComplete';
 import HelpDialog from '../components/HelpDialog';
@@ -42,6 +43,8 @@ class ButtonAppBar extends React.Component {
     };
 
     window.ipcRenderer.on(UPDATE_URL_LIST, (event, data) => {
+      RENDERER_INFO_LOG_OBJ.message = 'url list updated ';
+      window.lampix.logInformation({ logObj: RENDERER_INFO_LOG_OBJ });
       this.setState({
         urlAddresses: data
       });

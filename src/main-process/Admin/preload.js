@@ -8,7 +8,8 @@ const {
   FOCUS_SIMULATOR,
   LOAD_APP,
   OPEN_DEV_TOOLS,
-  CHANGE_CATEGORY_SETTINGS
+  CHANGE_CATEGORY_SETTINGS,
+  LOG_INFO
 } = require('../ipcEvents');
 
 window.ipcRenderer = ipcRenderer;
@@ -38,5 +39,6 @@ window.lampix = {
     url,
     category,
     classifier
-  })
+  }),
+  logInformation: (logObj) => ipcRenderer.send(LOG_INFO, logObj)
 };

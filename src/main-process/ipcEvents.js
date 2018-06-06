@@ -24,3 +24,6 @@ exports.REGISTER_SIMPLE = 'lx-simulator/IPC/REGISTER_SIMPLE';
 exports.REGISTER_POSITION = 'lx-simulator/IPC/REGISTER_POSITION';
 exports.TRANSFORM_COORDINATES = 'lx-simulator/IPC/TRANSFORM_COORDINATES';
 exports.CHANGE_CATEGORY_SETTINGS = 'lx-simulator/IPC/CHANGE_CATEGORY_SETTINGS';
+
+// Logger action
+exports.LOG_INFO = 'lx-simulator/IPC/LOG_INFO';
