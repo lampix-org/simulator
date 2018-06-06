@@ -138,7 +138,9 @@ class Simulator {
             posX: mouseX,
             posY: mouseY
           },
-          outline
+          outline: {
+            points: outline
+          }
         });
 
         this.browser.webContents.executeJavaScript(`onPrePositionClassifier(${i}, ${JSON.stringify(data)})`);
