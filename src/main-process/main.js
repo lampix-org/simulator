@@ -3,6 +3,7 @@ const { app } = require('electron');
 const url = require('url');
 const path = require('path');
 const { isDev, isDebuggingProd } = require('./utils/envCheck');
+const { enableUpdates } = require('./enableUpdates');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -35,6 +36,8 @@ async function createWindow() {
   // Create the admin window and load the index.html of the app.
   const { admin } = require('./Admin'); // eslint-disable-line
   admin.browser.loadURL(appURL);
+
+  enableUpdates();
 }
 
 // This method will be called when Electron has finished
