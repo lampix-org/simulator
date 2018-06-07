@@ -214,6 +214,18 @@ class Simulator {
     this.browser.webContents
       .executeJavaScript(`onTransformCoordinates(${JSON.stringify(parsedData)})`);
   }
+
+  sendApps() {
+    // TODO: Named apps, settings task
+    const { simulator } = this.generalConfig;
+    const dummyApps = Array.from(
+      { length: simulator.appSwitcher.numberOfDummyApps },
+      (v, i) => ({ name: `App #${i}` })
+    );
+
+    this.browser.webContents
+      .executeJavaScript(`onGetApps(${JSON.stringify(dummyApps)})`);
+  }
 }
 
 exports.Simulator = Simulator;

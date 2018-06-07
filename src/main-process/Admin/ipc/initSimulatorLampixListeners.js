@@ -4,7 +4,8 @@ const {
   REGISTER_SIMPLE,
   REGISTER_POSITION,
   GET_LAMPIX_INFO,
-  TRANSFORM_COORDINATES
+  TRANSFORM_COORDINATES,
+  GET_APPS
 } = require('../../ipcEvents');
 
 function initSimulatorLampixListeners(simulators) {
@@ -35,6 +36,11 @@ function initSimulatorLampixListeners(simulators) {
   ipcMain.on(TRANSFORM_COORDINATES, (event, data) => {
     const simulator = simulators[data.url];
     simulator.transformCoordinates(data.rect);
+  });
+
+  ipcMain.on(GET_APPS, (event, data) => {
+    const simulator = simulators[data.url];
+    simulator.sendApps();
   });
 }
 
