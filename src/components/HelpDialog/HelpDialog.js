@@ -52,51 +52,48 @@ const HelpDialog = ({
   classes,
   open,
   handleClose
-}) => {
-  console.log('open ', open);
-  return (
-    <Dialog
-      fullScreen
-      open={open}
-      TransitionComponent={Transition}
-    >
-      <AppBar>
-        <Toolbar className={classes.toolbar}>
-          <IconButton
-            color="inherit"
-            onClick={handleClose}
-            aria-label="Close"
-          >
-            <CloseIcon />
-          </IconButton>
-          <Typography
-            variant="title"
-            color="inherit"
-            className={classes.flex}
-          >
-          Help
-          </Typography>
-        </Toolbar>
-      </AppBar>
+}) => (
+  <Dialog
+    fullScreen
+    open={open}
+    TransitionComponent={Transition}
+  >
+    <AppBar>
+      <Toolbar className={classes.toolbar}>
+        <IconButton
+          color="inherit"
+          onClick={handleClose}
+          aria-label="Close"
+        >
+          <CloseIcon />
+        </IconButton>
+        <Typography
+          variant="title"
+          color="inherit"
+          className={classes.flex}
+        >
+        Help
+        </Typography>
+      </Toolbar>
+    </AppBar>
 
-      <div className={classes.container}>
-        <Tldr className={classes.paper} />
-        <WhatIsASimulator className={classes.paper} />
-        <LoadingAnApp
-          className={classes.paper}
-          imageClass={classes.image}
-        />
-        <SimulatorSettings
-          className={classes.paper}
-          imageClass={classes.image}
-        />
-        <RegisteredAreas className={classes.paper} />
-        <UsingTheSimulator className={classes.paper} />
-        <DevTools className={classes.paper} />
-      </div>
-    </Dialog>
-  );
-};
+    <div className={classes.container}>
+      <Tldr className={classes.paper} />
+      <WhatIsASimulator className={classes.paper} />
+      <LoadingAnApp
+        className={classes.paper}
+        imageClass={classes.image}
+      />
+      <SimulatorSettings
+        className={classes.paper}
+        imageClass={classes.image}
+      />
+      <RegisteredAreas className={classes.paper} />
+      <UsingTheSimulator className={classes.paper} />
+      <DevTools className={classes.paper} />
+    </div>
+  </Dialog>
+);
 
 HelpDialog.propTypes = {
   classes: PropTypes.shape({
