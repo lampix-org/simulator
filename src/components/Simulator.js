@@ -4,23 +4,23 @@ import ExpansionPanel, {
   ExpansionPanelSummary,
   ExpansionPanelDetails,
   ExpansionPanelActions
-} from 'material-ui/ExpansionPanel';
-import { Grid } from 'material-ui';
-import { withStyles } from 'material-ui/styles';
+} from '@material-ui/core/ExpansionPanel';
+import { Grid } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Button from 'material-ui/Button';
-import Divider from 'material-ui/Divider';
-import Switch from 'material-ui/Switch';
-import Input, { InputLabel } from 'material-ui/Input';
-import { MenuItem } from 'material-ui/Menu';
-import { FormControl, FormControlLabel } from 'material-ui/Form';
-import Select from 'material-ui/Select';
-import TextField from 'material-ui/TextField';
-import List, { ListItem, ListItemText } from 'material-ui/List';
-import Collapse from 'material-ui/transitions/Collapse';
+import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
+import Switch from '@material-ui/core/Switch';
+import Input, { InputLabel } from '@material-ui/core/Input';
+import { MenuItem } from '@material-ui/core/Menu';
+import { FormControl, FormControlLabel } from '@material-ui/core/FormGroup';
+import Select from '@material-ui/core/Select';
+import TextField from '@material-ui/core/TextField';
+import List, { ListItem, ListItemText } from '@material-ui/core/List';
+import Collapse from '@material-ui/core/Collapse';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
-import Typography from 'material-ui/Typography';
-import Card, { CardContent } from 'material-ui/Card';
+import Typography from '@material-ui/core/Typography';
+import Card, { CardContent } from '@material-ui/core/Card';
 
 import Separator from './Separator';
 

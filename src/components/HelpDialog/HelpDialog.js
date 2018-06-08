@@ -3,15 +3,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Material UI
-import { withStyles } from 'material-ui/styles';
-import grey from 'material-ui/colors/grey';
-import Dialog from 'material-ui/Dialog';
+import { withStyles } from '@material-ui/core/styles';
+import grey from '@material-ui/core/colors/grey';
+import Dialog from '@material-ui/core/Dialog';
 import CloseIcon from '@material-ui/icons/Close';
-import Typography from 'material-ui/Typography';
-import Slide from 'material-ui/transitions/Slide';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import IconButton from 'material-ui/IconButton';
+import Typography from '@material-ui/core/Typography';
+import Slide from '@material-ui/core/Slide';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
 
 // Help sections
 import Tldr from './help-sections/Tldr';
@@ -52,48 +52,51 @@ const HelpDialog = ({
   classes,
   open,
   handleClose
-}) => (
-  <Dialog
-    fullScreen
-    open={open}
-    transition={Transition}
-  >
-    <AppBar>
-      <Toolbar className={classes.toolbar}>
-        <IconButton
-          color="inherit"
-          onClick={handleClose}
-          aria-label="Close"
-        >
-          <CloseIcon />
-        </IconButton>
-        <Typography
-          variant="title"
-          color="inherit"
-          className={classes.flex}
-        >
+}) => {
+  console.log('open ', open);
+  return (
+    <Dialog
+      fullScreen
+      open={open}
+      TransitionComponent={Transition}
+    >
+      <AppBar>
+        <Toolbar className={classes.toolbar}>
+          <IconButton
+            color="inherit"
+            onClick={handleClose}
+            aria-label="Close"
+          >
+            <CloseIcon />
+          </IconButton>
+          <Typography
+            variant="title"
+            color="inherit"
+            className={classes.flex}
+          >
           Help
-        </Typography>
-      </Toolbar>
-    </AppBar>
+          </Typography>
+        </Toolbar>
+      </AppBar>
 
-    <div className={classes.container}>
-      <Tldr className={classes.paper} />
-      <WhatIsASimulator className={classes.paper} />
-      <LoadingAnApp
-        className={classes.paper}
-        imageClass={classes.image}
-      />
-      <SimulatorSettings
-        className={classes.paper}
-        imageClass={classes.image}
-      />
-      <RegisteredAreas className={classes.paper} />
-      <UsingTheSimulator className={classes.paper} />
-      <DevTools className={classes.paper} />
-    </div>
-  </Dialog>
-);
+      <div className={classes.container}>
+        <Tldr className={classes.paper} />
+        <WhatIsASimulator className={classes.paper} />
+        <LoadingAnApp
+          className={classes.paper}
+          imageClass={classes.image}
+        />
+        <SimulatorSettings
+          className={classes.paper}
+          imageClass={classes.image}
+        />
+        <RegisteredAreas className={classes.paper} />
+        <UsingTheSimulator className={classes.paper} />
+        <DevTools className={classes.paper} />
+      </div>
+    </Dialog>
+  );
+};
 
 HelpDialog.propTypes = {
   classes: PropTypes.shape({
