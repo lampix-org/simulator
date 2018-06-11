@@ -18,7 +18,7 @@ const {
 
 const level = configStore.store.logLevel;
 
-const myFormat = printf(info => `[${info.timestamp}] [${info.sentFrom}] [${info.level}]: ${info.message}`);
+const myFormat = printf(info => `[${info.timestamp}] [R] [${info.level}]: ${info.message}`);
 
 const Logger = winston.createLogger({
   format: combine(

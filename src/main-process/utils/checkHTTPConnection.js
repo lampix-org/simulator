@@ -1,8 +1,5 @@
 const request = require('request');
 const { Logger } = require('../Logger');
-const {
-  MAIN_PROCESS_ERROR_LOG_OBJ
-} = require('../constants');
 
 const checkHTTPConnection = (url) => new Promise((resolve, reject) => {
   const options = {
@@ -11,8 +8,7 @@ const checkHTTPConnection = (url) => new Promise((resolve, reject) => {
 
   request(url, options, (err, res) => {
     if (err) {
-      MAIN_PROCESS_ERROR_LOG_OBJ.message = `Attempt to reach server at ${url} failed`;
-      Logger.log(MAIN_PROCESS_ERROR_LOG_OBJ);
+      Logger.error(`Attempt to reach server at ${url} failed`);
       reject(err);
       return;
     }

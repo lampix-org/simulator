@@ -18,15 +18,7 @@ const {
 const { store } = require('../store');
 const { checkURL } = require('./checkURL');
 
-const {
-  MAIN_PROCESS_INFO_LOG_OBJ,
-  MAIN_PROCESS_ERROR_LOG_OBJ
-} = require('../constants');
-
-const logSimulatorNotFound = (url) => {
-  MAIN_PROCESS_INFO_LOG_OBJ.message = `Simulator for ${url} not found. Doing nothing.`;
-  Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
-};
+const logSimulatorNotFound = (url) => Logger.info(`Simulator for ${url} not found. Doing nothing.`);
 
 class Admin {
   constructor() {
@@ -46,8 +38,7 @@ class Admin {
   }
 
   async loadApp(url) {
-    MAIN_PROCESS_INFO_LOG_OBJ.message = `Admin.loadApp called with URL: ${url}`;
-    Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
+    Logger.info(`Admin.loadApp called with URL: ${url}`);
 
     if (this.simulators[url]) {
       return;
@@ -56,16 +47,13 @@ class Admin {
     const { success, error } = await checkURL(url);
 
     if (!success) {
-      MAIN_PROCESS_ERROR_LOG_OBJ.message = `URL check failed with message: ${error}`;
-      Logger.log(MAIN_PROCESS_ERROR_LOG_OBJ);
-      MAIN_PROCESS_ERROR_LOG_OBJ.message = 'Aborting app loading...';
-      Logger.log(MAIN_PROCESS_ERROR_LOG_OBJ);
+      Logger.error(`URL check failed with message: ${error}`);
+      Logger.error('Aborting app loading...');
       this.browser.webContents.send(INVALID_URL, error);
       return;
     }
 
-    MAIN_PROCESS_INFO_LOG_OBJ.message = 'Creating new simulator...';
-    Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
+    Logger.info('Creating new simulator...');
 
     const onClosed = () => {
       delete this.simulators[url];
@@ -88,8 +76,7 @@ class Admin {
 
     const options = process.env.NODE_ENV === 'development' ? { extraHeaders: 'pragma: no-cache\n' } : {};
 
-    MAIN_PROCESS_INFO_LOG_OBJ.message = `Loading app at ${url}`;
-    Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
+    Logger.info(`Loading app at ${url}`);
     this.simulators[url].browser.loadURL(`${url}?url=${url}`, options);
 
     this.updateURLListOrder(url);
@@ -98,11 +85,9 @@ class Admin {
   }
 
   closeSimulator(url) {
-    MAIN_PROCESS_INFO_LOG_OBJ.message = `Attempting to close simulator for ${url}...`;
-    Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
+    Logger.info(`Attempting to close simulator for ${url}...`);
     if (this.simulators[url]) {
-      MAIN_PROCESS_INFO_LOG_OBJ.message = 'Simulator found. Closing... ';
-      Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
+      Logger.info('Simulator found. Closing... ');
       this.simulators[url].browser.close();
       return;
     }
@@ -111,11 +96,9 @@ class Admin {
   }
 
   focusSimulator(url) {
-    MAIN_PROCESS_INFO_LOG_OBJ.message = `Attempting to focus simulator for ${url}...`;
-    Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
+    Logger.info(`Attempting to focus simulator for ${url}...`);
     if (this.simulators[url]) {
-      MAIN_PROCESS_INFO_LOG_OBJ.message = 'Simulator found. Focusing... ';
-      Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
+      Logger.info('Simulator found. Focusing... ');
       this.simulators[url].browser.focus();
       return;
     }
@@ -124,11 +107,9 @@ class Admin {
   }
 
   openDevTools(url) {
-    MAIN_PROCESS_INFO_LOG_OBJ.message = `Attempting to open dev tools for ${url}...`;
-    Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
+    Logger.info(`Attempting to open dev tools for ${url}...`);
     if (this.simulators[url]) {
-      MAIN_PROCESS_INFO_LOG_OBJ.message = 'Simulator found. Opening dev tools';
-      Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
+      Logger.info('Simulator found. Opening dev tools');
       this.simulators[url].browser.webContents.openDevTools();
       return;
     }
@@ -140,12 +121,10 @@ class Admin {
     // Check to see that the main admin window wasn't the one closed
     // If it was, then updating simulators is not necessary since the whole program closes
     if (this.browser) {
-      MAIN_PROCESS_INFO_LOG_OBJ.message = 'Sending simulator list to renderer...';
-      Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
+      Logger.info('Sending simulator list to renderer...');
       this.browser.webContents.send(UPDATE_SIMULATOR_LIST, this.simulators);
     } else {
-      MAIN_PROCESS_INFO_LOG_OBJ.message = 'Application closing. Will not send simulator list.';
-      Logger.log(MAIN_PROCESS_INFO_LOG_OBJ);
+      Logger.info('Application closing. Will not send simulator list.');
     }
   }
 

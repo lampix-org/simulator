@@ -18,9 +18,6 @@ const pluckUniqueClassifiersFromArray = (data) => [...new Set(data.map((rect) =>
 const preloadName = isDev ? 'preload.js' : 'preload-simulator.js';
 
 const { Logger } = require('../Logger');
-const {
-  RENDERER_INFO_LOG_OBJ
-} = require('../constants');
 
 class Simulator {
   constructor(url, {
@@ -92,23 +89,20 @@ class Simulator {
   }
 
   handleSimpleClassifier(mouseX, mouseY) {
-    RENDERER_INFO_LOG_OBJ.message = `Handling click / simple classification at x: ${mouseX}, y: ${mouseY}`;
-    Logger.log(RENDERER_INFO_LOG_OBJ);
+    Logger.debug(`Handling click / simple classification at x: ${mouseX}, y: ${mouseY}`);
 
     this.registeredData.simple.rectangles.forEach((rectangle, i) => {
       const { classifier, recognizedClass, metadata } = this.settings.simple;
 
       if (rectangle.classifier === classifier && pointInRectangle(rectangle, mouseX, mouseY)) {
-        RENDERER_INFO_LOG_OBJ.message = 'Point in rectangle, calling onSimpleClassifier in the browser window';
-        Logger.log(RENDERER_INFO_LOG_OBJ);
+        Logger.debug('Point in rectangle, calling onSimpleClassifier in the browser window');
         this.browser.webContents.executeJavaScript(`onSimpleClassifier(${i}, '${recognizedClass}', '${metadata}')`);
       }
     });
   }
 
   handlePositionClassifier(mouseX, mouseY) {
-    RENDERER_INFO_LOG_OBJ.message = `Handling right click / position classification at x: ${mouseX}, y: ${mouseY}`;
-    Logger.log(RENDERER_INFO_LOG_OBJ);
+    Logger.debug(`Handling right click / position classification at x: ${mouseX}, y: ${mouseY}`);
 
     const {
       classifier,
@@ -134,8 +128,7 @@ class Simulator {
       const data = [];
 
       if (outlineInRectangle(outline, rectangle)) {
-        RENDERER_INFO_LOG_OBJ.message = 'Outline in rectangle, calling onPrePositionClassifier, then onPositionClassifier in the browser window'; // eslint-disable-line
-        Logger.log(RENDERER_INFO_LOG_OBJ);
+        Logger.debug('Outline in rectangle, calling onPrePositionClassifier, then onPositionClassifier in the browser window'); // eslint-disable-line
 
         /**
          * The preposition callback doesn't have the classTag attribute because
