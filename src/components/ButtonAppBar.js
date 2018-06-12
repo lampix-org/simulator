@@ -5,7 +5,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import Icon from '@material-ui/core/Icon';
+import HelpOutline from '@material-ui/icons/HelpOutline';
+import Settings from '@material-ui/icons/Settings';
 import { UPDATE_URL_LIST } from '../main-process/ipcEvents';
 
 import AutoComplete from '../components/AutoComplete';
@@ -14,10 +15,6 @@ import HelpDialog from '../components/HelpDialog';
 const styles = {
   root: {
     flexGrow: 1
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20
   },
   logo: {
     width: 30,
@@ -91,8 +88,11 @@ class ButtonAppBar extends React.Component {
               onStateChange={this.handleDownshiftStateChange}
             />
             <Button onClick={this.loadApp} color="inherit">Load</Button>
-            <IconButton className={classes.menuButton} onClick={this.openHelp} color="inherit" aria-label="Menu">
-              <Icon>help_outline</Icon>
+            <IconButton onClick={this.openHelp} color="inherit">
+              <HelpOutline />
+            </IconButton>
+            <IconButton color="inherit">
+              <Settings />
             </IconButton>
           </Toolbar>
           <HelpDialog
