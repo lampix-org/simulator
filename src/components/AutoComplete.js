@@ -2,16 +2,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Downshift from 'downshift';
-import TextField from 'material-ui/TextField';
-import Paper from 'material-ui/Paper';
-import { MenuItem } from 'material-ui/Menu';
-import { withStyles } from 'material-ui/styles';
+import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
+import MenuItem from '@material-ui/core/MenuItem';
+import { withStyles } from '@material-ui/core/styles';
 
-const styles = {
-  input: {
+const styles = () => ({
+  formLabelRoot: {
+    '&$formLabelFocused': {
+      color: 'white'
+    },
+    color: 'white'
+  },
+  formLabelFocused: {},
+  whiteUnderline: {
+    '&:after': {
+      borderBottomColor: 'white'
+    }
+  },
+  whiteText: {
     color: 'white'
   }
-};
+});
 
 class AutoComplete extends React.Component {
   filter(inputValue) {
@@ -111,13 +123,16 @@ class AutoComplete extends React.Component {
                 fullWidth
                 label="URL address"
                 InputLabelProps={{
-                  className: classes.input
+                  FormLabelClasses: {
+                    root: classes.formLabelRoot,
+                    focused: classes.formLabelFocused
+                  }
                 }}
-                FormHelperTextProps={{
-                  className: classes.input
-                }}
-                inputProps={{
-                  className: classes.input
+                InputProps={{
+                  classes: {
+                    underline: classes.whiteUnderline,
+                    root: classes.whiteText
+                  }
                 }}
                 value={inputValue}
                 error={error}
