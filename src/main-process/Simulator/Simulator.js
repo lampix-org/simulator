@@ -107,7 +107,9 @@ class Simulator {
     } = this.settings.position;
     let outline = [];
 
-    if (classifier === 'paper') {
+    const paperClassifier = classifier === 'paper';
+
+    if (paperClassifier) {
       outline = paperOutline(mouseX, mouseY);
     } else {
       outline = hexagonOutline(mouseX, mouseY);
@@ -137,7 +139,9 @@ class Simulator {
             posY: mouseY
           },
           outline: {
-            points: outline
+            points: paperClassifier ?
+              outline.map((pair) => ({ posX: pair[0], posY: pair[1] })) :
+              outline
           }
         });
 
