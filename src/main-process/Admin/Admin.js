@@ -11,7 +11,7 @@ const { createAdminBrowser } = require('./createAdminBrowser');
 const {
   UPDATE_SIMULATOR_LIST,
   UPDATE_URL_LIST,
-  INVALID_URL
+  ERROR
 } = require('../ipcEvents');
 const { store } = require('../store');
 const { checkURL } = require('./checkURL');
@@ -47,7 +47,7 @@ class Admin {
     if (!success) {
       console.log(`URL check failed with message: ${error}`);
       console.log('Aborting app loading...');
-      this.browser.webContents.send(INVALID_URL, error);
+      this.browser.webContents.send(ERROR, error);
       return;
     }
 

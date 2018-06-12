@@ -6,7 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
-import { UPDATE_URL_LIST, INVALID_URL } from '../main-process/ipcEvents';
+import { UPDATE_URL_LIST } from '../main-process/ipcEvents';
 
 import AutoComplete from '../components/AutoComplete';
 import HelpDialog from '../components/HelpDialog';
@@ -24,8 +24,7 @@ const styles = {
     height: 30
   },
   toolbar: {
-    background: '#222222',
-    height: 85
+    background: '#222222'
   }
 };
 
@@ -35,9 +34,7 @@ class ButtonAppBar extends React.Component {
     super(props);
     this.state = {
       inputValue: '',
-      error: false,
       urlAddresses: [],
-      helperText: '',
       helpDialogOpen: false
     };
 
@@ -46,22 +43,12 @@ class ButtonAppBar extends React.Component {
         urlAddresses: data
       });
     });
-    window.ipcRenderer.on(INVALID_URL, (event, data) => {
-      this.setState({
-        error: true,
-        helperText: data
-      });
-    });
   }
 
   loadApp = () => {
     if (this.state.inputValue) {
       window.lampix.loadApp(this.state.inputValue);
     }
-    this.setState({
-      error: false,
-      helperText: ''
-    });
   }
 
   handleInputChange = (event) => {
@@ -88,7 +75,7 @@ class ButtonAppBar extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { inputValue, error, helperText } = this.state;
+    const { inputValue } = this.state;
 
     return (
       <div className={classes.root}>
@@ -100,9 +87,7 @@ class ButtonAppBar extends React.Component {
               onSelectedItemChange={this.handleSelectedItemChange}
               onChange={this.handleInputChange}
               onKeyDown={this.handleKeyDown}
-              error={error}
               style={{ flexGrow: 1 }}
-              helperText={helperText}
               onStateChange={this.handleDownshiftStateChange}
             />
             <Button onClick={this.loadApp} color="inherit">Load</Button>
