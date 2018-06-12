@@ -9,8 +9,10 @@ import HelpOutline from '@material-ui/icons/HelpOutline';
 import Settings from '@material-ui/icons/Settings';
 import { UPDATE_URL_LIST } from '../main-process/ipcEvents';
 
-import AutoComplete from '../components/AutoComplete';
-import HelpDialog from '../components/HelpDialog';
+import AutoComplete from './AutoComplete';
+import HelpDialog from './HelpDialog';
+
+import SettingsDialog from '../containers/Settings';
 
 const styles = {
   root: {
@@ -32,7 +34,8 @@ class ButtonAppBar extends React.Component {
     this.state = {
       inputValue: '',
       urlAddresses: [],
-      helpDialogOpen: false
+      helpDialogOpen: false,
+      settingsDialogOpen: false
     };
 
     window.ipcRenderer.on(UPDATE_URL_LIST, (event, data) => {
@@ -56,13 +59,13 @@ class ButtonAppBar extends React.Component {
     this.setState({ inputValue: item });
   }
 
-  openHelp = () => {
-    this.setState({ helpDialogOpen: true });
-  };
+  openDialog = (name) => this.setState({
+    [`${name}DialogOpen`]: true
+  });
 
-  closeHelp = () => {
-    this.setState({ helpDialogOpen: false });
-  };
+  closeDialog = (name) => this.setState({
+    [`${name}DialogOpen`]: false
+  });
 
   handleKeyDown = (e, isOpen) => {
     if (!isOpen && e.key === 'Enter') {
@@ -88,16 +91,27 @@ class ButtonAppBar extends React.Component {
               onStateChange={this.handleDownshiftStateChange}
             />
             <Button onClick={this.loadApp} color="inherit">Load</Button>
-            <IconButton onClick={this.openHelp} color="inherit">
+            <IconButton
+              onClick={() => this.openDialog('help')}
+              color="inherit"
+            >
               <HelpOutline />
             </IconButton>
-            <IconButton color="inherit">
+            <IconButton
+              color="inherit"
+              onClick={() => this.openDialog('settings')}
+            >
               <Settings />
             </IconButton>
           </Toolbar>
           <HelpDialog
             open={this.state.helpDialogOpen}
-            handleClose={this.closeHelp}
+            handleClose={() => this.closeDialog('help')}
+          />
+
+          <SettingsDialog
+            open={this.state.settingsDialogOpen}
+            handleClose={() => this.closeDialog('settings')}
           />
         </AppBar>
       </div>
