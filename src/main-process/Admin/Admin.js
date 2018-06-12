@@ -27,10 +27,10 @@ class Admin {
     });
 
     handleAdminUIReady(
-      initSimulatorSettingsListeners.bind(null, this.simulators),
-      initAppManagementListeners.bind(null, this),
-      initSimulatorClientEventListeners.bind(null, this.simulators),
-      initSimulatorLampixListeners.bind(null, this.simulators),
+      initSimulatorSettingsListeners.bind(this),
+      initAppManagementListeners.bind(this),
+      initSimulatorClientEventListeners.bind(this),
+      initSimulatorLampixListeners.bind(this),
       this.updateRendererURLs.bind(this)
     );
   }
@@ -55,7 +55,6 @@ class Admin {
 
     const onClosed = () => {
       delete this.simulators[url];
-      delete global[`simulator-${url}`];
       this.sendSimulators();
     };
 
@@ -70,8 +69,6 @@ class Admin {
       updateAdminUI
     });
 
-    global[`simulator-${url}`] = this.simulators[url];
-
     const options = process.env.NODE_ENV === 'development' ? { extraHeaders: 'pragma: no-cache\n' } : {};
 
     console.log(`Loading app at ${url}`);
@@ -82,7 +79,7 @@ class Admin {
     this.updateRendererURLs();
   }
 
-  closeSimulator(url) {
+  async closeSimulator(url) {
     console.log(`Attempting to close simulator for ${url}...`);
 
     if (this.simulators[url]) {
@@ -139,6 +136,11 @@ class Admin {
 
     store.set('urls', newList);
     this.storedURLs = new Set(newList);
+  }
+
+  switchToApp(toClose, toOpen) {
+    this.closeSimulator(toClose);
+    this.loadApp(toOpen);
   }
 }
 
