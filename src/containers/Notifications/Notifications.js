@@ -3,18 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // Material UI
-import { withStyles } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 
 // Component related
 import * as Actions from './actions';
 import NotificationContent from './NotificationContent';
-
-const styles = (theme) => ({
-  error: {
-    backgroundColor: theme.palette.error.dark,
-  }
-});
 
 class Notifications extends React.Component {
   handleClose = () => {
@@ -73,7 +66,6 @@ const mapDispatchToProps = (dispatch) => ({
   next: () => dispatch(Actions.next())
 });
 
-Notifications = withStyles(styles)(Notifications);
 Notifications = connect(mapStateToProps, mapDispatchToProps)(Notifications);
 
 export default Notifications;

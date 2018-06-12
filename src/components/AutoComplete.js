@@ -97,8 +97,6 @@ class AutoComplete extends React.Component {
       onKeyDown,
       classes,
       inputValue,
-      error,
-      helperText,
       onSelectedItemChange
     } = this.props;
 
@@ -135,8 +133,6 @@ class AutoComplete extends React.Component {
                   }
                 }}
                 value={inputValue}
-                error={error}
-                helperText={helperText}
                 {...getInputProps({
                   onChange,
                   onKeyDown: (event) => onKeyDown(event, this.dropdownOpen(isOpen, filteredItems))
@@ -165,8 +161,6 @@ AutoComplete.propTypes = {
     input: PropTypes.string
   }).isRequired,
   inputValue: PropTypes.string.isRequired,
-  error: PropTypes.bool.isRequired,
-  helperText: PropTypes.string.isRequired,
   onSelectedItemChange: PropTypes.func.isRequired
 };
 

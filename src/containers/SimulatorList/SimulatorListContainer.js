@@ -14,7 +14,7 @@ const styles = (theme) => ({
   container: theme.mixins.gutters({
     paddingTop: 16,
     paddingBottom: 16,
-    minHeight: 'calc(100% - 85px)',
+    minHeight: 'calc(100% - 64px)',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
