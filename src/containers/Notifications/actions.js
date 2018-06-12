@@ -9,11 +9,12 @@ export const hide = () => ({
   type: Constants.HIDE
 });
 
-export const queue = (message) => ({
+export const queue = (message, variant) => ({
   type: Constants.QUEUE,
   payload: {
     message: {
       message,
+      variant,
       key: new Date().getTime()
     }
   }
