@@ -8,7 +8,8 @@ const {
   FOCUS_SIMULATOR,
   LOAD_APP,
   OPEN_DEV_TOOLS,
-  CHANGE_CATEGORY_SETTINGS
+  CHANGE_CATEGORY_SETTINGS,
+  ADD_APP_NAME_URL_ASSOCIATION
 } = require('../ipcEvents');
 
 window.ipcRenderer = ipcRenderer;
@@ -38,5 +39,9 @@ window.lampix = {
     url,
     category,
     classifier
+  }),
+  addAssociation: (name, url) => ipcRenderer.send(ADD_APP_NAME_URL_ASSOCIATION, {
+    name,
+    url
   })
 };

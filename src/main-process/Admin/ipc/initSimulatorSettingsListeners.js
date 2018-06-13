@@ -4,7 +4,8 @@ const {
   SET_CLASSIFIER,
   SET_RECOGNIZED_CLASS,
   SET_METADATA,
-  CHANGE_CATEGORY_SETTINGS
+  CHANGE_CATEGORY_SETTINGS,
+  ADD_APP_NAME_URL_ASSOCIATION
 } = require('../../ipcEvents');
 const {
   SIMPLE,
@@ -70,6 +71,11 @@ function initSimulatorSettingsListeners() {
     sendSettingsBack(event.sender, url, {
       settings
     });
+  });
+
+  ipcMain.on(ADD_APP_NAME_URL_ASSOCIATION, (event, association) => {
+    this.updateNameURLAssociation(association);
+    this.sendConfig();
   });
 }
 

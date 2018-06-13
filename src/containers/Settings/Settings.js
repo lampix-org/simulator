@@ -16,8 +16,17 @@ import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 
+// Utils
+import get from 'lodash.get';
+
 // Custom components
 import Separator from '../../components/Separator';
+import AppNameURLAssociation from './AppNameURLAssociation';
+
+// IPC Events
+import {
+  APP_CONFIG
+} from '../../main-process/ipcEvents';
 
 const styles = (theme) => ({
   container: theme.mixins.gutters({
@@ -43,70 +52,142 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
-const Settings = ({
-  classes,
-  open,
-  handleClose
-}) => (
-  <Dialog
-    fullScreen
-    open={open}
-    TransitionComponent={Transition}
-  >
-    <AppBar>
-      <Toolbar className={classes.toolbar}>
-        <IconButton
-          color="inherit"
-          onClick={handleClose}
-          aria-label="Close"
-        >
-          <CloseIcon />
-        </IconButton>
-        <Typography
-          variant="title"
-          color="inherit"
-        >
-        Settings
-        </Typography>
-      </Toolbar>
-    </AppBar>
+class Settings extends React.Component {
+  state = {
+    association: {
+      name: '',
+      url: ''
+    }
+  };
 
-    <div className={classes.container}>
-      <Paper className={classes.paper}>
-        <Typography variant="title">
-          Associate URLs with app names
-        </Typography>
-        <Typography variant="subheading">
-          This allows loading apps using their name instead of the whole URL
-        </Typography>
+  componentDidMount() {
+    window.ipcRenderer.on(APP_CONFIG, (event, settings) => {
+      this.setState({ settings });
+    });
+  }
 
-        <Separator />
+  addNewAssociation = () => {
+    const { association: { name, url } } = this.state;
 
-        <TextField
-          label="App name"
-          type="text"
-          className={classes.textField}
-          margin="normal"
-        />
+    window.lampix.addAssociation(name, url);
+    this.setState({
+      association: {
+        name: '',
+        url: ''
+      }
+    });
+  }
 
-        <TextField
-          label="App URL"
-          type="text"
-          className={classes.textField}
-          margin="normal"
-        />
+  updateNewAssociationName = (event) => {
+    this.setState({
+      ...this.state,
+      association: {
+        url: this.state.association.url,
+        name: event.target.value
+      }
+    });
+  }
 
-        <Button
-          variant="contained"
-          color="default"
-          size="small"
-        >
-          Add
-        </Button>
-      </Paper>
-    </div>
-  </Dialog>
-);
+  updateNewAssociationURL = (event) => {
+    this.setState({
+      ...this.state,
+      association: {
+        url: event.target.value,
+        name: this.state.association.name
+      }
+    });
+  }
+
+  render() {
+    const {
+      classes,
+      open,
+      handleClose
+    } = this.props;
+
+    const nameToURLAssociations = get(this.state, 'settings.simulator.appSwitcher.nameToURLAssociations', {});
+    console.log(this.state.settings);
+
+    return (
+      <Dialog
+        fullScreen
+        open={open}
+        TransitionComponent={Transition}
+      >
+        <AppBar>
+          <Toolbar className={classes.toolbar}>
+            <IconButton
+              color="inherit"
+              onClick={handleClose}
+              aria-label="Close"
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography
+              variant="title"
+              color="inherit"
+            >
+            Settings
+            </Typography>
+          </Toolbar>
+        </AppBar>
+
+        <div className={classes.container}>
+          <Paper className={classes.paper}>
+            <Typography variant="title">
+              Associate URLs with app names
+            </Typography>
+            <Typography variant="subheading">
+              This allows loading apps using their name instead of the whole URL
+            </Typography>
+
+            <Separator />
+
+            <TextField
+              label="App name"
+              type="text"
+              className={classes.textField}
+              margin="normal"
+              onChange={this.updateNewAssociationName}
+            />
+
+            <TextField
+              label="App URL"
+              type="text"
+              className={classes.textField}
+              margin="normal"
+              onChange={this.updateNewAssociationURL}
+            />
+
+            <Button
+              variant="contained"
+              color="default"
+              size="small"
+              onClick={this.addNewAssociation}
+            >
+              Add
+            </Button>
+
+            {
+              Object.keys(nameToURLAssociations).map((name) => (
+                <AppNameURLAssociation
+                  key={name}
+                  name={name}
+                  url={nameToURLAssociations[name]}
+                  onNameChange={() => {}}
+                  onURLChange={() => {}}
+                  onSave={() => {}}
+                  onRemove={() => {}}
+                  textFieldClassName={classes.textField}
+                />
+              ))
+            }
+          </Paper>
+        </div>
+      </Dialog>
+    );
+  }
+}
 
 Settings.propTypes = {
   classes: PropTypes.shape({
