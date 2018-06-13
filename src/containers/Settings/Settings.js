@@ -69,7 +69,11 @@ class Settings extends React.Component {
   addNewAssociation = () => {
     const { association: { name, url } } = this.state;
 
-    window.lampix.addAssociation(name, url);
+    this.saveAssociation(name, url);
+    this.resetNewAssociationInputs();
+  }
+
+  resetNewAssociationInputs = () => {
     this.setState({
       association: {
         name: '',
@@ -100,6 +104,38 @@ class Settings extends React.Component {
 
   removeAssociation = (name) => {
     window.lampix.removeAssociation(name);
+  };
+
+  saveAssociation = (name, url) => {
+    window.lampix.addAssociation(name, url);
+  }
+
+  saveAssociationChanges = (oldName, name, url) => {
+    this.removeAssociation(window.lampix.removeAssociation(oldName));
+    this.saveAssociation(name, url);
+  }
+
+  updateExistingAssociationName = (oldName, newName) => {
+    const settings = { ...this.state.settings };
+    const { nameToURLAssociations } = settings.simulator.appSwitcher;
+
+    nameToURLAssociations[newName] = nameToURLAssociations[oldName];
+    delete nameToURLAssociations[oldName];
+
+    this.setState({
+      settings
+    });
+  };
+
+  updateExistingAssociationURL = (name, url) => {
+    const settings = { ...this.state.settings };
+    const { nameToURLAssociations } = settings.simulator.appSwitcher;
+
+    nameToURLAssociations[name] = url;
+
+    this.setState({
+      settings
+    });
   };
 
   render() {
@@ -172,14 +208,14 @@ class Settings extends React.Component {
             </Button>
 
             {
-              Object.keys(nameToURLAssociations).map((name) => (
+              Object.keys(nameToURLAssociations).map((name, i) => (
                 <AppNameURLAssociation
-                  key={name}
+                  key={i}
                   name={name}
                   url={nameToURLAssociations[name]}
-                  onNameChange={() => {}}
-                  onURLChange={() => {}}
-                  onSave={() => {}}
+                  onNameChange={(newName) => this.updateExistingAssociationName(name, newName)}
+                  onURLChange={(url) => this.updateExistingAssociationURL(name, url)}
+                  onSave={(oldName) => this.saveAssociationChanges(oldName, name, nameToURLAssociations[name])}
                   onRemove={() => this.removeAssociation(name)}
                   textFieldClassName={classes.textField}
                 />

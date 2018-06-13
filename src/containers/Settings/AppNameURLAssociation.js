@@ -20,19 +20,23 @@ const styles = (theme) => ({
 
 class AppNameURLAssociation extends React.PureComponent {
   state = {
-    editingDisabled: true
+    editingDisabled: true,
+    oldName: ''
   };
 
   enableEditing = () => this.setState({
-    editingDisabled: false
+    editingDisabled: false,
+    oldName: this.props.name
   });
 
   saveChanges = () => {
     const { onSave } = this.props;
+    onSave(this.state.oldName);
 
     this.setState({
-      editingDisabled: true
-    }, onSave);
+      editingDisabled: true,
+      oldName: ''
+    });
   }
 
   render() {
@@ -56,7 +60,7 @@ class AppNameURLAssociation extends React.PureComponent {
           margin="normal"
           value={name}
           disabled={editingDisabled}
-          onChange={onNameChange}
+          onChange={(event) => onNameChange(event.target.value)}
           className={textFieldClassName}
         />
 
@@ -66,7 +70,7 @@ class AppNameURLAssociation extends React.PureComponent {
           margin="normal"
           value={url}
           disabled={editingDisabled}
-          onChange={onURLChange}
+          onChange={(event) => onURLChange(event.target.value)}
           className={textFieldClassName}
         />
 
