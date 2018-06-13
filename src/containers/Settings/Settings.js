@@ -188,6 +188,7 @@ class Settings extends React.Component {
               className={classes.textField}
               margin="normal"
               onChange={this.updateNewAssociationName}
+              value={this.state.association.name}
             />
 
             <TextField
@@ -196,6 +197,7 @@ class Settings extends React.Component {
               className={classes.textField}
               margin="normal"
               onChange={this.updateNewAssociationURL}
+              value={this.state.association.url}
             />
 
             <Button
