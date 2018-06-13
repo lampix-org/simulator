@@ -12,6 +12,12 @@ import Slide from '@material-ui/core/Slide';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
+import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+
+// Custom components
+import Separator from '../../components/Separator';
 
 const styles = (theme) => ({
   container: theme.mixins.gutters({
@@ -25,7 +31,12 @@ const styles = (theme) => ({
     marginBottom: theme.spacing.unit * 2,
     paddingTop: 16,
     paddingBottom: 16
-  })
+  }),
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 200,
+  }
 });
 
 function Transition(props) {
@@ -61,7 +72,38 @@ const Settings = ({
     </AppBar>
 
     <div className={classes.container}>
+      <Paper className={classes.paper}>
+        <Typography variant="title">
+          Associate URLs with app names
+        </Typography>
+        <Typography variant="subheading">
+          This allows loading apps using their name instead of the whole URL
+        </Typography>
 
+        <Separator />
+
+        <TextField
+          label="App name"
+          type="text"
+          className={classes.textField}
+          margin="normal"
+        />
+
+        <TextField
+          label="App URL"
+          type="text"
+          className={classes.textField}
+          margin="normal"
+        />
+
+        <Button
+          variant="contained"
+          color="default"
+          size="small"
+        >
+          Add
+        </Button>
+      </Paper>
     </div>
   </Dialog>
 );
@@ -71,6 +113,7 @@ Settings.propTypes = {
     toolbar: PropTypes.string,
     container: PropTypes.string,
     paper: PropTypes.string,
+    textField: PropTypes.string
   }).isRequired,
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired
