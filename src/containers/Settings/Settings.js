@@ -67,7 +67,11 @@ const Settings = ({
 );
 
 Settings.propTypes = {
-  classes: PropTypes.shape({}).isRequired,
+  classes: PropTypes.shape({
+    toolbar: PropTypes.string,
+    container: PropTypes.string,
+    paper: PropTypes.string,
+  }).isRequired,
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired
 };
