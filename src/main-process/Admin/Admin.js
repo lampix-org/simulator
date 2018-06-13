@@ -155,6 +155,11 @@ class Admin {
     configStore.set(`simulator.appSwitcher.nameToURLAssociations.${name}`, url);
     this.config.simulator.appSwitcher.nameToURLAssociations[name] = url;
   }
+
+  removeNameURLAssociation(name) {
+    configStore.delete(`simulator.appSwitcher.nameToURLAssociations.${name}`);
+    delete this.config.simulator.appSwitcher.nameToURLAssociations[name];
+  }
 }
 
 exports.Admin = Admin;

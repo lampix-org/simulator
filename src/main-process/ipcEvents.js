@@ -15,6 +15,7 @@ exports.CHANGE_CATEGORY_SETTINGS = 'lx-simulator/IPC/CHANGE_CATEGORY_SETTINGS';
 exports.LOAD_APP = 'lx/simulator/IPC/LOAD_APP';
 exports.APP_CONFIG = 'lx/simulator/IPC/APP_CONFIG';
 exports.ADD_APP_NAME_URL_ASSOCIATION = 'lx/simulator/IPC/ADD_APP_NAME_URL_ASSOCIATION';
+exports.REMOVE_APP_NAME_URL_ASSOCIATION = 'lx/simulator/IPC/REMOVE_APP_NAME_URL_ASSOCIATION';
 
 // Simulated app events
 exports.MOUSE_MOVE = 'lx-simulator/IPC/MOUSE_MOVE';

@@ -74,7 +74,6 @@ class AppNameURLAssociation extends React.PureComponent {
           editingDisabled ?
             <Button
               variant="contained"
-              color="white"
               size="small"
               onClick={this.enableEditing}
             >
@@ -82,7 +81,6 @@ class AppNameURLAssociation extends React.PureComponent {
             </Button> :
             <Button
               variant="contained"
-              color="white"
               size="small"
               onClick={this.saveChanges}
             >
@@ -93,7 +91,6 @@ class AppNameURLAssociation extends React.PureComponent {
         <Button
           className={classes.button}
           variant="contained"
-          color="white"
           size="small"
           onClick={onRemove}
         >

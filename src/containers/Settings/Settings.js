@@ -98,6 +98,10 @@ class Settings extends React.Component {
     });
   }
 
+  removeAssociation = (name) => {
+    window.lampix.removeAssociation(name);
+  };
+
   render() {
     const {
       classes,
@@ -106,7 +110,6 @@ class Settings extends React.Component {
     } = this.props;
 
     const nameToURLAssociations = get(this.state, 'settings.simulator.appSwitcher.nameToURLAssociations', {});
-    console.log(this.state.settings);
 
     return (
       <Dialog
@@ -177,7 +180,7 @@ class Settings extends React.Component {
                   onNameChange={() => {}}
                   onURLChange={() => {}}
                   onSave={() => {}}
-                  onRemove={() => {}}
+                  onRemove={() => this.removeAssociation(name)}
                   textFieldClassName={classes.textField}
                 />
               ))
