@@ -139,10 +139,6 @@ class Admin {
     store.set('urls', newList);
     this.storedURLs = new Set(newList);
   }
-
-  logInfo(logObj) {
-    Logger.log(logObj);
-  }
 }
 
 exports.Admin = Admin;
