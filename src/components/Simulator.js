@@ -30,6 +30,13 @@ import {
   MOVEMENT
 } from '../common/constants';
 
+const {
+  DEFAULT_WINDOW_WIDTH,
+  DEFAULT_WINDOW_HEIGHT
+} = require('../main-process/constants');
+
+const DEFAULT_DISPLAY_SIZE = 5;
+
 const styles = () => ({
   registeredAreaContainer: {
     display: 'flex',
@@ -47,6 +54,12 @@ const styles = () => ({
     '&:hover': {
       transform: 'scale(1.05)'
     }
+  },
+  registeredAreaDiv: {
+    backgroundColor: 'black',
+    position: 'relative',
+    height: '5vh',
+    width: '5vw'
   }
 });
 
@@ -62,6 +75,30 @@ class Simulator extends React.Component {
   renderRegisteredArea = (rect, category) => {
     const { handleRegisteredAreaClick, url, classes } = this.props;
 
+    const divHeightConvertedToPx = (window.innerHeight * DEFAULT_DISPLAY_SIZE) / 100;
+    const divWidthConvertedToPx = (window.innerWidth * DEFAULT_DISPLAY_SIZE) / 100;
+
+    const widthScaleDownFactor = Math.round(DEFAULT_WINDOW_WIDTH / divWidthConvertedToPx);
+    const heightScaleDownFactor = Math.round(DEFAULT_WINDOW_HEIGHT / divHeightConvertedToPx);
+    const registeredAreaLocationWidth = rect.width > 0 ?
+      Math.round(rect.width / widthScaleDownFactor) : DEFAULT_DISPLAY_SIZE;
+    const registeredAreaLocationHeight = rect.height > 0 ?
+      Math.round(rect.height / heightScaleDownFactor) : DEFAULT_DISPLAY_SIZE;
+    const registeredAreaLocationLeft = rect.posX > 0 ?
+      Math.round(rect.posX / widthScaleDownFactor) : 0;
+    const registeredAreaLocationTop = rect.posY > 0 ? Math.round(rect.posY / heightScaleDownFactor) : 0;
+
+    const registeredAreaLocation = {
+      backgroundColor: 'white',
+      position: 'absolute',
+      width: registeredAreaLocationWidth,
+      height: registeredAreaLocationHeight,
+      left: registeredAreaLocationLeft,
+      top: registeredAreaLocationTop
+    };
+
+    console.log('registeredAreaLocation ', registeredAreaLocation);
+
     return (
       <Card
         key={`${rect.posX}/${rect.posY}`}
@@ -69,14 +106,17 @@ class Simulator extends React.Component {
         onClick={() => handleRegisteredAreaClick(url, category, rect.classifier)}
       >
         <CardContent>
-          <Typography variant="body1">X: {rect.posX}</Typography>
-          <Typography variant="body1">Y: {rect.posY}</Typography>
-          <Typography variant="body1">Width: {rect.width}</Typography>
-          <Typography variant="body1">Height: {rect.height}</Typography>
           {
             rect.classifier &&
             <Typography variant="body1">Classifier: {rect.classifier}</Typography>
           }
+          <div className={`${classes.registeredAreaDiv}`}>
+            <div style={registeredAreaLocation}></div>
+          </div>
+          <Typography variant="body1">X: {rect.posX}</Typography>
+          <Typography variant="body1">Y: {rect.posY}</Typography>
+          <Typography variant="body1">Width: {rect.width}</Typography>
+          <Typography variant="body1">Height: {rect.height}</Typography>
         </CardContent>
       </Card>
     );
