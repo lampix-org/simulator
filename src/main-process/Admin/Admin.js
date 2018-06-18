@@ -1,4 +1,8 @@
 const { Simulator } = require('../Simulator');
+const { createAdminBrowser } = require('./createAdminBrowser');
+const { store } = require('../store');
+const { configStore } = require('../config');
+const { checkURL } = require('./checkURL');
 const {
   initSimulatorSettingsListeners,
   initAppManagementListeners,
@@ -7,31 +11,31 @@ const {
   handleAdminUIReady,
   sendSettingsBack
 } = require('./ipc');
-const { createAdminBrowser } = require('./createAdminBrowser');
 const {
   UPDATE_SIMULATOR_LIST,
   UPDATE_URL_LIST,
-  ERROR
+  ERROR,
+  APP_CONFIG
 } = require('../ipcEvents');
-const { store } = require('../store');
-const { checkURL } = require('./checkURL');
 
 const logSimulatorNotFound = (url) => console.log(`Simulator for ${url} not found. Doing nothing.`);
 
 class Admin {
   constructor() {
     this.storedURLs = new Set(store.get('urls') || []);
+    this.config = configStore.store;
     this.simulators = {};
     this.browser = createAdminBrowser(() => {
       this.browser = null;
     });
 
-    handleAdminUIReady(
-      initSimulatorSettingsListeners.bind(this),
-      initAppManagementListeners.bind(this),
-      initSimulatorClientEventListeners.bind(this),
-      initSimulatorLampixListeners.bind(this),
-      this.updateRendererURLs.bind(this)
+    handleAdminUIReady.call(
+      this,
+      initSimulatorSettingsListeners,
+      initAppManagementListeners,
+      initSimulatorClientEventListeners,
+      initSimulatorLampixListeners,
+      this.updateRendererURLs
     );
   }
 
@@ -138,9 +142,23 @@ class Admin {
     this.storedURLs = new Set(newList);
   }
 
+  sendConfig() {
+    this.browser.webContents.send(APP_CONFIG, this.config);
+  }
+
   switchToApp(toClose, toOpen) {
     this.closeSimulator(toClose);
     this.loadApp(toOpen);
+  }
+
+  updateNameURLAssociation({ name, url }) {
+    configStore.set(`simulator.appSwitcher.nameToURLAssociations.${name}`, url);
+    this.config.simulator.appSwitcher.nameToURLAssociations[name] = url;
+  }
+
+  removeNameURLAssociation(name) {
+    configStore.delete(`simulator.appSwitcher.nameToURLAssociations.${name}`);
+    delete this.config.simulator.appSwitcher.nameToURLAssociations[name];
   }
 }
 

@@ -147,7 +147,7 @@ class Simulator {
 
         this.browser.webContents.executeJavaScript(`onPrePositionClassifier(${i}, ${JSON.stringify(data)})`);
 
-        // TODO: Make the time of this timeout configurable
+        // TODO: Make the time of this timeout configurableeslint --fix --ignore-pattern internals/
         setTimeout(() => {
           data[data.length - 1].classTag = recognizedClass;
           this.browser.webContents
