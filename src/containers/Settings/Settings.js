@@ -110,34 +110,6 @@ class Settings extends React.Component {
     window.lampix.addAssociation(name, url);
   }
 
-  saveAssociationChanges = (oldName, name, url) => {
-    this.removeAssociation(window.lampix.removeAssociation(oldName));
-    this.saveAssociation(name, url);
-  }
-
-  updateExistingAssociationName = (oldName, newName) => {
-    const settings = { ...this.state.settings };
-    const { nameToURLAssociations } = settings.simulator.appSwitcher;
-
-    nameToURLAssociations[newName] = nameToURLAssociations[oldName];
-    delete nameToURLAssociations[oldName];
-
-    this.setState({
-      settings
-    });
-  };
-
-  updateExistingAssociationURL = (name, url) => {
-    const settings = { ...this.state.settings };
-    const { nameToURLAssociations } = settings.simulator.appSwitcher;
-
-    nameToURLAssociations[name] = url;
-
-    this.setState({
-      settings
-    });
-  };
-
   render() {
     const {
       classes,
@@ -215,9 +187,6 @@ class Settings extends React.Component {
                   key={i}
                   name={name}
                   url={nameToURLAssociations[name]}
-                  onNameChange={(newName) => this.updateExistingAssociationName(name, newName)}
-                  onURLChange={(url) => this.updateExistingAssociationURL(name, url)}
-                  onSave={(oldName) => this.saveAssociationChanges(oldName, name, nameToURLAssociations[name])}
                   onRemove={() => this.removeAssociation(name)}
                   textFieldClassName={classes.textField}
                 />
