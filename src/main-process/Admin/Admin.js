@@ -6,8 +6,7 @@ const {
   initSimulatorClientEventListeners,
   initSimulatorLampixListeners,
   handleAdminUIReady,
-  sendSettingsBack,
-  initLoggerListener
+  sendSettingsBack
 } = require('./ipc');
 const { createAdminBrowser } = require('./createAdminBrowser');
 const {
@@ -32,8 +31,7 @@ class Admin {
       initAppManagementListeners.bind(null, this),
       initSimulatorClientEventListeners.bind(null, this.simulators),
       initSimulatorLampixListeners.bind(null, this.simulators),
-      this.updateRendererURLs.bind(this),
-      initLoggerListener.bind(null, this)
+      this.updateRendererURLs.bind(this)
     );
   }
 

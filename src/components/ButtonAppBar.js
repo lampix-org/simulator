@@ -42,6 +42,7 @@ class ButtonAppBar extends React.Component {
     };
 
     window.ipcRenderer.on(UPDATE_URL_LIST, (event, data) => {
+      window.Logger.info(`url list received ${data}`);
       this.setState({
         urlAddresses: data
       });

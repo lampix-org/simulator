@@ -11,6 +11,8 @@ const {
   CHANGE_CATEGORY_SETTINGS
 } = require('../ipcEvents');
 
+window.Logger = require('../Logger');
+
 window.ipcRenderer = ipcRenderer;
 
 window.lampix = {

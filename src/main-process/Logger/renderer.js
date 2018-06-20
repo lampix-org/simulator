@@ -1,38 +1,16 @@
-const winston = require('winston');
-const { configStore } = require('../config');
+const { LOG_INFO } = require('../ipcEvents');
 
-const {
-  combine,
-  timestamp,
-  printf
-} = winston.format;
+const log = (rendererLevel, message) => {
+  window.ipcRenderer.send(LOG_INFO, { rendererLevel, message });
+};
 
-const { logger } = require('./config');
-
-const {
-  timestampFormat,
-  maxsize,
-  maxfiles,
-  filename
-} = logger;
-
-const level = configStore.store.logLevel;
-
-const myFormat = printf(info => `[${info.timestamp}] [R] [${info.level}]: ${info.message}`);
-
-const Logger = winston.createLogger({
-  format: combine(
-    timestamp({
-      format: timestampFormat
-    }),
-    myFormat
-  ),
-  level,
-  transports: [new winston.transports.File({ filename, maxsize, maxfiles })]
-});
-
-if (process.env.NODE_ENV === 'development') {
-  Logger.add(new winston.transports.Console());
-}
-
-exports.Logger = Logger;
+module.exports = {
+  // Logger: {
+  error: log.bind(null, 'error'),
+  warn: log.bind(null, 'warn'),
+  info: log.bind(null, 'info'),
+  verbose: log.bind(null, 'verbose'),
+  debug: log.bind(null, 'debug'),
+  silly: log.bind(null, 'silly')
+  // }
+};
