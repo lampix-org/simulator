@@ -1,27 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ExpansionPanel, {
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
-  ExpansionPanelActions
-} from 'material-ui/ExpansionPanel';
-import { Grid } from 'material-ui';
-import { withStyles } from 'material-ui/styles';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Button from 'material-ui/Button';
-import Divider from 'material-ui/Divider';
-import Switch from 'material-ui/Switch';
-import Input, { InputLabel } from 'material-ui/Input';
-import { MenuItem } from 'material-ui/Menu';
-import { FormControl, FormControlLabel } from 'material-ui/Form';
-import Select from 'material-ui/Select';
-import TextField from 'material-ui/TextField';
-import List, { ListItem, ListItemText } from 'material-ui/List';
-import Collapse from 'material-ui/transitions/Collapse';
-import { ExpandLess, ExpandMore } from '@material-ui/icons';
-import Typography from 'material-ui/Typography';
-import Card, { CardContent } from 'material-ui/Card';
 
+// Material UI
+import { withStyles } from '@material-ui/core/styles';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
+import Switch from '@material-ui/core/Switch';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Select from '@material-ui/core/Select';
+import TextField from '@material-ui/core/TextField';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Collapse from '@material-ui/core/Collapse';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import Typography from '@material-ui/core/Typography';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+
+// Custom components
 import Separator from './Separator';
 
 import {
@@ -140,7 +147,7 @@ class Simulator extends React.Component {
 
     return (
       <ExpansionPanel key={url}>
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+        <ExpansionPanelSummary expandIcon={<ExpandMore />}>
           <Typography variant="subheading">Simulator {url}</Typography>
         </ExpansionPanelSummary>
         <Divider />

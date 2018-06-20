@@ -1,4 +1,8 @@
 const { Simulator } = require('../Simulator');
+const { createAdminBrowser } = require('./createAdminBrowser');
+const { store } = require('../store');
+const { configStore } = require('../config');
+const { checkURL } = require('./checkURL');
 const { Logger } = require('../Logger');
 const {
   initSimulatorSettingsListeners,
@@ -8,30 +12,31 @@ const {
   handleAdminUIReady,
   sendSettingsBack
 } = require('./ipc');
-const { createAdminBrowser } = require('./createAdminBrowser');
 const {
   UPDATE_SIMULATOR_LIST,
   UPDATE_URL_LIST,
-  INVALID_URL
+  ERROR,
+  APP_CONFIG
 } = require('../ipcEvents');
-const { store } = require('../store');
-const { checkURL } = require('./checkURL');
 
 const logSimulatorNotFound = (url) => Logger.info(`Simulator for ${url} not found. Doing nothing.`);
 
 class Admin {
   constructor() {
     this.storedURLs = new Set(store.get('urls') || []);
+    this.config = configStore.store;
     this.simulators = {};
     this.browser = createAdminBrowser(() => {
       this.browser = null;
     });
-    handleAdminUIReady(
-      initSimulatorSettingsListeners.bind(null, this.simulators),
-      initAppManagementListeners.bind(null, this),
-      initSimulatorClientEventListeners.bind(null, this.simulators),
-      initSimulatorLampixListeners.bind(null, this.simulators),
-      this.updateRendererURLs.bind(this)
+
+    handleAdminUIReady.call(
+      this,
+      initSimulatorSettingsListeners,
+      initAppManagementListeners,
+      initSimulatorClientEventListeners,
+      initSimulatorLampixListeners,
+      this.updateRendererURLs
     );
   }
 
@@ -47,7 +52,7 @@ class Admin {
     if (!success) {
       Logger.error(`URL check failed with message: ${error}`);
       Logger.error('Aborting app loading...');
-      this.browser.webContents.send(INVALID_URL, error);
+      this.browser.webContents.send(ERROR, error);
       return;
     }
 
@@ -55,7 +60,6 @@ class Admin {
 
     const onClosed = () => {
       delete this.simulators[url];
-      delete global[`simulator-${url}`];
       this.sendSimulators();
     };
 
@@ -70,8 +74,6 @@ class Admin {
       updateAdminUI
     });
 
-    global[`simulator-${url}`] = this.simulators[url];
-
     const options = process.env.NODE_ENV === 'development' ? { extraHeaders: 'pragma: no-cache\n' } : {};
 
     Logger.info(`Loading app at ${url}`);
@@ -82,7 +84,7 @@ class Admin {
     this.updateRendererURLs();
   }
 
-  closeSimulator(url) {
+  async closeSimulator(url) {
     Logger.info(`Attempting to close simulator for ${url}...`);
     if (this.simulators[url]) {
       Logger.info('Simulator found. Closing... ');
@@ -136,6 +138,25 @@ class Admin {
 
     store.set('urls', newList);
     this.storedURLs = new Set(newList);
+  }
+
+  sendConfig() {
+    this.browser.webContents.send(APP_CONFIG, this.config);
+  }
+
+  switchToApp(toClose, toOpen) {
+    this.closeSimulator(toClose);
+    this.loadApp(toOpen);
+  }
+
+  updateNameURLAssociation({ name, url }) {
+    configStore.set(`simulator.appSwitcher.nameToURLAssociations.${name}`, url);
+    this.config.simulator.appSwitcher.nameToURLAssociations[name] = url;
+  }
+
+  removeNameURLAssociation(name) {
+    configStore.delete(`simulator.appSwitcher.nameToURLAssociations.${name}`);
+    delete this.config.simulator.appSwitcher.nameToURLAssociations[name];
   }
 }
 

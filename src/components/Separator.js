@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Material UI
-import Divider from 'material-ui/Divider';
+import Divider from '@material-ui/core/Divider';
 
 const styles = {
   padding: (spacing) => ({

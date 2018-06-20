@@ -6,25 +6,25 @@ const {
   OPEN_DEV_TOOLS
 } = require('../../ipcEvents');
 
-function initAppManagementListeners(admin) {
+function initAppManagementListeners() {
   ipcMain.on(LOAD_APP, (event, data) => {
     const { url } = data;
-    admin.loadApp(url);
+    this.loadApp(url);
   });
 
   ipcMain.on(CLOSE_SIMULATOR, (event, data) => {
     const { url } = data;
-    admin.closeSimulator(url);
+    this.closeSimulator(url);
   });
 
   ipcMain.on(FOCUS_SIMULATOR, (event, data) => {
     const { url } = data;
-    admin.focusSimulator(url);
+    this.focusSimulator(url);
   });
 
   ipcMain.on(OPEN_DEV_TOOLS, (event, data) => {
     const { url } = data;
-    admin.openDevTools(url);
+    this.openDevTools(url);
   });
 }
 

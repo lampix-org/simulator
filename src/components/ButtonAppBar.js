@@ -1,31 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import Button from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
-import Icon from 'material-ui/Icon';
-import { UPDATE_URL_LIST, INVALID_URL } from '../main-process/ipcEvents';
+import { withStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import HelpOutline from '@material-ui/icons/HelpOutline';
+import Settings from '@material-ui/icons/Settings';
+import { UPDATE_URL_LIST } from '../main-process/ipcEvents';
 
-import AutoComplete from '../components/AutoComplete';
-import HelpDialog from '../components/HelpDialog';
+import AutoComplete from './AutoComplete';
+import HelpDialog from './HelpDialog';
+
+import SettingsDialog from '../containers/Settings';
 
 const styles = {
   root: {
     flexGrow: 1
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20
   },
   logo: {
     width: 30,
     height: 30
   },
   toolbar: {
-    background: '#222222',
-    height: 85
+    background: '#222222'
   }
 };
 
@@ -35,10 +33,9 @@ class ButtonAppBar extends React.Component {
     super(props);
     this.state = {
       inputValue: '',
-      open: false,
-      error: false,
       urlAddresses: [],
-      helperText: ''
+      helpDialogOpen: false,
+      settingsDialogOpen: false
     };
 
     window.ipcRenderer.on(UPDATE_URL_LIST, (event, data) => {
@@ -47,22 +44,12 @@ class ButtonAppBar extends React.Component {
         urlAddresses: data
       });
     });
-    window.ipcRenderer.on(INVALID_URL, (event, data) => {
-      this.setState({
-        error: true,
-        helperText: data
-      });
-    });
   }
 
   loadApp = () => {
     if (this.state.inputValue) {
       window.lampix.loadApp(this.state.inputValue);
     }
-    this.setState({
-      error: false,
-      helperText: ''
-    });
   }
 
   handleInputChange = (event) => {
@@ -73,13 +60,13 @@ class ButtonAppBar extends React.Component {
     this.setState({ inputValue: item });
   }
 
-  openHelp = () => {
-    this.setState({ open: true });
-  };
+  openDialog = (name) => this.setState({
+    [`${name}DialogOpen`]: true
+  });
 
-  closeHelp = () => {
-    this.setState({ open: false });
-  };
+  closeDialog = (name) => this.setState({
+    [`${name}DialogOpen`]: false
+  });
 
   handleKeyDown = (e, isOpen) => {
     if (!isOpen && e.key === 'Enter') {
@@ -89,7 +76,7 @@ class ButtonAppBar extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { inputValue, error, helperText } = this.state;
+    const { inputValue } = this.state;
 
     return (
       <div className={classes.root}>
@@ -101,18 +88,31 @@ class ButtonAppBar extends React.Component {
               onSelectedItemChange={this.handleSelectedItemChange}
               onChange={this.handleInputChange}
               onKeyDown={this.handleKeyDown}
-              error={error}
               style={{ flexGrow: 1 }}
-              helperText={helperText}
+              onStateChange={this.handleDownshiftStateChange}
             />
             <Button onClick={this.loadApp} color="inherit">Load</Button>
-            <IconButton className={classes.menuButton} onClick={this.openHelp} color="inherit" aria-label="Menu">
-              <Icon>help_outline</Icon>
+            <IconButton
+              onClick={() => this.openDialog('help')}
+              color="inherit"
+            >
+              <HelpOutline />
+            </IconButton>
+            <IconButton
+              color="inherit"
+              onClick={() => this.openDialog('settings')}
+            >
+              <Settings />
             </IconButton>
           </Toolbar>
           <HelpDialog
-            open={this.state.open}
-            handleClose={this.closeHelp}
+            open={this.state.helpDialogOpen}
+            handleClose={() => this.closeDialog('help')}
+          />
+
+          <SettingsDialog
+            open={this.state.settingsDialogOpen}
+            handleClose={() => this.closeDialog('settings')}
           />
         </AppBar>
       </div>

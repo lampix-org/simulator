@@ -3,8 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Material UI
-import Paper from 'material-ui/Paper';
-import Typography from 'material-ui/Typography';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
 // Custom components
 import Separator from '../../Separator';
@@ -23,6 +23,13 @@ const Tldr = ({ className }) => (
 
     <Typography variant="body1">
       <strong>Dev tools</strong>: expand simulator settings, click <i>DEV TOOLS</i>.
+    </Typography>
+
+    <Separator />
+
+    <Typography variant="body1">
+      Click on a registered area card (in the simulator settings) to automatically
+      &nbsp;choose the settings for it. The <i>recognized class</i> may differ, if applicable.
     </Typography>
   </Paper>
 );

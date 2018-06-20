@@ -7,7 +7,9 @@ const {
   REGISTER_SIMPLE,
   REGISTER_POSITION,
   GET_LAMPIX_INFO,
-  TRANSFORM_COORDINATES
+  TRANSFORM_COORDINATES,
+  GET_APPS,
+  SWITCH_TO_APP
 } = require('../ipcEvents');
 
 
@@ -55,5 +57,19 @@ window._lampix_internal = {
   transformCoordinates: (rect) => ipcRenderer.send(TRANSFORM_COORDINATES, {
     url: appUrl,
     rect
+  }),
+  getApps: () => ipcRenderer.send(GET_APPS, {
+    url: appUrl
+  }),
+  /**
+   * The switchToApp method receives an app NAME or a URL
+   *
+   * NOTE: Currently, it will take app names into account only after the implementation of
+   * task 92862
+   * @param {string} app
+   */
+  switchToApp: (newApp) => ipcRenderer.send(SWITCH_TO_APP, {
+    toClose: appUrl,
+    toOpen: newApp
   })
 };

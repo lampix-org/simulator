@@ -1,44 +1,54 @@
 import React, { Component } from 'react';
-import { withStyles } from 'material-ui/styles';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-import { ADMIN_UI_READY } from '../../main-process/ipcEvents';
+// IPC Events
+import {
+  ADMIN_UI_READY,
+  ERROR
+} from '../../main-process/ipcEvents';
 
 import ButtonAppBar from '../../components/ButtonAppBar';
 import SimulatorList from '../SimulatorList';
+import SimulatorListContainer from '../SimulatorList/SimulatorListContainer';
 
-const styles = (theme) => ({
-  simulatorListContainer: theme.mixins.gutters({
-    paddingTop: 16,
-    paddingBottom: 16,
-    minHeight: 'calc(100% - 85px)',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
-  })
-});
+import Notifications from '../Notifications';
+import { queue } from '../Notifications/actions';
+import { notificationTypes } from '../Notifications/constants';
 
 class Core extends Component {
   componentDidMount() {
+    const { showMessage } = this.props;
+
     window.ipcRenderer.send(ADMIN_UI_READY);
+    window.ipcRenderer.on(ERROR, (event, errorMessage) => {
+      showMessage(errorMessage, notificationTypes.error);
+    });
   }
 
   render() {
-    const { classes } = this.props;
     return (
       <React.Fragment>
         <ButtonAppBar />
 
-        <div className={classes.simulatorListContainer}>
+        <SimulatorListContainer>
           <SimulatorList />
-        </div>
+        </SimulatorListContainer>
+
+        <Notifications />
       </React.Fragment>
     );
   }
 }
 
 Core.propTypes = {
-  classes: PropTypes.object.isRequired // eslint-disable-line
+  showMessage: PropTypes.func.isRequired
 };
 
-export default withStyles(styles)(Core);
+const mapDispatchToProps = (dispatch) => ({
+  showMessage: (message, variant) => dispatch(queue(message, variant))
+});
+
+Core = connect(null, mapDispatchToProps)(Core);
+
+export default Core;

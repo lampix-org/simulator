@@ -2,104 +2,166 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Downshift from 'downshift';
-import TextField from 'material-ui/TextField';
-import Paper from 'material-ui/Paper';
-import Typography from 'material-ui/Typography';
-import { withStyles } from 'material-ui/styles';
-import noop from 'lodash.noop';
+import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
+import MenuItem from '@material-ui/core/MenuItem';
+import { withStyles } from '@material-ui/core/styles';
 
-const styles = {
-  input: {
+const styles = () => ({
+  formLabelRoot: {
+    '&$formLabelFocused': {
+      color: 'white'
+    },
+    color: 'white'
+  },
+  formLabelFocused: {},
+  whiteUnderline: {
+    '&:after': {
+      borderBottomColor: 'white'
+    }
+  },
+  whiteText: {
     color: 'white'
   }
-};
+});
 
-function AutoComplete({
-  items,
-  onChange,
-  onKeyDown,
-  classes,
-  inputValue,
-  error,
-  helperText,
-  onSelectedItemChange
-}) {
-  return (
-    <Downshift
-      inputValue={inputValue}
-      onChange={onSelectedItemChange}
-      render={({
-        getInputProps,
-        getItemProps,
-        isOpen,
-        selectedItem,
-        highlightedIndex
-      }) => (
-        <div
-          style={{ flexGrow: 1 }}
-        >
-          <TextField
-            fullWidth
-            label="URL address"
-            InputLabelProps={{
-              className: classes.input
-            }}
-            FormHelperTextProps={{
-              className: classes.input
-            }}
-            inputProps={{
-              className: classes.input
-            }}
-            value={inputValue}
-            error={error}
-            helperText={helperText}
-            {...getInputProps({
-              onChange,
-              onKeyDown: (event) => onKeyDown(event, isOpen)
-            })}
-          />
-          {isOpen ? (
-            <Paper style={{ position: 'absolute', padding: '10px', zIndex: 100 }}>
-              {items
-                .filter(i =>
-                  !inputValue ||
-                  i.toLowerCase().includes(inputValue.toLowerCase()))
-                .map((item, index) => (
-                  <Typography
-                    {...getItemProps({ item })}
-                    key={item}
-                    style={{
-                      color: highlightedIndex === index ? 'red' : '#0d0d0d',
-                      fontWeight: selectedItem === item ? 'bold' : 'normal',
-                    }}
-                  >
-                    {item}
-                  </Typography>
-                ))}
-            </Paper>
-          ) : null}
-        </div>
-      )}
-    />
-  );
+class AutoComplete extends React.Component {
+  filter(inputValue) {
+    const { items } = this.props;
+    const result = items.filter((i => !inputValue || i.toLowerCase().includes(inputValue.toLowerCase())));
+
+    return result;
+  }
+
+  dropdownOpen(isOpen, filteredItems) {
+    return isOpen && filteredItems.length > 0;
+  }
+
+  renderSuggestion({
+    item,
+    index,
+    itemProps,
+    highlightedIndex,
+    selectedItem
+  }) {
+    const isHighlighted = highlightedIndex === index;
+    const isSelected = (selectedItem || '').indexOf(item) > -1;
+
+    return (
+      <MenuItem
+        {...itemProps}
+        key={item}
+        selected={isHighlighted}
+        component="div"
+        style={{
+          fontWeight: isSelected ? 500 : 400,
+        }}
+      >
+        {item}
+      </MenuItem>
+    );
+  }
+
+  renderDropdown({
+    filteredItems,
+    getItemProps,
+    highlightedIndex,
+    selectedItem,
+    isOpen
+  }) {
+    const shouldBeOpen = this.dropdownOpen(isOpen, filteredItems);
+
+    if (!shouldBeOpen) {
+      return null;
+    }
+
+    return (
+      <Paper style={{ position: 'absolute', zIndex: 100 }}>
+        {
+          filteredItems.map((item, index) =>
+            this.renderSuggestion({
+              item,
+              index,
+              itemProps: getItemProps({ item }),
+              highlightedIndex,
+              selectedItem
+            }))
+        }
+      </Paper>
+    );
+  }
+
+  render() {
+    const {
+      onChange,
+      onKeyDown,
+      classes,
+      inputValue,
+      onSelectedItemChange
+    } = this.props;
+
+    const filteredItems = this.filter(inputValue);
+
+    return (
+      <Downshift
+        inputValue={inputValue}
+        onChange={onSelectedItemChange}
+        onStateChange={this.handleDownshiftStateChange}
+      >
+        {
+          ({
+            getInputProps,
+            getItemProps,
+            isOpen,
+            selectedItem,
+            highlightedIndex
+          }) => (
+            <div style={{ flexGrow: 1 }}>
+              <TextField
+                fullWidth
+                label="URL address"
+                InputLabelProps={{
+                  FormLabelClasses: {
+                    root: classes.formLabelRoot,
+                    focused: classes.formLabelFocused
+                  }
+                }}
+                InputProps={{
+                  classes: {
+                    underline: classes.whiteUnderline,
+                    root: classes.whiteText
+                  }
+                }}
+                value={inputValue}
+                {...getInputProps({
+                  onChange,
+                  onKeyDown: (event) => onKeyDown(event, this.dropdownOpen(isOpen, filteredItems))
+                })}
+              />
+              {this.renderDropdown({
+                filteredItems,
+                getItemProps,
+                selectedItem,
+                highlightedIndex,
+                isOpen
+              })}
+            </div>
+          )
+        }
+      </Downshift>
+    );
+  }
 }
 
-AutoComplete.defaultProps = {
-  onChange: noop,
-  onKeyDown: noop,
-  helperText: '',
-  onSelectedItemChange: noop
-};
-
 AutoComplete.propTypes = {
-  items: PropTypes.array.isRequired, // eslint-disable-line
-  onChange: PropTypes.func,
-  onKeyDown: PropTypes.func,
-  classes: PropTypes.object.isRequired, // eslint-disable-line
+  items: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onChange: PropTypes.func.isRequired,
+  onKeyDown: PropTypes.func.isRequired,
+  classes: PropTypes.shape({
+    input: PropTypes.string
+  }).isRequired,
   inputValue: PropTypes.string.isRequired,
-  error: PropTypes.bool.isRequired,
-  helperText: PropTypes.string,
-  onSelectedItemChange: PropTypes.func
+  onSelectedItemChange: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(AutoComplete);

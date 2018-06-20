@@ -1,11 +1,12 @@
 import React from 'react';
 
-import Typography from 'material-ui/Typography';
+import Typography from '@material-ui/core/Typography';
 
 import { UPDATE_SIMULATOR_LIST, UPDATE_SIMULATOR_SETTINGS } from '../../main-process/ipcEvents';
 import { SIMPLE, POSITION } from '../../common/constants';
 
 import Simulator from '../../components/Simulator';
+import Separator from '../../components/Separator';
 
 class SimulatorList extends React.Component {
   constructor(props) {
@@ -181,10 +182,13 @@ class SimulatorList extends React.Component {
       )) : (
         <React.Fragment>
           <Typography variant="display1">
-            { 'Looks like you haven\'t loaded any simulators :( '}
+            { 'Looks like you haven\'t loaded any simulators :(' }
           </Typography>
-          <Typography variant="body1">
-            { 'You can do that by entering a URL in the field above and pressing the load button! '}
+
+          <Separator />
+
+          <Typography variant="subheading">
+            You can do that via the URL field above or by dragging an HTML file here
           </Typography>
         </React.Fragment>
       );

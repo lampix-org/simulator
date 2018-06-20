@@ -6,6 +6,10 @@ module.exports = {
     },
     coordinateConversion: {
       scaleFactor: 1
+    },
+    appSwitcher: {
+      numberOfDummyApps: 5,
+      nameToURLAssociations: {}
     }
   },
   pix: {

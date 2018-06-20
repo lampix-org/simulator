@@ -1,5 +1,6 @@
 const electron = require('electron');
 const noop = require('lodash.noop');
+const merge = require('lodash.merge');
 const path = require('path');
 const mainDisplayCenterCoords = require('../utils/mainDisplayCenterCoords');
 const {
@@ -26,13 +27,17 @@ const newWindow = ({
 } = {}) => {
   const { x, y } = mainDisplayCenterCoords(width, height);
 
-  const windowOptions = Object.assign(options, {
+  const windowOptions = merge(options, {
     width,
     height,
     x,
     y,
     icon: isDev ? lampixLogo : undefined,
-    useContentSize: true
+    useContentSize: true,
+    webPreferences: {
+      webviewTag: false,
+      nodeIntegration: false
+    }
   });
   const window = new BrowserWindow(windowOptions);
 
