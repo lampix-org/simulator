@@ -64,13 +64,17 @@ class Settings extends React.Component {
       name: '',
       url: ''
     },
-    scaleFactor: ''
+    scaleFactor: '',
+    endpoint: '',
+    token: ''
   };
 
   componentDidMount() {
     window.ipcRenderer.on(APP_CONFIG, (event, settings) => {
       this.setState({ settings });
       this.state.scaleFactor = this.state.settings.simulator.coordinateConversion.scaleFactor;
+      this.state.endpoint = this.state.settings.pix.endpoint;
+      this.state.token = this.state.settings.pix.token;
     });
   }
 
@@ -126,8 +130,19 @@ class Settings extends React.Component {
   }
 
   saveScaleFactor = () => {
-    // const { scaleFactor: value } = this.state;
     window.lampix.saveScaleFactor(this.state.scaleFactor);
+  }
+
+  updatePix = (label, event) => {
+    this.setState({
+      ...this.state,
+      [label]: event.target.value
+    });
+  }
+
+  savePix = () => {
+    const { endpoint, token } = this.state;
+    window.lampix.savePix({ endpoint, token });
   }
 
   render() {
@@ -239,6 +254,41 @@ class Settings extends React.Component {
               color="default"
               size="small"
               onClick={this.saveScaleFactor}
+            >
+              Save
+            </Button>
+          </Paper>
+
+          <Paper className={classes.paper}>
+            <Typography variant="title">
+              Set pix endpoint and token
+            </Typography>
+
+            <Separator />
+
+            <TextField
+              label="Endpoint"
+              type="text"
+              className={classes.textField}
+              margin="normal"
+              value={this.state.endpoint}
+              onChange={(e) => this.updatePix('endpoint', e)}
+            />
+
+            <TextField
+              label="Token"
+              type="text"
+              className={classes.textField}
+              margin="normal"
+              value={this.state.token}
+              onChange={(e) => this.updatePix('token', e)}
+            />
+
+            <Button
+              variant="contained"
+              color="default"
+              size="small"
+              onClick={this.savePix}
             >
               Save
             </Button>

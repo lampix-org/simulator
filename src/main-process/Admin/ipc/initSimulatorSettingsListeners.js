@@ -7,7 +7,8 @@ const {
   CHANGE_CATEGORY_SETTINGS,
   ADD_APP_NAME_URL_ASSOCIATION,
   REMOVE_APP_NAME_URL_ASSOCIATION,
-  SAVE_SCALE_FACTOR
+  SAVE_SCALE_FACTOR,
+  SAVE_PIX
 } = require('../../ipcEvents');
 const {
   SIMPLE,
@@ -87,6 +88,11 @@ function initSimulatorSettingsListeners() {
 
   ipcMain.on(SAVE_SCALE_FACTOR, (event, value) => {
     this.updateScaleFactor(value);
+    this.sendConfig();
+  });
+
+  ipcMain.on(SAVE_PIX, (event, pixObject) => {
+    this.updatePix(pixObject);
     this.sendConfig();
   });
 }

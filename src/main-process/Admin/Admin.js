@@ -165,6 +165,11 @@ class Admin {
     configStore.set('simulator.coordinateConversion.scaleFactor', value);
     this.config.simulator.coordinateConversion.scaleFactor = value;
   }
+
+  updatePix(pixObject) {
+    configStore.set('pix', pixObject);
+    this.config.pix = pixObject;
+  }
 }
 
 exports.Admin = Admin;
