@@ -6,7 +6,8 @@ const {
   SET_METADATA,
   CHANGE_CATEGORY_SETTINGS,
   ADD_APP_NAME_URL_ASSOCIATION,
-  REMOVE_APP_NAME_URL_ASSOCIATION
+  REMOVE_APP_NAME_URL_ASSOCIATION,
+  SAVE_SCALE_FACTOR
 } = require('../../ipcEvents');
 const {
   SIMPLE,
@@ -81,6 +82,11 @@ function initSimulatorSettingsListeners() {
 
   ipcMain.on(REMOVE_APP_NAME_URL_ASSOCIATION, (event, associationName) => {
     this.removeNameURLAssociation(associationName);
+    this.sendConfig();
+  });
+
+  ipcMain.on(SAVE_SCALE_FACTOR, (event, value) => {
+    this.updateScaleFactor(value);
     this.sendConfig();
   });
 }
