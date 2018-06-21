@@ -3,17 +3,18 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // Material UI
-import { withStyles } from 'material-ui/styles';
-import Snackbar from 'material-ui/Snackbar';
+import { withStyles } from '@material-ui/core/styles';
+import Snackbar from '@material-ui/core/Snackbar';
 
 // Actions
 import { queue } from '../Notifications/actions';
+import { notificationTypes } from '../Notifications/constants';
 
 const styles = (theme) => ({
   container: theme.mixins.gutters({
     paddingTop: 16,
     paddingBottom: 16,
-    minHeight: 'calc(100% - 85px)',
+    minHeight: 'calc(100% - 64px)',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -55,7 +56,7 @@ class SimulatorListContainer extends React.Component {
       const url = `file://${event.dataTransfer.files[0].path}`;
       window.lampix.loadApp(url);
     } else {
-      showMessage('HTML files only');
+      showMessage('HTML files only', notificationTypes.error);
     }
 
     this.setState({
@@ -96,7 +97,7 @@ SimulatorListContainer.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  showMessage: (message) => dispatch(queue(message))
+  showMessage: (message, variant) => dispatch(queue(message, variant))
 });
 
 SimulatorListContainer = connect(null, mapDispatchToProps)(SimulatorListContainer);

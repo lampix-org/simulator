@@ -107,7 +107,9 @@ class Simulator {
     } = this.settings.position;
     let outline = [];
 
-    if (classifier === 'paper') {
+    const paperClassifier = classifier === 'paper';
+
+    if (paperClassifier) {
       outline = paperOutline(mouseX, mouseY);
     } else {
       outline = hexagonOutline(mouseX, mouseY);
@@ -137,13 +139,15 @@ class Simulator {
             posY: mouseY
           },
           outline: {
-            points: outline
+            points: paperClassifier ?
+              outline.map((pair) => ({ posX: pair[0], posY: pair[1] })) :
+              outline
           }
         });
 
         this.browser.webContents.executeJavaScript(`onPrePositionClassifier(${i}, ${JSON.stringify(data)})`);
 
-        // TODO: Make the time of this timeout configurable
+        // TODO: Make the time of this timeout configurableeslint --fix --ignore-pattern internals/
         setTimeout(() => {
           data[data.length - 1].classTag = recognizedClass;
           this.browser.webContents
@@ -209,6 +213,18 @@ class Simulator {
 
     this.browser.webContents
       .executeJavaScript(`onTransformCoordinates(${JSON.stringify(parsedData)})`);
+  }
+
+  sendApps() {
+    // TODO: Named apps, settings task
+    const { simulator } = this.generalConfig;
+    const dummyApps = Array.from(
+      { length: simulator.appSwitcher.numberOfDummyApps },
+      (v, i) => ({ name: `App #${i}` })
+    );
+
+    this.browser.webContents
+      .executeJavaScript(`onGetApps(${JSON.stringify(dummyApps)})`);
   }
 }
 
