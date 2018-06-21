@@ -49,9 +49,8 @@ const styles = (theme) => ({
 });
 
 const scalefactorProps = {
-  step: 0.5,
-  min: 1,
-  max: 3
+  step: 0.1,
+  min: 1
 };
 
 function Transition(props) {
@@ -125,7 +124,7 @@ class Settings extends React.Component {
   updateScaleFactor = (event) => {
     this.setState({
       ...this.state,
-      scaleFactor: event.target.value,
+      scaleFactor: event.target.value.match(/[1-9]*[,.]{0,1}[1-9]{0,2}/)[0]
     });
   }
 
