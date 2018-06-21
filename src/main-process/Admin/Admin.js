@@ -160,6 +160,16 @@ class Admin {
     configStore.delete(`simulator.appSwitcher.nameToURLAssociations.${name}`);
     delete this.config.simulator.appSwitcher.nameToURLAssociations[name];
   }
+
+  updateScaleFactor(value) {
+    configStore.set('simulator.coordinateConversion.scaleFactor', value);
+    this.config.simulator.coordinateConversion.scaleFactor = value;
+  }
+
+  updatePix(pixObject) {
+    configStore.set('pix', pixObject);
+    this.config.pix = pixObject;
+  }
 }
 
 exports.Admin = Admin;

@@ -48,6 +48,11 @@ const styles = (theme) => ({
   }
 });
 
+const scalefactorProps = {
+  step: 0.1,
+  min: 1
+};
+
 function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
@@ -57,12 +62,18 @@ class Settings extends React.Component {
     association: {
       name: '',
       url: ''
-    }
+    },
+    scaleFactor: '',
+    endpoint: '',
+    token: ''
   };
 
   componentDidMount() {
     window.ipcRenderer.on(APP_CONFIG, (event, settings) => {
       this.setState({ settings });
+      this.state.scaleFactor = this.state.settings.simulator.coordinateConversion.scaleFactor;
+      this.state.endpoint = this.state.settings.pix.endpoint;
+      this.state.token = this.state.settings.pix.token;
     });
   }
 
@@ -108,6 +119,29 @@ class Settings extends React.Component {
 
   saveAssociation = (name, url) => {
     window.lampix.addAssociation(name, url);
+  }
+
+  updateScaleFactor = (event) => {
+    this.setState({
+      ...this.state,
+      scaleFactor: event.target.value.match(/[1-9]*[,.]{0,1}[1-9]{0,2}/)[0]
+    });
+  }
+
+  saveScaleFactor = () => {
+    window.lampix.saveScaleFactor(this.state.scaleFactor);
+  }
+
+  updatePix = (label, event) => {
+    this.setState({
+      ...this.state,
+      [label]: event.target.value
+    });
+  }
+
+  savePix = () => {
+    const { endpoint, token } = this.state;
+    window.lampix.savePix({ endpoint, token });
   }
 
   render() {
@@ -192,6 +226,71 @@ class Settings extends React.Component {
                 />
               ))
             }
+          </Paper>
+
+          <Paper className={classes.paper}>
+            <Typography variant="title">
+              Set the scale factor for coordinates
+            </Typography>
+            <Typography variant="subheading">
+              This allows changing the scale factor for the coordinates (x, y, width, height)
+            </Typography>
+
+            <Separator />
+
+            <TextField
+              label="Scale factor"
+              type="number"
+              className={classes.textField}
+              margin="normal"
+              value={this.state.scaleFactor}
+              onChange={this.updateScaleFactor}
+              inputProps={scalefactorProps}
+            />
+
+            <Button
+              variant="contained"
+              color="default"
+              size="small"
+              onClick={this.saveScaleFactor}
+            >
+              Save
+            </Button>
+          </Paper>
+
+          <Paper className={classes.paper}>
+            <Typography variant="title">
+              Set pix endpoint and token
+            </Typography>
+
+            <Separator />
+
+            <TextField
+              label="Endpoint"
+              type="text"
+              className={classes.textField}
+              margin="normal"
+              value={this.state.endpoint}
+              onChange={(e) => this.updatePix('endpoint', e)}
+            />
+
+            <TextField
+              label="Token"
+              type="text"
+              className={classes.textField}
+              margin="normal"
+              value={this.state.token}
+              onChange={(e) => this.updatePix('token', e)}
+            />
+
+            <Button
+              variant="contained"
+              color="default"
+              size="small"
+              onClick={this.savePix}
+            >
+              Save
+            </Button>
           </Paper>
         </div>
       </Dialog>
