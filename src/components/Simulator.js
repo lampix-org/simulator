@@ -110,13 +110,26 @@ class Simulator extends React.Component {
             rect.classifier &&
             <Typography variant="body1">Classifier: {rect.classifier}</Typography>
           }
-          <div className={`${classes.registeredAreaDiv}`}>
-            <div style={registeredAreaLocation}></div>
-          </div>
-          <Typography variant="body1">X: {rect.posX}</Typography>
+          {
+            (rect.classifier || category === MOVEMENT) &&
+            <div>
+              <Separator divider />
+              <div className={`${classes.registeredAreaDiv}`}>
+                <div style={registeredAreaLocation}></div>
+              </div>
+            </div>
+          }
+          {/* <Slide direction="up" in={checked} mountOnEnter unmountOnExit>
+            <Paper elevation={4} className={classes.paper}>
+              <svg className={classes.svg}>
+                <polygon points="0,100 50,00, 100,100" className={classes.polygon} />
+              </svg>
+            </Paper>
+          </Slide> */}
+          {/* <Typography variant="body1">X: {rect.posX}</Typography>
           <Typography variant="body1">Y: {rect.posY}</Typography>
           <Typography variant="body1">Width: {rect.width}</Typography>
-          <Typography variant="body1">Height: {rect.height}</Typography>
+          <Typography variant="body1">Height: {rect.height}</Typography> */}
         </CardContent>
       </Card>
     );
