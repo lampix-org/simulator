@@ -39,8 +39,11 @@ class Admin {
     );
   }
 
-  async loadApp(url) {
-    console.log(`Admin.loadApp called with URL: ${url}`);
+  async loadApp(urlOrName) {
+    console.log(`Admin.loadApp called with URL / App Name: ${urlOrName}`);
+    const associations = this.config.simulator.appSwitcher.nameToURLAssociations;
+    const alias = (urlOrName in associations) ? urlOrName : null;
+    const url = associations[alias] || urlOrName;
 
     if (this.simulators[url]) {
       return;
@@ -77,8 +80,7 @@ class Admin {
 
     console.log(`Loading app at ${url}`);
     this.simulators[url].browser.loadURL(`${url}?url=${url}`, options);
-
-    this.updateURLListOrder(url);
+    this.updateURLListOrder(alias || url);
     this.sendSimulators();
     this.updateRendererURLs();
   }
