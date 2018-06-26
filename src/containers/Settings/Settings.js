@@ -1,6 +1,7 @@
 // React
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 // Material UI
 import { withStyles } from '@material-ui/core/styles';
@@ -27,6 +28,10 @@ import AppNameURLAssociation from './AppNameURLAssociation';
 import {
   APP_CONFIG
 } from '../../main-process/ipcEvents';
+
+// Actions
+import { queue } from '../Notifications/actions';
+import { notificationTypes } from '../Notifications/constants';
 
 const styles = (theme) => ({
   container: theme.mixins.gutters({
@@ -93,22 +98,12 @@ class Settings extends React.Component {
     });
   }
 
-  updateNewAssociationName = (event) => {
+  updateNewAssociation = (event, type) => {
     this.setState({
       ...this.state,
       association: {
-        url: this.state.association.url,
-        name: event.target.value
-      }
-    });
-  }
-
-  updateNewAssociationURL = (event) => {
-    this.setState({
-      ...this.state,
-      association: {
-        url: event.target.value,
-        name: this.state.association.name
+        url: type === 'url' ? event.target.value : this.state.association.url,
+        name: type === 'name' ? event.target.value : this.state.association.name
       }
     });
   }
@@ -142,6 +137,21 @@ class Settings extends React.Component {
   savePix = () => {
     const { endpoint, token } = this.state;
     window.lampix.savePix({ endpoint, token });
+  }
+
+  areSettingsValid = (settings) => settings.findIndex(element => element === '') === -1
+
+  saveSettings = (event, callback, message, settings) => {
+    const { showMessage } = this.props;
+    if ((event.key === 'Enter' || !event.key)) {
+      if (this.areSettingsValid(settings)) {
+        event.preventDefault();
+        callback.call(this);
+        showMessage(`${message} saved`, notificationTypes.success);
+      } else {
+        showMessage(`${message} cannot be empty`, notificationTypes.error);
+      }
+    }
   }
 
   render() {
@@ -193,7 +203,13 @@ class Settings extends React.Component {
               type="text"
               className={classes.textField}
               margin="normal"
-              onChange={this.updateNewAssociationName}
+              onChange={(e) => this.updateNewAssociation(e, 'name')}
+              onKeyPress={
+                (e) => this.saveSettings(
+                  e, this.addNewAssociation, 'Name and URL',
+                  [this.state.association.name, this.state.association.url]
+               )
+              }
               value={this.state.association.name}
             />
 
@@ -202,7 +218,13 @@ class Settings extends React.Component {
               type="text"
               className={classes.textField}
               margin="normal"
-              onChange={this.updateNewAssociationURL}
+              onChange={(e) => this.updateNewAssociation(e, 'url')}
+              onKeyPress={
+                (e) => this.saveSettings(
+                  e, this.addNewAssociation, 'Name and URL',
+                  [this.state.association.name, this.state.association.url]
+               )
+              }
               value={this.state.association.url}
             />
 
@@ -210,7 +232,12 @@ class Settings extends React.Component {
               variant="contained"
               color="default"
               size="small"
-              onClick={this.addNewAssociation}
+              onClick={
+                (e) => this.saveSettings(
+                  e, this.addNewAssociation, 'Name and URL',
+                  [this.state.association.name, this.state.association.url]
+               )
+              }
             >
               Add
             </Button>
@@ -246,13 +273,14 @@ class Settings extends React.Component {
               value={this.state.scaleFactor}
               onChange={this.updateScaleFactor}
               inputProps={scalefactorProps}
+              onKeyPress={(e) => this.saveSettings(e, this.saveScaleFactor, 'Scale factor', [this.state.scaleFactor])}
             />
 
             <Button
               variant="contained"
               color="default"
               size="small"
-              onClick={this.saveScaleFactor}
+              onClick={(e) => this.saveSettings(e, this.saveScaleFactor, 'Scale factor', [this.state.scaleFactor])}
             >
               Save
             </Button>
@@ -272,6 +300,12 @@ class Settings extends React.Component {
               margin="normal"
               value={this.state.endpoint}
               onChange={(e) => this.updatePix('endpoint', e)}
+              onKeyPress={
+                (e) => this.saveSettings(
+                  e, this.savePix, 'Pix endpoint and token',
+                  [this.state.endpoint, this.state.token]
+                )
+              }
             />
 
             <TextField
@@ -281,13 +315,24 @@ class Settings extends React.Component {
               margin="normal"
               value={this.state.token}
               onChange={(e) => this.updatePix('token', e)}
+              onKeyPress={
+                (e) => this.saveSettings(
+                  e, this.savePix, 'Pix endpoint and token',
+                  [this.state.endpoint, this.state.token]
+                )
+              }
             />
 
             <Button
               variant="contained"
               color="default"
               size="small"
-              onClick={this.savePix}
+              onClick={
+                (e) => this.saveSettings(
+                  e, this.savePix, 'Pix endpoint and token',
+                  [this.state.endpoint, this.state.token]
+                )
+              }
             >
               Save
             </Button>
@@ -306,7 +351,14 @@ Settings.propTypes = {
     textField: PropTypes.string
   }).isRequired,
   open: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func.isRequired
+  handleClose: PropTypes.func.isRequired,
+  showMessage: PropTypes.func.isRequired
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  showMessage: (message, variant) => dispatch(queue(message, variant))
+});
+
+Settings = connect(null, mapDispatchToProps)(Settings);
 
 export default withStyles(styles)(Settings);
