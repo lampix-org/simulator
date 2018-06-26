@@ -2,7 +2,12 @@ const { LOG_INFO } = require('../ipcEvents');
 
 const log = (rendererLevel, message) => {
   window.ipcRenderer.send(LOG_INFO, { rendererLevel, message });
+  console.log(`date obj ${new Date()}`);
 };
+
+// const formatMessage(rendererLevel, message) {
+
+// }
 
 module.exports = {
   // Logger: {
