@@ -27,7 +27,6 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import Slide from '@material-ui/core/Slide';
 
 // Custom components
 import Separator from './Separator';
@@ -50,8 +49,17 @@ const styles = () => ({
     display: 'flex',
     flexWrap: 'wrap',
   },
+  slider: {
+    maxHeight: 0,
+    transition: 'max-height 0.15s ease-out',
+    overflow: 'hidden'
+  },
   registeredArea: {
-    margin: 10
+    margin: 10,
+    '&:hover $slider': {
+      maxHeight: 500,
+      transition: 'max-height 0.25s ease-in',
+    },
   },
   expansionPanelDetails: {
     flexDirection: 'column'
@@ -77,14 +85,6 @@ const styles = () => ({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative'
-  },
-  slider: {
-    display: 'hidden',
-    transition: 'transform 200ms ease',
-    '&:hover': {
-      display: 'visible',
-      transform: 'scale(1.05)'
-    }
   }
 });
 
@@ -122,30 +122,13 @@ class Simulator extends React.Component {
       top: registeredAreaLocationTop
     };
 
-    let showDiv = true;
-
-    console.log('registeredAreaLocation ', registeredAreaLocation);
-
-    const mouseEnter = () => {
-      console.log('entered');
-      showDiv = true;
-      console.log('showDiv ', showDiv);
-      this.forceUpdate();
-    };
-    const mouseExit = () => {
-      console.log('exited');
-      showDiv = false;
-      console.log('showDiv ', showDiv);
-      this.forceUpdate();
-    };
-
     return (
       <Card
         key={`${rect.posX}/${rect.posY}`}
         className={`${classes.registeredArea} ${classes.clickableCard}`}
         onClick={() => handleRegisteredAreaClick(url, category, rect.classifier)}
       >
-        <CardContent onMouseEnter={mouseEnter} onMouseLeave={mouseExit}>
+        <CardContent >
           {
             rect.classifier &&
             <Typography variant="body1">Classifier: {rect.classifier}</Typography>
@@ -162,12 +145,12 @@ class Simulator extends React.Component {
 
             </div>
           }
-          <Slide direction="up" in={showDiv} >
+          <div className={`${classes.slider}`} >
             <Typography variant="body1">X: {rect.posX}</Typography>
-            {/* <Typography variant="body1">Y: {rect.posY}</Typography>
+            <Typography variant="body1">Y: {rect.posY}</Typography>
             <Typography variant="body1">Width: {rect.width}</Typography>
-            <Typography variant="body1">Height: {rect.height}</Typography> */}
-          </Slide>
+            <Typography variant="body1">Height: {rect.height}</Typography>
+          </div>
         </CardContent>
       </Card>
 
