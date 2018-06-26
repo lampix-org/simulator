@@ -10,7 +10,9 @@ const {
   OPEN_DEV_TOOLS,
   CHANGE_CATEGORY_SETTINGS,
   ADD_APP_NAME_URL_ASSOCIATION,
-  REMOVE_APP_NAME_URL_ASSOCIATION
+  REMOVE_APP_NAME_URL_ASSOCIATION,
+  SAVE_SCALE_FACTOR,
+  SAVE_PIX
 } = require('../ipcEvents');
 
 window.Logger = require('../Logger');
@@ -47,5 +49,7 @@ window.lampix = {
     name,
     url
   }),
-  removeAssociation: (name) => ipcRenderer.send(REMOVE_APP_NAME_URL_ASSOCIATION, name)
+  removeAssociation: (name) => ipcRenderer.send(REMOVE_APP_NAME_URL_ASSOCIATION, name),
+  saveScaleFactor: (value) => ipcRenderer.send(SAVE_SCALE_FACTOR, value),
+  savePix: (object) => ipcRenderer.send(SAVE_PIX, object),
 };

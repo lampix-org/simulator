@@ -40,8 +40,11 @@ class Admin {
     );
   }
 
-  async loadApp(url) {
-    Logger.info(`Admin.loadApp called with URL: ${url}`);
+  async loadApp(urlOrName) {
+    Logger.info(`Admin.loadApp called with URL / App Name: ${urlOrName}`);
+    const associations = this.config.simulator.appSwitcher.nameToURLAssociations;
+    const alias = (urlOrName in associations) ? urlOrName : null;
+    const url = associations[alias] || urlOrName;
 
     if (this.simulators[url]) {
       return;
@@ -78,8 +81,7 @@ class Admin {
 
     Logger.info(`Loading app at ${url}`);
     this.simulators[url].browser.loadURL(`${url}?url=${url}`, options);
-
-    this.updateURLListOrder(url);
+    this.updateURLListOrder(alias || url);
     this.sendSimulators();
     this.updateRendererURLs();
   }
@@ -157,6 +159,16 @@ class Admin {
   removeNameURLAssociation(name) {
     configStore.delete(`simulator.appSwitcher.nameToURLAssociations.${name}`);
     delete this.config.simulator.appSwitcher.nameToURLAssociations[name];
+  }
+
+  updateScaleFactor(value) {
+    configStore.set('simulator.coordinateConversion.scaleFactor', value);
+    this.config.simulator.coordinateConversion.scaleFactor = value;
+  }
+
+  updatePix(pixObject) {
+    configStore.set('pix', pixObject);
+    this.config.pix = pixObject;
   }
 }
 

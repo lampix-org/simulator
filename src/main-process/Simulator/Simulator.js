@@ -188,21 +188,19 @@ class Simulator {
   }
 
   sendLampixInfo() {
-    const { pix } = this.generalConfig;
+    const pix = configStore.get('pix');
     const info = {
       version: '0.1',
       id: this.id,
       isSimulator: true,
       pix
     };
-
     this.browser.webContents
       .executeJavaScript(`onLampixInfo(${JSON.stringify(info)})`);
   }
 
   transformCoordinates(rectangles = []) {
     const parsedData = parseIfString(rectangles);
-
     const { simulator } = this.generalConfig;
 
     parsedData.forEach((rect) => {
