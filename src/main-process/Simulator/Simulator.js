@@ -186,7 +186,7 @@ class Simulator {
   }
 
   sendLampixInfo() {
-    const { pix } = this.generalConfig;
+    const pix = configStore.get('pix');
     const info = {
       version: '0.1',
       id: this.id,
