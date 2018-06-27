@@ -1,6 +1,6 @@
 const net = require('net');
 const { spawn } = require('child_process');
-const { seekAvailablePort } = require('./seekAvailablePort');
+const getPort = require('get-port');
 
 const spawnOptions = {
   stdio: 'inherit',
@@ -30,7 +30,7 @@ const tryConnectingToRenderer = (port) => {
 };
 
 const start = () => {
-  seekAvailablePort(startRendererPort).then((port) => {
+  getPort({ port: startRendererPort }).then((port) => {
     client.on('error', () => {
       setTimeout(() => tryConnectingToRenderer(port), 1000);
     });
@@ -42,7 +42,7 @@ const start = () => {
       env
     });
 
-    tryConnectingToRenderer();
+    tryConnectingToRenderer(port);
   });
 };
 
