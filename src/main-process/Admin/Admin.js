@@ -21,6 +21,9 @@ const {
 
 const logSimulatorNotFound = (url) => Logger.info(`Simulator for ${url} not found. Doing nothing.`);
 
+let simulatorPosition = 30;
+const simulatorPositionStep = 15;
+
 class Admin {
   constructor() {
     this.storedURLs = new Set(store.get('urls') || []);
@@ -64,6 +67,7 @@ class Admin {
     const onClosed = () => {
       delete this.simulators[url];
       this.sendSimulators();
+      simulatorPosition -= simulatorPositionStep;
     };
 
     const updateAdminUI = sendSettingsBack.bind(
@@ -80,6 +84,8 @@ class Admin {
     const options = process.env.NODE_ENV === 'development' ? { extraHeaders: 'pragma: no-cache\n' } : {};
 
     Logger.info(`Loading app at ${url}`);
+    simulatorPosition += simulatorPositionStep;
+    this.simulators[url].browser.setPosition(simulatorPosition, simulatorPosition, true);
     this.simulators[url].browser.loadURL(`${url}?url=${url}`, options);
     this.updateURLListOrder(alias || url);
     this.sendSimulators();
