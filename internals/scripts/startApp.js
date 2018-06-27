@@ -9,7 +9,6 @@ const spawnOptions = {
 
 const env = Object.create(process.env);
 
-const startRendererPort = +process.env.PORT || 3000;
 const client = new net.Socket();
 let electronStarted = false;
 
@@ -30,7 +29,7 @@ const tryConnectingToRenderer = (port) => {
 };
 
 const start = () => {
-  getPort({ port: startRendererPort }).then((port) => {
+  getPort().then((port) => {
     client.on('error', () => {
       setTimeout(() => tryConnectingToRenderer(port), 1000);
     });
