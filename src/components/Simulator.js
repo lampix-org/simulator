@@ -56,6 +56,8 @@ const styles = () => ({
   },
   registeredArea: {
     margin: 10,
+  },
+  sliderParent: {
     '&:hover $slider': {
       maxHeight: 500,
       transition: 'max-height 0.25s ease-in',
@@ -131,25 +133,28 @@ class Simulator extends React.Component {
         <CardContent >
           {
             rect.classifier &&
-            <Typography variant="body1">Classifier: {rect.classifier}</Typography>
+            <div>
+              <Typography variant="body1">Classifier: {rect.classifier}</Typography>
+              <Separator divider />
+            </div>
           }
           {
             (rect.classifier || category === MOVEMENT) &&
             <div>
-              <Separator divider />
               <div className={`${classes.registeredAreaParent}`}>
                 <div className={`${classes.registeredAreaDiv}`}>
                   <div style={registeredAreaLocation}></div>
                 </div>
               </div>
-
             </div>
           }
-          <div className={`${classes.slider}`} >
-            <Typography variant="body1">X: {rect.posX}</Typography>
-            <Typography variant="body1">Y: {rect.posY}</Typography>
-            <Typography variant="body1">Width: {rect.width}</Typography>
-            <Typography variant="body1">Height: {rect.height}</Typography>
+          <div className={`${classes.sliderParent}`} >
+            <div className={`${classes.slider}`} >
+              <Typography variant="body1">X: {rect.posX}</Typography>
+              <Typography variant="body1">Y: {rect.posY}</Typography>
+              <Typography variant="body1">Width: {rect.width}</Typography>
+              <Typography variant="body1">Height: {rect.height}</Typography>
+            </div>
           </div>
         </CardContent>
       </Card>
