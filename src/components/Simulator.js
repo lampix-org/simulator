@@ -37,13 +37,30 @@ import {
   MOVEMENT
 } from '../common/constants';
 
+const {
+  DEFAULT_WINDOW_WIDTH,
+  DEFAULT_WINDOW_HEIGHT
+} = require('../main-process/constants');
+
+const DEFAULT_DISPLAY_SIZE = 5;
+
 const styles = () => ({
   registeredAreaContainer: {
     display: 'flex',
     flexWrap: 'wrap',
+    alignItems: 'flex-start'
+  },
+  slider: {
+    maxHeight: 0,
+    transition: 'max-height 0.15s ease-out',
+    overflow: 'hidden'
   },
   registeredArea: {
-    margin: 10
+    margin: 10,
+    '&:hover $slider': {
+      maxHeight: 500,
+      transition: 'max-height 0.25s ease-in',
+    },
   },
   expansionPanelDetails: {
     flexDirection: 'column'
@@ -54,6 +71,21 @@ const styles = () => ({
     '&:hover': {
       transform: 'scale(1.05)'
     }
+  },
+  registeredAreaDiv: {
+    backgroundColor: 'black',
+    position: 'relative',
+    height: '5vh',
+    width: '5vw',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  registeredAreaParent: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative'
   }
 });
 
@@ -69,23 +101,61 @@ class Simulator extends React.Component {
   renderRegisteredArea = (rect, category) => {
     const { handleRegisteredAreaClick, url, classes } = this.props;
 
+    const divHeightConvertedToPx = (window.innerHeight * DEFAULT_DISPLAY_SIZE) / 100;
+    const divWidthConvertedToPx = (window.innerWidth * DEFAULT_DISPLAY_SIZE) / 100;
+
+    const widthScaleDownFactor = Math.round(DEFAULT_WINDOW_WIDTH / divWidthConvertedToPx);
+    const heightScaleDownFactor = Math.round(DEFAULT_WINDOW_HEIGHT / divHeightConvertedToPx);
+    const registeredAreaLocationWidth = rect.width > 0 ?
+      Math.round(rect.width / widthScaleDownFactor) : DEFAULT_DISPLAY_SIZE;
+    const registeredAreaLocationHeight = rect.height > 0 ?
+      Math.round(rect.height / heightScaleDownFactor) : DEFAULT_DISPLAY_SIZE;
+    const registeredAreaLocationLeft = rect.posX > 0 ?
+      Math.round(rect.posX / widthScaleDownFactor) : 0;
+    const registeredAreaLocationTop = rect.posY > 0 ? Math.round(rect.posY / heightScaleDownFactor) : 0;
+
+    const registeredAreaLocation = {
+      backgroundColor: 'white',
+      position: 'absolute',
+      width: registeredAreaLocationWidth,
+      height: registeredAreaLocationHeight,
+      left: registeredAreaLocationLeft,
+      top: registeredAreaLocationTop
+    };
+
     return (
       <Card
         key={`${rect.posX}/${rect.posY}`}
         className={`${classes.registeredArea} ${classes.clickableCard}`}
         onClick={() => handleRegisteredAreaClick(url, category, rect.classifier)}
       >
-        <CardContent>
-          <Typography variant="body1">X: {rect.posX}</Typography>
-          <Typography variant="body1">Y: {rect.posY}</Typography>
-          <Typography variant="body1">Width: {rect.width}</Typography>
-          <Typography variant="body1">Height: {rect.height}</Typography>
+        <CardContent >
           {
             rect.classifier &&
-            <Typography variant="body1">Classifier: {rect.classifier}</Typography>
+            <div>
+              <Typography variant="body1">Classifier: {rect.classifier}</Typography>
+              <Separator divider />
+            </div>
           }
+          {
+            (rect.classifier || category === MOVEMENT) &&
+            <div>
+              <div className={`${classes.registeredAreaParent}`}>
+                <div className={`${classes.registeredAreaDiv}`}>
+                  <div style={registeredAreaLocation}></div>
+                </div>
+              </div>
+            </div>
+          }
+          <div className={`${classes.slider}`} >
+            <Typography variant="body1">X: {rect.posX}</Typography>
+            <Typography variant="body1">Y: {rect.posY}</Typography>
+            <Typography variant="body1">Width: {rect.width}</Typography>
+            <Typography variant="body1">Height: {rect.height}</Typography>
+          </div>
         </CardContent>
       </Card>
+
     );
   };
 
