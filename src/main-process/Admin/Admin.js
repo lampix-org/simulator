@@ -52,7 +52,11 @@ class Admin {
       return;
     }
 
-    const { success, error } = await checkURL(url);
+    const {
+      success,
+      error,
+      url: checkedURL
+    } = await checkURL(url);
 
     if (!success) {
       console.log(`URL check failed with message: ${error}`);
@@ -64,7 +68,7 @@ class Admin {
     console.log('Creating new simulator...');
 
     const onClosed = () => {
-      delete this.simulators[url];
+      delete this.simulators[checkedURL];
       this.sendSimulators();
       simulatorPosition -= simulatorPositionStep;
     };
@@ -72,20 +76,20 @@ class Admin {
     const updateAdminUI = sendSettingsBack.bind(
       null,
       this.browser.webContents,
-      url
+      checkedURL
     );
 
-    this.simulators[url] = new Simulator(url, {
+    this.simulators[checkedURL] = new Simulator(checkedURL, {
       onClosed,
       updateAdminUI
     });
 
     const options = process.env.NODE_ENV === 'development' ? { extraHeaders: 'pragma: no-cache\n' } : {};
 
-    console.log(`Loading app at ${url}`);
+    console.log(`Loading app at ${checkedURL}`);
     simulatorPosition += simulatorPositionStep;
-    this.simulators[url].browser.setPosition(simulatorPosition, simulatorPosition, true);
-    this.simulators[url].browser.loadURL(`${url}?url=${url}`, options);
+    this.simulators[checkedURL].browser.setPosition(simulatorPosition, simulatorPosition, true);
+    this.simulators[checkedURL].browser.loadURL(`${checkedURL}?url=${checkedURL}`, options);
     this.updateURLListOrder(alias || url);
     this.sendSimulators();
     this.updateRendererURLs();
