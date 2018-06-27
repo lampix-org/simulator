@@ -48,6 +48,7 @@ const styles = () => ({
   registeredAreaContainer: {
     display: 'flex',
     flexWrap: 'wrap',
+    alignItems: 'flex-start'
   },
   slider: {
     maxHeight: 0,
@@ -56,8 +57,6 @@ const styles = () => ({
   },
   registeredArea: {
     margin: 10,
-  },
-  sliderParent: {
     '&:hover $slider': {
       maxHeight: 500,
       transition: 'max-height 0.25s ease-in',
@@ -148,13 +147,11 @@ class Simulator extends React.Component {
               </div>
             </div>
           }
-          <div className={`${classes.sliderParent}`} >
-            <div className={`${classes.slider}`} >
-              <Typography variant="body1">X: {rect.posX}</Typography>
-              <Typography variant="body1">Y: {rect.posY}</Typography>
-              <Typography variant="body1">Width: {rect.width}</Typography>
-              <Typography variant="body1">Height: {rect.height}</Typography>
-            </div>
+          <div className={`${classes.slider}`} >
+            <Typography variant="body1">X: {rect.posX}</Typography>
+            <Typography variant="body1">Y: {rect.posY}</Typography>
+            <Typography variant="body1">Width: {rect.width}</Typography>
+            <Typography variant="body1">Height: {rect.height}</Typography>
           </div>
         </CardContent>
       </Card>
