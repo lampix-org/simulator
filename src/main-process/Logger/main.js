@@ -3,17 +3,19 @@ const { configStore } = require('../config');
 
 const { ipcMain } = require('electron');
 
+console.log('ipcMain ', ipcMain);
+
 const { LOG_INFO } = require('../ipcEvents');
 
-const Scarlet = require('scarlet');
+// const Scarlet = require('scarlet');
 
-const scarlet = Scarlet();
+// const scarlet = Scarlet();
 
-winston.log = scarlet.intercept(winston.log).using((invocation, proceed) => {
-  // ipcRenderer.send
-  // console.log('invocation ', invocation);
-  proceed();
-}).proxy();
+// winston.log = scarlet.intercept(winston.log).using((invocation, proceed) => {
+//   const { level, message, renderer } = invocation.args;
+//   ipcRenderer.send(LOG_TO_CONSOLE, { level, message, renderer });
+//   proceed();
+// }).proxy();
 
 const {
   combine,

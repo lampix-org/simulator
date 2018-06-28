@@ -36,3 +36,4 @@ exports.SWITCH_TO_APP = 'lx-simulator/IPC/SWITCH_TO_APP';
 
 // Logger action
 exports.LOG_INFO = 'lx-simulator/IPC/LOG_INFO';
+exports.LOG_TO_CONSOLE = 'lx-simulator/IPC/LOG_TO_CONSOLE';
