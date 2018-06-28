@@ -1,14 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 // Material UI
 import { withStyles } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
-
-// Actions
-import { queue } from '../Notifications/actions';
-import { notificationTypes } from '../Notifications/constants';
 
 const styles = (theme) => ({
   container: theme.mixins.gutters({
@@ -48,16 +43,10 @@ class SimulatorListContainer extends React.Component {
   }
 
   handleDrop = (event) => {
-    const { showMessage } = this.props;
     const { path } = event.dataTransfer.files[0];
-    const htmlFile = path.slice(-5) === '.html';
 
-    if (htmlFile) {
-      const url = `file://${event.dataTransfer.files[0].path}`;
-      window.lampix.loadApp(url);
-    } else {
-      showMessage('HTML files only', notificationTypes.error);
-    }
+    const url = `file://${path}`;
+    window.lampix.loadApp(url);
 
     this.setState({
       dragging: false
@@ -92,14 +81,7 @@ SimulatorListContainer.propTypes = {
   classes: PropTypes.shape({
     container: PropTypes.string
   }).isRequired,
-  children: PropTypes.node.isRequired,
-  showMessage: PropTypes.func.isRequired
+  children: PropTypes.node.isRequired
 };
-
-const mapDispatchToProps = (dispatch) => ({
-  showMessage: (message, variant) => dispatch(queue(message, variant))
-});
-
-SimulatorListContainer = connect(null, mapDispatchToProps)(SimulatorListContainer);
 
 export default withStyles(styles)(SimulatorListContainer);
