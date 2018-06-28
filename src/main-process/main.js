@@ -2,7 +2,7 @@
 const { app, Menu } = require('electron');
 const url = require('url');
 const path = require('path');
-const { isDev, isDebuggingProd } = require('./utils/envCheck');
+const { isDev, isProd, isDebuggingProd } = require('./utils/envCheck');
 const { enableUpdates } = require('./enableUpdates');
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -33,7 +33,7 @@ async function createWindow() {
     slashes: true
   });
 
-  if (process.platform === 'darwin' && process.env.NODE_ENV === 'production') {
+  if (process.platform === 'darwin' && isProd) {
     const menuTemplate = [
       {
         label: 'Edit',
