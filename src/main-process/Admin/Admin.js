@@ -175,8 +175,9 @@ class Admin {
   }
 
   updateScaleFactor(value) {
-    configStore.set('simulator.coordinateConversion.scaleFactor', value);
-    this.config.simulator.coordinateConversion.scaleFactor = value;
+    const parsedValue = parseFloat(value);
+    configStore.set('simulator.coordinateConversion.scaleFactor', parsedValue);
+    this.config.simulator.coordinateConversion.scaleFactor = parsedValue;
   }
 
   updatePix(pixObject) {
