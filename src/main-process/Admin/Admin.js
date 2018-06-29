@@ -17,6 +17,8 @@ const {
   ERROR,
   APP_CONFIG
 } = require('../ipcEvents');
+const defaults = require('../config/defaults.js');
+const merge = require('lodash.merge');
 
 const logSimulatorNotFound = (url) => console.log(`Simulator for ${url} not found. Doing nothing.`);
 
@@ -26,7 +28,7 @@ const simulatorPositionStep = 15;
 class Admin {
   constructor() {
     this.storedURLs = new Set(store.get('urls') || []);
-    this.config = configStore.store;
+    this.config = merge(configStore.store, defaults);
     this.simulators = {};
     this.browser = createAdminBrowser(() => {
       this.browser = null;
