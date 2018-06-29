@@ -35,6 +35,7 @@ class Admin {
     handleAdminUIReady.call(
       this,
       this.updateRendererURLs,
+      this.sendSimulators,
       initSimulatorSettingsListeners,
       initAppManagementListeners,
       initSimulatorClientEventListeners,
