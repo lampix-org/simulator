@@ -33,7 +33,7 @@ async function createWindow() {
     slashes: true
   });
 
-  if (process.platform === 'darwin' && isProd) {
+  if (isProd) {
     const menuTemplate = [
       {
         label: 'Edit',
@@ -45,6 +45,20 @@ async function createWindow() {
           { role: 'copy' },
           { role: 'paste' },
           { role: 'selectall' }
+        ]
+      },
+      {
+        label: 'View',
+        submenu: [
+          { role: 'reload' },
+          { role: 'forcereload' },
+          { role: 'toggledevtools' }
+        ]
+      },
+      {
+        role: 'window',
+        submenu: [
+          { role: 'close' }
         ]
       }
     ];
