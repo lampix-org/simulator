@@ -20,7 +20,6 @@ const {
   timestampFormat,
   maxsize,
   maxfiles,
-  filename
 } = logger;
 const { logLevel } = configStore.store;
 
@@ -56,7 +55,7 @@ class Logger {
         logFormat
       ),
       transports: [new winston.transports.File({
-        filename,
+        filename: 'lampix-simulator.log',
         maxsize,
         maxfiles
       })]
