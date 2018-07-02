@@ -1,6 +1,10 @@
 
+const { Logger } = require('./main');
+
 if (process.type && process.type === 'browser') {
-  module.exports = require('./main');
+  const log = new Logger();
+  module.exports.Logger = log;
+  // module.exports = require('./main');
 } else {
   module.exports = require('./renderer');
 }

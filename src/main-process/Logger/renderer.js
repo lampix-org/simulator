@@ -4,7 +4,6 @@ const { LOG_INFO, LOG_TO_CONSOLE } = require('../ipcEvents');
 
 const log = (rendererLevel, message) => {
   ipcRenderer.send(LOG_INFO, { rendererLevel, message });
-  console.log(`date obj ${new Date()}`);
   console.log(formatMessage(null, null));
 };
 
