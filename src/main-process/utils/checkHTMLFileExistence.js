@@ -25,7 +25,7 @@ const checkHTMLFileExistence = (url) => new Promise((resolve, reject) => {
 
     // Assume directory was dropped instead of file, check for index.html existence
     assumedURL = new URL(`${url}/index.html`);
-    fileOkay = fs.existsSync(assumedURL.pathname);
+    fileOkay = fs.existsSync(assumedURL);
   }
 
   if (!pathExists) {
@@ -35,7 +35,7 @@ const checkHTMLFileExistence = (url) => new Promise((resolve, reject) => {
 
   if (fileOkay) {
     Logger.info('Specified path okay. Attempting to load local HTML file...');
-    resolve(assumedURL.href);
+    resolve(assumedURL);
   } else {
     reject(new Error(errorMessage));
   }
