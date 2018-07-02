@@ -6,3 +6,4 @@ exports.DEFAULT_CLASSES = [
   ...(range(0, 10)).map((n) => n.toString()),
   ...(range(100, 110)).map((n) => n.toString())
 ];
+

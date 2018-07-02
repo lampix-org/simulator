@@ -29,6 +29,11 @@ exports.REGISTER_MOVEMENT = 'lx-simulator/IPC/REGISTER_MOVEMENT';
 exports.REGISTER_SIMPLE = 'lx-simulator/IPC/REGISTER_SIMPLE';
 exports.REGISTER_POSITION = 'lx-simulator/IPC/REGISTER_POSITION';
 exports.TRANSFORM_COORDINATES = 'lx-simulator/IPC/TRANSFORM_COORDINATES';
+exports.CHANGE_CATEGORY_SETTINGS = 'lx-simulator/IPC/CHANGE_CATEGORY_SETTINGS';
 exports.GET_LAMPIX_INFO = 'lx/simulator/IPC/GET_LAMPIX_INFO';
 exports.GET_APPS = 'lx-simulator/IPC/GET_APPS';
 exports.SWITCH_TO_APP = 'lx-simulator/IPC/SWITCH_TO_APP';
+
+// Logger action
+exports.LOG_INFO = 'lx-simulator/IPC/LOG_INFO';
+exports.LOG_TO_CONSOLE = 'lx-simulator/IPC/LOG_TO_CONSOLE';

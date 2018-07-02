@@ -17,6 +17,8 @@ const { isDev } = require('../utils/envCheck');
 const pluckUniqueClassifiersFromArray = (data) => [...new Set(data.map((rect) => rect.classifier))];
 const preloadName = isDev ? 'preload.js' : 'preload-simulator.js';
 
+const { Logger } = require('../Logger');
+
 class Simulator {
   constructor(url, {
     onClosed = noop,
@@ -85,20 +87,20 @@ class Simulator {
   }
 
   handleSimpleClassifier(mouseX, mouseY) {
-    console.log(`Handling click / simple classification at x: ${mouseX}, y: ${mouseY}`);
+    Logger.verbose(`Handling click / simple classification at x: ${mouseX}, y: ${mouseY}`);
 
     this.registeredData.simple.rectangles.forEach((rectangle, i) => {
       const { classifier, recognizedClass, metadata } = this.settings.simple;
 
       if (rectangle.classifier === classifier && pointInRectangle(rectangle, mouseX, mouseY)) {
-        console.log('Point in rectangle, calling onSimpleClassifier in the browser window');
+        Logger.verbose('Point in rectangle, calling onSimpleClassifier in the browser window');
         this.browser.webContents.executeJavaScript(`onSimpleClassifier(${i}, '${recognizedClass}', '${metadata}')`);
       }
     });
   }
 
   handlePositionClassifier(mouseX, mouseY) {
-    console.log(`Handling right click / position classification at x: ${mouseX}, y: ${mouseY}`);
+    Logger.verbose(`Handling right click / position classification at x: ${mouseX}, y: ${mouseY}`);
 
     const {
       classifier,
@@ -126,7 +128,7 @@ class Simulator {
       const data = [];
 
       if (outlineInRectangle(outline, rectangle)) {
-        console.log('Outline in rectangle, calling onPrePositionClassifier, then onPositionClassifier in the browser window'); // eslint-disable-line
+        Logger.verbose('Outline in rectangle, calling onPrePositionClassifier, then onPositionClassifier in the browser window'); // eslint-disable-line
 
         /**
          * The preposition callback doesn't have the classTag attribute because

@@ -3,6 +3,7 @@ const { createAdminBrowser } = require('./createAdminBrowser');
 const { store } = require('../store');
 const { configStore } = require('../config');
 const { checkURL } = require('./checkURL');
+const { Logger } = require('../Logger');
 const {
   initSimulatorSettingsListeners,
   initAppManagementListeners,
@@ -18,7 +19,7 @@ const {
   APP_CONFIG
 } = require('../ipcEvents');
 
-const logSimulatorNotFound = (url) => console.log(`Simulator for ${url} not found. Doing nothing.`);
+const logSimulatorNotFound = (url) => Logger.info(`Simulator for ${url} not found. Doing nothing.`);
 
 let simulatorPosition = 30;
 const simulatorPositionStep = 15;
@@ -44,7 +45,7 @@ class Admin {
   }
 
   async loadApp(urlOrName) {
-    console.log(`Admin.loadApp called with URL / App Name: ${urlOrName}`);
+    Logger.info(`Admin.loadApp called with URL / App Name: ${urlOrName}`);
     const associations = this.config.simulator.appSwitcher.nameToURLAssociations;
     const alias = (urlOrName in associations) ? urlOrName : null;
     const url = associations[alias] || urlOrName;
@@ -60,20 +61,19 @@ class Admin {
     } = await checkURL(url);
 
     if (!success) {
-      console.log(`URL check failed with message: ${error}`);
-      console.log('Aborting app loading...');
+      Logger.error(`URL check failed with message: ${error}`);
+      Logger.error('Aborting app loading...');
       this.browser.webContents.send(ERROR, error);
       return;
     }
 
-    console.log('Creating new simulator...');
+    Logger.info('Creating new simulator...');
 
     const onClosed = () => {
       delete this.simulators[checkedURL];
       this.sendSimulators();
       simulatorPosition -= simulatorPositionStep;
     };
-
     const updateAdminUI = sendSettingsBack.bind(
       null,
       this.browser.webContents,
@@ -87,7 +87,7 @@ class Admin {
 
     const options = process.env.NODE_ENV === 'development' ? { extraHeaders: 'pragma: no-cache\n' } : {};
 
-    console.log(`Loading app at ${checkedURL}`);
+    Logger.info(`Loading app at ${checkedURL}`);
     simulatorPosition += simulatorPositionStep;
     this.simulators[checkedURL].browser.setPosition(simulatorPosition, simulatorPosition, true);
     this.simulators[checkedURL].browser.loadURL(`${checkedURL}?url=${checkedURL}`, options);
@@ -97,9 +97,9 @@ class Admin {
   }
 
   async closeSimulator(url) {
-    console.log(`Attempting to close simulator for ${url}...`);
+    Logger.info(`Attempting to close simulator for ${url}...`);
     if (this.simulators[url]) {
-      console.log('Simulator found. Closing... ');
+      Logger.info('Simulator found. Closing... ');
       this.simulators[url].browser.close();
       return;
     }
@@ -108,10 +108,9 @@ class Admin {
   }
 
   focusSimulator(url) {
-    console.log(`Attempting to focus simulator for ${url}...`);
-
+    Logger.info(`Attempting to focus simulator for ${url}...`);
     if (this.simulators[url]) {
-      console.log('Simulator found. Focusing... ');
+      Logger.info('Simulator found. Focusing... ');
       this.simulators[url].browser.focus();
       return;
     }
@@ -120,10 +119,9 @@ class Admin {
   }
 
   openDevTools(url) {
-    console.log(`Attempting to open dev tools for ${url}...`);
-
+    Logger.info(`Attempting to open dev tools for ${url}...`);
     if (this.simulators[url]) {
-      console.log('Simulator found. Opening dev tools');
+      Logger.info('Simulator found. Opening dev tools');
       this.simulators[url].browser.webContents.openDevTools();
       return;
     }
@@ -135,10 +133,10 @@ class Admin {
     // Check to see that the main admin window wasn't the one closed
     // If it was, then updating simulators is not necessary since the whole program closes
     if (this.browser) {
-      console.log('Sending simulator list to renderer...');
+      Logger.info('Sending simulator list to renderer...');
       this.browser.webContents.send(UPDATE_SIMULATOR_LIST, this.simulators);
     } else {
-      console.log('Application closing. Will not send simulator list.');
+      Logger.info('Application closing. Will not send simulator list.');
     }
   }
 
