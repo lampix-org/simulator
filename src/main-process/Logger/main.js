@@ -41,7 +41,11 @@ class Logger {
         }
       }
       if (this.adminBrowser) {
-        this.adminBrowser.webContents.send(LOG_TO_CONSOLE, { level, message, renderer });
+        try {
+          this.adminBrowser.webContents.send(LOG_TO_CONSOLE, { level, message, renderer });
+        } catch (err) {
+          this.adminBrowser = null;
+        }
       }
       proceed();
     }).proxy();
