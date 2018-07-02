@@ -19,7 +19,7 @@ async function checkURL(inputURL) {
 
     if (url.protocol === 'http:' || url.protocol === 'https:') {
       await checkHTTPConnection(url);
-      return respond(true, null, url);
+      return respond(true, null, url.href);
     }
 
     throw new Error('Expected file, http or https protocols');
