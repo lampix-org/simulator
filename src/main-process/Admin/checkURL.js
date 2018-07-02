@@ -1,25 +1,28 @@
 const { checkHTTPConnection } = require('../utils/checkHTTPConnection');
+const { checkHTMLFileExistence } = require('../utils/checkHTMLFileExistence');
 const { URL } = require('url');
-const { Logger } = require('../Logger');
 
-const respond = (success, error) => ({
+const respond = (success, error, url) => ({
   success,
-  error
+  error,
+  url
 });
 
 async function checkURL(inputURL) {
   try {
     const url = new URL(inputURL);
 
-    // If the file is server locally, then assume everything's good
     if (url.protocol === 'file:') {
-      Logger.debug('File protocol, not doing extra checks, assuming valid URL');
-      return respond(true);
+      const parsedURL = await checkHTMLFileExistence(url);
+      return respond(true, null, parsedURL);
     }
-    Logger.debug(`Attempting to connect to ${url.href}`);
-    await checkHTTPConnection(url.href);
-    Logger.debug('Connection check passed, assuming valid URL');
-    return respond(true);
+
+    if (url.protocol === 'http:' || url.protocol === 'https:') {
+      await checkHTTPConnection(url);
+      return respond(true, null, url);
+    }
+
+    throw new Error('Expected file, http or https protocols');
   } catch (err) {
     return respond(false, err.message);
   }

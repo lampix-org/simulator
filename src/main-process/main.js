@@ -1,8 +1,8 @@
 // Module to control application life.
-const { app } = require('electron');
+const { app, Menu } = require('electron');
 const url = require('url');
 const path = require('path');
-const { isDev, isDebuggingProd } = require('./utils/envCheck');
+const { isDev, isProd, isDebuggingProd } = require('./utils/envCheck');
 const { enableUpdates } = require('./enableUpdates');
 const { Logger } = require('./Logger');
 
@@ -34,6 +34,45 @@ async function createWindow() {
     slashes: true
   });
 
+  if (isProd) {
+    const menuTemplate = [
+      {
+        label: 'Edit',
+        submenu: [
+          { role: 'undo' },
+          { role: 'redo' },
+          { type: 'separator' },
+          { role: 'cut' },
+          { role: 'copy' },
+          { role: 'paste' },
+          { role: 'selectall' }
+        ]
+      },
+      {
+        label: 'View',
+        submenu: [
+          { role: 'reload' },
+          { role: 'forcereload' },
+          { role: 'toggledevtools' }
+        ]
+      },
+      {
+        role: 'window',
+        submenu: [
+          { role: 'close' }
+        ]
+      }
+    ];
+    menuTemplate.unshift({
+      label: app.getName(),
+      submenu: [
+        { role: 'about' },
+        { role: 'quit' }
+      ]
+    });
+    const menu = Menu.buildFromTemplate(menuTemplate);
+    Menu.setApplicationMenu(menu);
+  }
   // Create the admin window and load the index.html of the app.
   const { admin } = require('./Admin'); // eslint-disable-line
   admin.browser.loadURL(appURL);

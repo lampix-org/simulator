@@ -35,11 +35,12 @@ class Admin {
 
     handleAdminUIReady.call(
       this,
+      this.updateRendererURLs,
+      this.sendSimulators,
       initSimulatorSettingsListeners,
       initAppManagementListeners,
       initSimulatorClientEventListeners,
-      initSimulatorLampixListeners,
-      this.updateRendererURLs
+      initSimulatorLampixListeners
     );
   }
 
@@ -53,7 +54,11 @@ class Admin {
       return;
     }
 
-    const { success, error } = await checkURL(url);
+    const {
+      success,
+      error,
+      url: checkedURL
+    } = await checkURL(url);
 
     if (!success) {
       Logger.error(`URL check failed with message: ${error}`);
@@ -65,7 +70,7 @@ class Admin {
     Logger.info('Creating new simulator...');
 
     const onClosed = () => {
-      delete this.simulators[url];
+      delete this.simulators[checkedURL];
       this.sendSimulators();
       simulatorPosition -= simulatorPositionStep;
     };
@@ -73,20 +78,20 @@ class Admin {
     const updateAdminUI = sendSettingsBack.bind(
       null,
       this.browser.webContents,
-      url
+      checkedURL
     );
 
-    this.simulators[url] = new Simulator(url, {
+    this.simulators[checkedURL] = new Simulator(checkedURL, {
       onClosed,
       updateAdminUI
     });
 
     const options = process.env.NODE_ENV === 'development' ? { extraHeaders: 'pragma: no-cache\n' } : {};
 
-    Logger.info(`Loading app at ${url}`);
+    Logger.info(`Loading app at ${checkedURL}`);
     simulatorPosition += simulatorPositionStep;
-    this.simulators[url].browser.setPosition(simulatorPosition, simulatorPosition, true);
-    this.simulators[url].browser.loadURL(`${url}?url=${url}`, options);
+    this.simulators[checkedURL].browser.setPosition(simulatorPosition, simulatorPosition, true);
+    this.simulators[checkedURL].browser.loadURL(`${checkedURL}?url=${checkedURL}`, options);
     this.updateURLListOrder(alias || url);
     this.sendSimulators();
     this.updateRendererURLs();
@@ -168,8 +173,9 @@ class Admin {
   }
 
   updateScaleFactor(value) {
-    configStore.set('simulator.coordinateConversion.scaleFactor', value);
-    this.config.simulator.coordinateConversion.scaleFactor = value;
+    const parsedValue = parseFloat(value);
+    configStore.set('simulator.coordinateConversion.scaleFactor', parsedValue);
+    this.config.simulator.coordinateConversion.scaleFactor = parsedValue;
   }
 
   updatePix(pixObject) {

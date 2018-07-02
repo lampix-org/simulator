@@ -6,7 +6,8 @@ const checkHTTPConnection = (url) => new Promise((resolve, reject) => {
     method: 'HEAD',
   };
 
-  request(url, options, (err, res) => {
+  console.log(`Attempting to connect to ${url.href}`);
+  request(url.href, options, (err, res) => {
     if (err) {
       Logger.error(`Attempt to reach server at ${url} failed`);
       reject(err);
@@ -14,6 +15,7 @@ const checkHTTPConnection = (url) => new Promise((resolve, reject) => {
     }
 
     if (res.statusCode >= 200 && res.statusCode <= 299) {
+      console.log('Connection check passed, assuming valid URL');
       resolve();
     } else {
       reject(new Error(`Server responded with status code ${res.statusCode}. Expected value between 200 and 299.`));
