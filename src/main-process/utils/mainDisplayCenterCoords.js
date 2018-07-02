@@ -5,7 +5,7 @@ const {
   DEFAULT_WINDOW_HEIGHT
 } = require('../constants');
 
-const { bounds } = screen.getPrimaryDisplay();
+const { bounds } = screen.getDisplayNearestPoint(screen.getCursorScreenPoint());
 
 module.exports = (windowWidth = DEFAULT_WINDOW_WIDTH, windowHeight = DEFAULT_WINDOW_HEIGHT) => ({
   x: bounds.x + ((bounds.width - windowWidth) / 2),
