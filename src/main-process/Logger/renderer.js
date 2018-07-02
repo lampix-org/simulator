@@ -4,11 +4,11 @@ const { LOG_INFO, LOG_TO_CONSOLE } = require('../ipcEvents');
 
 const log = (rendererLevel, message) => {
   ipcRenderer.send(LOG_INFO, { rendererLevel, message });
-  console.log(formatMessage(null, null));
 };
 
 ipcRenderer.on(LOG_TO_CONSOLE, (event, data) => {
   const { level, message, renderer } = data;
+  // by logging from here to console it will log to simulator admin web console.
   console.log(formatMessage(level, message, renderer));
 });
 

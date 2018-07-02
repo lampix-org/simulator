@@ -74,11 +74,10 @@ class Admin {
       this.sendSimulators();
       simulatorPosition -= simulatorPositionStep;
     };
-
     const updateAdminUI = sendSettingsBack.bind(
       null,
       this.browser.webContents,
-      checkedURL
+      checkedURL.href
     );
 
     this.simulators[checkedURL] = new Simulator(checkedURL, {

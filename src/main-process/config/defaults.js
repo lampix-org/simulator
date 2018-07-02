@@ -16,5 +16,5 @@ module.exports = {
     endpoint: '',
     token: ''
   },
-  logLevel: 'info'
+  logLevel: 'debug'
 };

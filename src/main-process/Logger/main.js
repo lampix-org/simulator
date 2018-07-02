@@ -48,6 +48,7 @@ class Logger {
     }).proxy();
     const logFormat = printf(info => `[${info.timestamp}] [${info.renderer ? 'R' : 'M'}] [${info.level}]: ${info.message}`); // eslint-disable-line
     winston.configure({
+      level: logLevel,
       format: combine(
         timestamp({
           format: timestampFormat
@@ -57,12 +58,11 @@ class Logger {
       transports: [new winston.transports.File({
         filename,
         maxsize,
-        maxfiles,
-        logLevel
+        maxfiles
       })]
     });
     if (process.env.NODE_ENV === 'development') {
-      winston.add(new winston.transports.Console({ logLevel }));
+      winston.add(new winston.transports.Console({ level: logLevel }));
     }
     const onRendererLog = (event, data) => {
       const { rendererLevel, message } = data;

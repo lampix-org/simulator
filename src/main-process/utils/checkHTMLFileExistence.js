@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const { URL } = require('url');
+const { Logger } = require('../Logger');
 
 const errors = {
   invalidPath: 'Specified path does not exist',
@@ -20,7 +21,7 @@ const checkHTMLFileExistence = (url) => new Promise((resolve, reject) => {
   let errorMessage = errors.invalidFile;
 
   if (pathExists && !isHTML) {
-    console.log('Assuming path is a directory. Checking for index.html');
+    Logger.info('Assuming path is a directory. Checking for index.html');
 
     // Assume directory was dropped instead of file, check for index.html existence
     assumedURL = new URL(`${url}/index.html`);
@@ -28,12 +29,12 @@ const checkHTMLFileExistence = (url) => new Promise((resolve, reject) => {
   }
 
   if (!pathExists) {
-    console.log(errors.invalidPath);
+    Logger.error(errors.invalidPath);
     errorMessage = errors.invalidPath;
   }
 
   if (fileOkay) {
-    console.log('Specified path okay. Attempting to load local HTML file...');
+    Logger.info('Specified path okay. Attempting to load local HTML file...');
     resolve(assumedURL.href);
   } else {
     reject(new Error(errorMessage));
