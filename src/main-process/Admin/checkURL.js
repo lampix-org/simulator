@@ -5,7 +5,7 @@ const { URL } = require('url');
 const respond = (success, error, url) => ({
   success,
   error,
-  url
+  url: decodeURIComponent(url.href)
 });
 
 async function checkURL(inputURL) {
@@ -19,7 +19,7 @@ async function checkURL(inputURL) {
 
     if (url.protocol === 'http:' || url.protocol === 'https:') {
       await checkHTTPConnection(url);
-      return respond(true, null, url.href);
+      return respond(true, null, url);
     }
 
     throw new Error('Expected file, http or https protocols');
