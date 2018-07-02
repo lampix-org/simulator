@@ -77,7 +77,7 @@ class Admin {
     const updateAdminUI = sendSettingsBack.bind(
       null,
       this.browser.webContents,
-      checkedURL.href
+      checkedURL
     );
 
     this.simulators[checkedURL] = new Simulator(checkedURL, {

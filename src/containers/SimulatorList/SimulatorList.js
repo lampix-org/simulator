@@ -26,9 +26,6 @@ class SimulatorList extends React.Component {
       });
     });
     window.ipcRenderer.on(UPDATE_SIMULATOR_SETTINGS, (event, data) => {
-      console.log('data------> ', data);
-      // console.log('data.url.URL.href ', data.url.URL.href);
-      console.log('this.state.simulatorList ', this.state.simulatorList);
       const {
         movementRegisteredAreasOpen,
         simpleRegisteredAreasOpen,
