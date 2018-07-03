@@ -5,7 +5,7 @@ const { URL } = require('url');
 const respond = (success, error, url) => ({
   success,
   error,
-  url: decodeURIComponent(url.href)
+  url: url ? decodeURIComponent(url.href) : null
 });
 
 async function checkURL(inputURL) {
