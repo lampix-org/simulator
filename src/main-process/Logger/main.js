@@ -1,56 +1,30 @@
 const winston = require('winston');
-const { configStore } = require('../config');
-
 const { ipcMain } = require('electron');
-
-const { LOG_INFO, LOG_TO_CONSOLE } = require('../ipcEvents');
-
-const Scarlet = require('scarlet');
-
-const scarlet = Scarlet();
 
 const {
   combine,
   timestamp,
-  printf
 } = winston.format;
-const { logger } = require('./config');
+
+const { configStore } = require('../config');
+const { LOG_INFO, LOG_TO_CONSOLE } = require('../ipcEvents');
+
+const {
+  logger,
+  format: logFormat
+} = require('./config');
 
 const {
   timestampFormat,
   maxsize,
   maxfiles,
 } = logger;
-const { logLevel } = configStore.store;
+
+const logLevel = configStore.get('logLevel');
 
 class Logger {
   constructor() {
-    winston.log = scarlet.intercept(winston.log).using((invocation, proceed) => {
-      let level;
-      let message;
-      let renderer;
-      if (invocation.args.length > 1) {
-        [level, message] = invocation.args;
-        renderer = false;
-      } else {
-        [{ level, message, renderer }] = invocation.args;
-        if (level === 'verbose') {
-          level = 'log';
-        } else if (level === 'silly') {
-          level = 'debug';
-        }
-      }
-      if (this.adminBrowser) {
-        try {
-          this.adminBrowser.webContents.send(LOG_TO_CONSOLE, { level, message, renderer });
-        } catch (err) {
-          this.adminBrowser = null;
-        }
-      }
-      proceed();
-    }).proxy();
-    const logFormat = printf(info => `[${info.timestamp}] [${info.renderer ? 'R' : 'M'}] [${info.level}]: ${info.message}`); // eslint-disable-line
-    winston.configure({
+    this._ = winston.createLogger({
       level: logLevel,
       format: combine(
         timestamp({
@@ -58,43 +32,71 @@ class Logger {
         }),
         logFormat
       ),
-      transports: [new winston.transports.File({
-        filename: 'lampix-simulator.log',
-        maxsize,
-        maxfiles
-      })]
+      transports: [
+        new winston.transports.File({
+          filename: 'lampix-simulator.log',
+          maxsize,
+          maxfiles
+        })
+      ]
     });
-    if (process.env.NODE_ENV === 'development') {
-      winston.add(new winston.transports.Console({ level: logLevel }));
-    }
-    const onRendererLog = (event, data) => {
+
+    ipcMain.on(LOG_INFO, (event, data) => {
       const { rendererLevel, message } = data;
-      winston.log({ level: rendererLevel, message, renderer: true });
-    };
-    ipcMain.on(LOG_INFO, onRendererLog);
+      this._.log({ level: rendererLevel, message, renderer: true });
+    });
+
+    if (process.env.NODE_ENV === 'development') {
+      this._.add(new winston.transports.Console({ level: logLevel }));
+    }
   }
 
   setAdminBrowser(adminBrowser) {
     this.adminBrowser = adminBrowser;
   }
 
+  _logLevelHighEnough(level) {
+    return this._.levels[this._.level] >= this._.levels[level];
+  }
+
+  _log(level, message, renderer) {
+    if (!this._logLevelHighEnough(level)) {
+      return;
+    }
+
+    if (this.adminBrowser) {
+      try {
+        this.adminBrowser.webContents.send(LOG_TO_CONSOLE, { level, message, renderer });
+      } catch (err) {
+        this.adminBrowser = null;
+      }
+    }
+
+    this._.log({ level, message, renderer });
+  }
+
   error(message) {
-    winston.log.call(null, 'error', message);
+    this._log.call(this, 'error', message, false);
   }
+
   warn(message) {
-    winston.log.call(null, 'warn', message);
+    this._log.call(this, 'warn', message, false);
   }
+
   info(message) {
-    winston.log.call(null, 'info', message);
+    this._log.call(this, 'info', message, false);
   }
+
   verbose(message) {
-    winston.log.call(null, 'verbose', message);
+    this._log.call(this, 'verbose', message, false);
   }
+
   debug(message) {
-    winston.log.call(null, 'debug', message);
+    this._log.call(this, 'debug', message, false);
   }
+
   silly(message) {
-    winston.log.call(null, 'silly', message);
+    this._log.call(this, 'silly', message, false);
   }
 }
 

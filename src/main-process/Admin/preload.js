@@ -14,9 +14,9 @@ const {
   SAVE_SCALE_FACTOR,
   SAVE_PIX
 } = require('../ipcEvents');
+const Logger = require('../Logger');
 
-window.Logger = require('../Logger');
-
+window.Logger = Logger;
 window.ipcRenderer = ipcRenderer;
 
 window.lampix = {
