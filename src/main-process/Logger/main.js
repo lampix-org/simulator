@@ -98,15 +98,4 @@ class Logger {
   }
 }
 
-// module.exports = {
-//   Logger: {
-//     error: winston.log.bind(null, 'error'),
-//     warn: winston.log.bind(null, 'warn'),
-//     info: winston.log.bind(null, 'info'),
-//     verbose: winston.log.bind(null, 'verbose'),
-//     debug: winston.log.bind(null, 'debug'),
-//     silly: winston.log.bind(null, 'silly')
-//   }
-// };
-
 module.exports.Logger = Logger;
