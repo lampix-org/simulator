@@ -66,7 +66,6 @@ async function createWindow() {
     menuTemplate.unshift({
       label: app.getName(),
       submenu: [
-        { role: 'about' },
         { role: 'quit' }
       ]
     });
