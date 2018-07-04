@@ -218,7 +218,7 @@ class Simulator extends React.Component {
     return (
       <ExpansionPanel key={url}>
         <ExpansionPanelSummary expandIcon={<ExpandMore />}>
-          <Typography variant="subheading">Simulator {url}</Typography>
+          <Typography variant="subheading">{url}</Typography>
         </ExpansionPanelSummary>
         <Divider />
         <ExpansionPanelDetails className={classes.expansionPanelDetails}>
