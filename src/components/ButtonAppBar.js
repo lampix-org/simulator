@@ -38,11 +38,11 @@ class ButtonAppBar extends React.Component {
       settingsDialogOpen: false
     };
 
-    window.ipcRenderer.on(UPDATE_URL_LIST, (event, data) => {
-      window.Logger.info(`url list received ${data}`);
-      this.setState({
-        urlAddresses: data
-      });
+    window.ipcRenderer.on(UPDATE_URL_LIST, (event, urlAddresses) => {
+      window.Logger.info('URL list received.');
+      window.Logger.verbose(`URL list: ${JSON.stringify(urlAddresses, null, 2)}`);
+
+      this.setState({ urlAddresses });
     });
   }
 
