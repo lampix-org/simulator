@@ -36,8 +36,7 @@ module.exports = {
      * development checks
      */
     new webpack.EnvironmentPlugin({
-      NODE_ENV: 'production',
-      DEBUG_PROD: process.env.DEBUG_PROD || 'false'
+      NODE_ENV: 'production'
     })
   ],
 
