@@ -12,6 +12,7 @@
     "compile:renderer": "cross-env NODE_ENV=production webpack --config internals/webpack.prod.js --progress --colors",
     "compile:main": "cross-env NODE_ENV=production webpack --config internals/webpack.main.prod.js --progress --colors",
     "build": "electron-builder -c.extraMetadata.main=dist/main.js --publish always",
+    "build:dev": "electron-builder -c.extraMetadata.main=dist/main.js",
     "build:linux": "npm run build -- --linux",
     "build:windows": "npm run build -- --win",
     "build:wine": "npm run build -- --linux --win",
