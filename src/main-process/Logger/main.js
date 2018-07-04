@@ -42,8 +42,8 @@ class Logger {
     });
 
     ipcMain.on(LOG_INFO, (event, data) => {
-      const { rendererLevel, message } = data;
-      this._.log({ level: rendererLevel, message, renderer: true });
+      const { level, message } = data;
+      this._.log({ level, message, renderer: true });
     });
 
     if (process.env.NODE_ENV === 'development') {
