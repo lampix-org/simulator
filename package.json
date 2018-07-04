@@ -32,6 +32,7 @@
   "build": {
     "productName": "Lampix Simulator",
     "appId": "org.lampix.Simulator",
+    "artifactName": "${name}-${channel}.${ext}",
     "dmg": {
       "contents": [
         {
