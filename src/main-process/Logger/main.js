@@ -7,7 +7,7 @@ const {
 } = winston.format;
 
 const { configStore } = require('../config');
-const { LOG_INFO, LOG_TO_CONSOLE } = require('../ipcEvents');
+const { LOG_R_TO_M, LOG_M_TO_R } = require('../ipcEvents');
 
 const {
   logger,
@@ -41,7 +41,7 @@ class Logger {
       ]
     });
 
-    ipcMain.on(LOG_INFO, (event, data) => {
+    ipcMain.on(LOG_R_TO_M, (event, data) => {
       const { level, message } = data;
       this._.log({ level, message, renderer: true });
     });
@@ -66,7 +66,7 @@ class Logger {
 
     if (this.adminBrowser) {
       try {
-        this.adminBrowser.webContents.send(LOG_TO_CONSOLE, { level, message, renderer });
+        this.adminBrowser.webContents.send(LOG_M_TO_R, { level, message, renderer });
       } catch (err) {
         this.adminBrowser = null;
       }

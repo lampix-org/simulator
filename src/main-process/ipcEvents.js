@@ -35,5 +35,5 @@ exports.GET_APPS = 'lx-simulator/IPC/GET_APPS';
 exports.SWITCH_TO_APP = 'lx-simulator/IPC/SWITCH_TO_APP';
 
 // Logger
-exports.LOG_INFO = 'lx-simulator/IPC/LOG_INFO';
-exports.LOG_TO_CONSOLE = 'lx-simulator/IPC/LOG_TO_CONSOLE';
+exports.LOG_R_TO_M = 'lx-simulator/IPC/LOG_R_TO_M';
+exports.LOG_M_TO_R = 'lx-simulator/IPC/LOG_M_TO_R';

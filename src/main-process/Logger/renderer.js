@@ -1,5 +1,5 @@
 const { ipcRenderer } = require('electron');
-const { LOG_INFO, LOG_TO_CONSOLE } = require('../ipcEvents');
+const { LOG_R_TO_M, LOG_M_TO_R } = require('../ipcEvents');
 
 const normalizeLevel = (level) => {
   if (level === 'verbose') {
@@ -18,11 +18,11 @@ const createMessagePayload = (message, renderer) => [
 ];
 
 const log = (level, message) => {
-  ipcRenderer.send(LOG_INFO, { level, message });
+  ipcRenderer.send(LOG_R_TO_M, { level, message });
   console[normalizeLevel(level)](...createMessagePayload(message, true));
 };
 
-ipcRenderer.on(LOG_TO_CONSOLE, (event, data) => {
+ipcRenderer.on(LOG_M_TO_R, (event, data) => {
   const { level, message } = data;
   console[normalizeLevel(level)](...createMessagePayload(message, false));
 });
