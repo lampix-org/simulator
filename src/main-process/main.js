@@ -78,8 +78,6 @@ async function createWindow() {
   admin.browser.loadURL(appURL);
   Logger.setAdminBrowser(admin.browser);
   enableUpdates();
-
-  console.log('Test to see whether updates work');
 }
 
 // This method will be called when Electron has finished
