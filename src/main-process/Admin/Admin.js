@@ -21,6 +21,10 @@ const {
 
 const logSimulatorNotFound = (url) => Logger.info(`Simulator for ${url} not found. Doing nothing.`);
 
+const errors = {
+  appNotFound: 'Your app is no longer available... '
+};
+
 let simulatorPosition = 30;
 const simulatorPositionStep = 15;
 
@@ -116,6 +120,12 @@ class Admin {
     }
 
     logSimulatorNotFound(url);
+  }
+
+  simulatorError(message) {
+    Logger.info(errors[message]);
+    this.browser.webContents.send(ERROR, errors[message]);
+    this.browser.focus();
   }
 
   openDevTools(url) {
