@@ -18,6 +18,8 @@ exports.ADD_APP_NAME_URL_ASSOCIATION = 'lx/simulator/IPC/ADD_APP_NAME_URL_ASSOCI
 exports.REMOVE_APP_NAME_URL_ASSOCIATION = 'lx/simulator/IPC/REMOVE_APP_NAME_URL_ASSOCIATION';
 exports.SAVE_SCALE_FACTOR = 'lx/simulator/IPC/SAVE_SCALE_FACTOR';
 exports.SAVE_PIX = 'lx/simulator/IPC/SAVE_PIX';
+exports.SAVE_USER_SIMPLE_CLASSES = 'lx/simulator/SAVE_USER_SIMPLE_CLASSES';
+exports.SAVE_USER_POSITION_CLASSES = 'lx/simulator/SAVE_USER_POSITION_CLASSES';
 
 // Simulated app events
 exports.MOUSE_MOVE = 'lx-simulator/IPC/MOUSE_MOVE';

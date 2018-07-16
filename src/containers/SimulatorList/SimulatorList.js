@@ -2,7 +2,7 @@ import React from 'react';
 
 import Typography from '@material-ui/core/Typography';
 
-import { UPDATE_SIMULATOR_LIST, UPDATE_SIMULATOR_SETTINGS } from '../../main-process/ipcEvents';
+import { UPDATE_SIMULATOR_LIST, UPDATE_SIMULATOR_SETTINGS, APP_CONFIG } from '../../main-process/ipcEvents';
 import { SIMPLE, POSITION } from '../../common/constants';
 
 import Simulator from '../../components/Simulator';
@@ -12,7 +12,9 @@ class SimulatorList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      simulatorList: {}
+      simulatorList: {},
+      userSimpleClasses: {},
+      userPositionClasses: {}
     };
     window.ipcRenderer.on(UPDATE_SIMULATOR_LIST, (event, data) => {
       const simulatorList = data;
@@ -45,6 +47,13 @@ class SimulatorList extends React.Component {
           }
         }
       });
+    });
+    window.ipcRenderer.on(APP_CONFIG, (event, settings) => {
+      const userSimpleClasses = settings.userSimpleClasses && settings.userSimpleClasses[0] !== '' ?
+        settings.userSimpleClasses : undefined;
+      const userPositionClasses = settings.userPositionClasses && settings.userPositionClasses[0] !== '' ?
+        settings.userPositionClasses : undefined;
+      this.setState({ userSimpleClasses, userPositionClasses });
     });
   }
 
@@ -178,6 +187,8 @@ class SimulatorList extends React.Component {
           onPositionRegisteredAreasClick={this.handlePositionRegisteredAreasClick}
           openDevTools={this.openDevTools}
           handleRegisteredAreaClick={this.handleRegisteredAreaClick}
+          userSimpleClasses={this.state.userSimpleClasses}
+          userPositionClasses={this.state.userPositionClasses}
         />
       )) : (
         <React.Fragment>

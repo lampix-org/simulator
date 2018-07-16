@@ -191,6 +191,16 @@ class Admin {
     configStore.set('pix', pixObject);
     this.config.pix = pixObject;
   }
+
+  updateUserSimpleClasses(userSimpleClasses) {
+    configStore.set('userSimpleClasses', userSimpleClasses);
+    this.config.userSimpleClasses = userSimpleClasses;
+  }
+
+  updateUserPositionClasses(userPositionClasses) {
+    configStore.set('userPositionClasses', userPositionClasses);
+    this.config.userPositionClasses = userPositionClasses;
+  }
 }
 
 exports.Admin = Admin;

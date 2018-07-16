@@ -60,6 +60,8 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
+const commaRegExp = new RegExp(',', 'g');
+
 class Settings extends React.Component {
   state = {
     association: {
@@ -68,7 +70,9 @@ class Settings extends React.Component {
     },
     scaleFactor: '',
     endpoint: '',
-    token: ''
+    token: '',
+    simpleClasses: '',
+    positionClasses: ''
   };
 
   componentDidMount() {
@@ -77,6 +81,10 @@ class Settings extends React.Component {
       this.state.scaleFactor = this.state.settings.simulator.coordinateConversion.scaleFactor;
       this.state.endpoint = this.state.settings.pix.endpoint;
       this.state.token = this.state.settings.pix.token;
+      this.state.simpleClasses = this.state.settings.userSimpleClasses ?
+        this.state.settings.userSimpleClasses.toString().replace(commaRegExp, '\n') : '';
+      this.state.positionClasses = this.state.settings.userPositionClasses ?
+        this.state.settings.userPositionClasses.toString().replace(commaRegExp, '\n') : '';
     });
   }
 
@@ -150,6 +158,29 @@ class Settings extends React.Component {
         showMessage(`${message} cannot be empty`, notificationTypes.error);
       }
     }
+  }
+
+  updateUserSimpleClasses = (event) => {
+    this.setState({
+      ...this.state,
+      simpleClasses: event.target.value
+    });
+  }
+
+  saveUserSimpleClasses = () => {
+    const { simpleClasses } = this.state;
+    window.lampix.saveUserSimpleClasses(simpleClasses.trim().split('\n'));
+  }
+
+  updateUserPositionClasses = (event) => {
+    this.setState({
+      ...this.state,
+      positionClasses: event.target.value
+    });
+  }
+  saveUserPositionClasses = () => {
+    const { positionClasses } = this.state;
+    window.lampix.saveUserPositionClasses(positionClasses.trim().split('\n'));
   }
 
   render() {
@@ -331,6 +362,57 @@ class Settings extends React.Component {
                   [this.state.endpoint, this.state.token]
                 )
               }
+            >
+              Save
+            </Button>
+          </Paper>
+
+          <Paper className={classes.paper}>
+            <Typography variant="title">
+              Set custom classes
+            </Typography>
+            <Typography variant="subheading">
+              This allows setting custom values in the recognized class dropdown for simple and position classifiers
+            </Typography>
+
+            <Separator />
+
+            <TextField
+              label="Simple classes"
+              multiline
+              rows="4"
+              rowsMax="4"
+              className={classes.textField}
+              margin="normal"
+              value={this.state.simpleClasses}
+              onChange={this.updateUserSimpleClasses}
+            />
+
+            <Button
+              variant="contained"
+              color="default"
+              size="small"
+              onClick={() => this.saveUserSimpleClasses()}
+            >
+              Save
+            </Button>
+
+            <TextField
+              label="Position classes"
+              multiline
+              rows="4"
+              rowsMax="4"
+              className={classes.textField}
+              margin="normal"
+              value={this.state.positionClasses}
+              onChange={this.updateUserPositionClasses}
+            />
+
+            <Button
+              variant="contained"
+              color="default"
+              size="small"
+              onClick={() => this.saveUserPositionClasses()}
             >
               Save
             </Button>
