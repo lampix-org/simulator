@@ -372,13 +372,15 @@ class Settings extends React.Component {
             <Typography variant="subheading">
               This allows setting custom values in the recognized class dropdown for simple and position classifiers
             </Typography>
+            <Typography variant="body1">
+              Please put each custom class on a separate line
+            </Typography>
 
             <Separator />
-
             <TextField
               label="Simple classes"
               multiline
-              rows="4"
+              rows="2"
               rowsMax="4"
               className={classes.textField}
               margin="normal"
@@ -395,10 +397,11 @@ class Settings extends React.Component {
               Save
             </Button>
 
+            <Separator />
             <TextField
               label="Position classes"
               multiline
-              rows="4"
+              rows="2"
               rowsMax="4"
               className={classes.textField}
               margin="normal"
