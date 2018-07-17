@@ -60,8 +60,6 @@ function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
 
-const commaRegExp = new RegExp(',', 'g');
-
 class Settings extends React.Component {
   state = {
     association: {
@@ -82,9 +80,9 @@ class Settings extends React.Component {
       this.state.endpoint = this.state.settings.pix.endpoint;
       this.state.token = this.state.settings.pix.token;
       this.state.simpleClasses = this.state.settings.userSimpleClasses ?
-        this.state.settings.userSimpleClasses.toString().replace(commaRegExp, '\n') : '';
+        this.state.settings.userSimpleClasses.join('\n') : '';
       this.state.positionClasses = this.state.settings.userPositionClasses ?
-        this.state.settings.userPositionClasses.toString().replace(commaRegExp, '\n') : '';
+        this.state.settings.userPositionClasses.join('\n') : '';
     });
   }
 
