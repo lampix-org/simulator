@@ -19,6 +19,33 @@ const Logger = require('../Logger');
 window.Logger = Logger;
 window.ipcRenderer = ipcRenderer;
 
+// window.beforeunload = (event) => {
+//   console.log('event ', event);
+// };
+
+// window.addEventListener('beforeunload', (event, string) => {
+//   // Logger.info(JSON.stringify(event, null, 2));
+//   // Logger.info(string);
+//   if (event.preventDefault) {
+//     Logger.info('nebunie');
+//     event.preventDefault();
+//   }
+// });
+
+// window.onbeforeunload = (evt) => {
+//   Logger.info(evt.preventDefault());
+//   Logger.info('from onbeforeunload');
+//   // evt.preventDefault();
+//   // Logger.info(JSON.stringify(evt, null, 2));
+//   // Logger.info(evt.currentTarget);
+//   // Logger.info(evt.defaultPrevented);
+//   // Logger.info(evt.eventPhase);
+//   // Logger.info(evt.isTrusted);
+//   // Logger.info(evt.returnValue);
+//   // Logger.info(evt.srcElement);
+//   // Logger.info(evt.target);
+// };
+
 window.lampix = {
   loadApp: (url) => ipcRenderer.send(LOAD_APP, { url }),
   toggleMovement: (url) => ipcRenderer.send(TOGGLE_MOVEMENT, { url }),

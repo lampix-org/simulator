@@ -1,5 +1,5 @@
 // Module to control application life.
-const { app, Menu, globalShortcut } = require('electron');
+const { app, Menu } = require('electron');
 const url = require('url');
 const path = require('path');
 const { isDev, isProd, isDebuggingProd } = require('./utils/envCheck');
@@ -72,44 +72,9 @@ async function createWindow() {
     const menu = Menu.buildFromTemplate(menuTemplate);
     Menu.setApplicationMenu(menu);
   }
-
-  const menuTemplateAdmin = [
-    {
-      label: 'Edit',
-      submenu: [
-        { role: 'undo' },
-        { role: 'redo' },
-        { type: 'separator' },
-        { role: 'cut' },
-        { role: 'copy' },
-        { role: 'paste' },
-        { role: 'selectall' }
-      ]
-    },
-    {
-      label: 'View',
-      submenu: [
-        { role: 'toggledevtools' }
-      ]
-    },
-    {
-      role: 'window',
-      submenu: [
-        { role: 'close' }
-      ]
-    }
-  ];
-  menuTemplateAdmin.unshift({
-    label: app.getName(),
-    submenu: [
-      { role: 'quit' }
-    ]
-  });
-  const menuAdmin = Menu.buildFromTemplate(menuTemplateAdmin);
   // Create the admin window and load the index.html of the app.
   const { admin } = require('./Admin'); // eslint-disable-line
   admin.browser.loadURL(appURL);
-  admin.browser.setMenu(menuAdmin);
   Logger.setAdminBrowser(admin.browser);
   enableUpdates();
 }
@@ -119,11 +84,14 @@ async function createWindow() {
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
 
-app.on('ready', () => {
-  globalShortcut.register('CommandOrControl+R', () => {
-    console.log('CommandOrControl+R is pressed');
-  });
-});
+// app.on('ready', () => {
+//   globalShortcut.register('CommandOrControl+R', () => {
+//     console.log('CommandOrControl+R is pressed');
+//   });
+//   globalShortcut.register('Control+Shift+R', () => {
+//     console.log('Control+Shift+R is pressed');
+//   });
+// });
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
