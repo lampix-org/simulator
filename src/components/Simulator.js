@@ -173,8 +173,10 @@ class Simulator extends React.Component {
     const positionRectangles = simulatorData.registeredData.position.rectangles;
     const simpleClassifiers = simulatorData.registeredData.simple.classifiers;
     const positionClassifiers = simulatorData.registeredData.position.classifiers;
-    const simpleClasses = userSimpleClasses || simulatorData.registeredData.simple.classes;
-    const positionClasses = userPositionClasses || simulatorData.registeredData.position.classes;
+    const simpleClasses = (userSimpleClasses && userSimpleClasses.length > 0) ?
+      userSimpleClasses : simulatorData.registeredData.simple.classes;
+    const positionClasses = (userPositionClasses && userPositionClasses.length > 0) ?
+      userPositionClasses : simulatorData.registeredData.position.classes;
 
     const movementRegisteredAreas = (simulatorRegisteredData && movementRectangles) ?
       movementRectangles.map((rect) => this.renderRegisteredArea(rect, MOVEMENT)) : null;

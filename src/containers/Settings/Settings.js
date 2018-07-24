@@ -79,9 +79,9 @@ class Settings extends React.Component {
       this.state.scaleFactor = this.state.settings.simulator.coordinateConversion.scaleFactor;
       this.state.endpoint = this.state.settings.pix.endpoint;
       this.state.token = this.state.settings.pix.token;
-      this.state.simpleClasses = this.state.settings.userSimpleClasses ?
+      this.state.simpleClasses = this.state.settings.userSimpleClasses.length > 0 ?
         this.state.settings.userSimpleClasses.join('\n') : '';
-      this.state.positionClasses = this.state.settings.userPositionClasses ?
+      this.state.positionClasses = this.state.settings.userPositionClasses.length > 0 ?
         this.state.settings.userPositionClasses.join('\n') : '';
     });
   }
@@ -170,6 +170,17 @@ class Settings extends React.Component {
     window.lampix.saveUserSimpleClasses(simpleClasses.trim().split('\n'));
   }
 
+  resetUserSimpleClasses = () => {
+    this.setState({
+      ...this.state,
+      simpleClasses: ''
+    }, () => {
+      const { simpleClasses } = this.state;
+      console.log('simple classes in callback ', simpleClasses);
+      window.lampix.saveUserSimpleClasses(simpleClasses);
+    });
+  }
+
   updateUserPositionClasses = (event) => {
     this.setState({
       ...this.state,
@@ -179,6 +190,17 @@ class Settings extends React.Component {
   saveUserPositionClasses = () => {
     const { positionClasses } = this.state;
     window.lampix.saveUserPositionClasses(positionClasses.trim().split('\n'));
+  }
+
+  resetUserPositionClasses = () => {
+    this.setState({
+      ...this.state,
+      positionClasses: ''
+    }, () => {
+      const { positionClasses } = this.state;
+      console.log('positionClasses classes in callback ', positionClasses);
+      window.lampix.saveUserPositionClasses(positionClasses);
+    });
   }
 
   render() {
@@ -392,9 +414,22 @@ class Settings extends React.Component {
               variant="contained"
               color="default"
               size="small"
-              onClick={() => this.saveUserSimpleClasses()}
+              onClick={(e) => this.saveSettings(
+                  e, this.saveUserSimpleClasses, 'Simple classes',
+                  this.state.simpleClasses.trim().split('\n')
+                )
+              }
             >
               Save
+            </Button>
+
+            <Button
+              variant="contained"
+              color="default"
+              size="small"
+              onClick={() => this.resetUserSimpleClasses()}
+            >
+              Reset
             </Button>
 
             <Separator />
@@ -413,9 +448,22 @@ class Settings extends React.Component {
               variant="contained"
               color="default"
               size="small"
-              onClick={() => this.saveUserPositionClasses()}
+              onClick={(e) => this.saveSettings(
+                  e, this.saveUserPositionClasses, 'Position classes',
+                  this.state.positionClasses.trim().split('\n')
+                )
+              }
             >
               Save
+            </Button>
+
+            <Button
+              variant="contained"
+              color="default"
+              size="small"
+              onClick={() => this.resetUserPositionClasses()}
+            >
+              Reset
             </Button>
           </Paper>
         </div>
