@@ -48,6 +48,9 @@ const styles = (theme) => ({
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
     width: 200,
+  },
+  button: {
+    margin: theme.spacing.unit
   }
 });
 
@@ -278,6 +281,7 @@ class Settings extends React.Component {
             />
 
             <Button
+              className={classes.button}
               variant="contained"
               color="default"
               size="small"
@@ -326,6 +330,7 @@ class Settings extends React.Component {
             />
 
             <Button
+              className={classes.button}
               variant="contained"
               color="default"
               size="small"
@@ -373,6 +378,7 @@ class Settings extends React.Component {
             />
 
             <Button
+              className={classes.button}
               variant="contained"
               color="default"
               size="small"
@@ -411,6 +417,7 @@ class Settings extends React.Component {
             />
 
             <Button
+              className={classes.button}
               variant="contained"
               color="default"
               size="small"
@@ -424,6 +431,7 @@ class Settings extends React.Component {
             </Button>
 
             <Button
+              className={classes.button}
               variant="contained"
               color="default"
               size="small"
@@ -445,6 +453,7 @@ class Settings extends React.Component {
             />
 
             <Button
+              className={classes.button}
               variant="contained"
               color="default"
               size="small"
@@ -458,6 +467,7 @@ class Settings extends React.Component {
             </Button>
 
             <Button
+              className={classes.button}
               variant="contained"
               color="default"
               size="small"
