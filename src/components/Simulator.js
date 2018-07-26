@@ -160,15 +160,23 @@ class Simulator extends React.Component {
   };
 
   render() {
-    const { classes, url, simulatorData } = this.props;
+    const {
+      classes,
+      url,
+      simulatorData,
+      userSimpleClasses,
+      userPositionClasses
+    } = this.props;
     const simulatorRegisteredData = simulatorData.registeredData;
     const movementRectangles = simulatorData.registeredData.movement.rectangles;
     const simpleRectangles = simulatorData.registeredData.simple.rectangles;
     const positionRectangles = simulatorData.registeredData.position.rectangles;
     const simpleClassifiers = simulatorData.registeredData.simple.classifiers;
     const positionClassifiers = simulatorData.registeredData.position.classifiers;
-    const simpleClasses = simulatorData.registeredData.simple.classes;
-    const positionClasses = simulatorData.registeredData.position.classes;
+    const simpleClasses = (userSimpleClasses && userSimpleClasses.length > 0) ?
+      userSimpleClasses : simulatorData.registeredData.simple.classes;
+    const positionClasses = (userPositionClasses && userPositionClasses.length > 0) ?
+      userPositionClasses : simulatorData.registeredData.position.classes;
 
     const movementRegisteredAreas = (simulatorRegisteredData && movementRectangles) ?
       movementRectangles.map((rect) => this.renderRegisteredArea(rect, MOVEMENT)) : null;
@@ -384,7 +392,9 @@ Simulator.propTypes = {
   onSimpleRegisteredAreasClick: PropTypes.func.isRequired,
   onPositionRegisteredAreasClick: PropTypes.func.isRequired,
   openDevTools: PropTypes.func.isRequired,
-  handleRegisteredAreaClick: PropTypes.func.isRequired
+  handleRegisteredAreaClick: PropTypes.func.isRequired,
+  userSimpleClasses: PropTypes.string.isRequired,
+  userPositionClasses: PropTypes.string.isRequired
 };
 
 export default withStyles(styles)(Simulator);

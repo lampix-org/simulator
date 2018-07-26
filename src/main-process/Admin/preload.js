@@ -12,7 +12,9 @@ const {
   ADD_APP_NAME_URL_ASSOCIATION,
   REMOVE_APP_NAME_URL_ASSOCIATION,
   SAVE_SCALE_FACTOR,
-  SAVE_PIX
+  SAVE_PIX,
+  SAVE_USER_SIMPLE_CLASSES,
+  SAVE_USER_POSITION_CLASSES
 } = require('../ipcEvents');
 const Logger = require('../Logger');
 
@@ -52,4 +54,6 @@ window.lampix = {
   removeAssociation: (name) => ipcRenderer.send(REMOVE_APP_NAME_URL_ASSOCIATION, name),
   saveScaleFactor: (value) => ipcRenderer.send(SAVE_SCALE_FACTOR, value),
   savePix: (object) => ipcRenderer.send(SAVE_PIX, object),
+  saveUserSimpleClasses: (simpleClasses) => ipcRenderer.send(SAVE_USER_SIMPLE_CLASSES, simpleClasses),
+  saveUserPositionClasses: (positionClasses) => ipcRenderer.send(SAVE_USER_POSITION_CLASSES, positionClasses),
 };

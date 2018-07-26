@@ -68,7 +68,9 @@ class Settings extends React.Component {
     },
     scaleFactor: '',
     endpoint: '',
-    token: ''
+    token: '',
+    simpleClasses: '',
+    positionClasses: ''
   };
 
   componentDidMount() {
@@ -77,6 +79,10 @@ class Settings extends React.Component {
       this.state.scaleFactor = this.state.settings.simulator.coordinateConversion.scaleFactor;
       this.state.endpoint = this.state.settings.pix.endpoint;
       this.state.token = this.state.settings.pix.token;
+      this.state.simpleClasses = this.state.settings.userSimpleClasses.length > 0 ?
+        this.state.settings.userSimpleClasses.join('\n') : '';
+      this.state.positionClasses = this.state.settings.userPositionClasses.length > 0 ?
+        this.state.settings.userPositionClasses.join('\n') : '';
     });
   }
 
@@ -150,6 +156,51 @@ class Settings extends React.Component {
         showMessage(`${message} cannot be empty`, notificationTypes.error);
       }
     }
+  }
+
+  updateUserSimpleClasses = (event) => {
+    this.setState({
+      ...this.state,
+      simpleClasses: event.target.value
+    });
+  }
+
+  saveUserSimpleClasses = () => {
+    const { simpleClasses } = this.state;
+    window.lampix.saveUserSimpleClasses(simpleClasses.trim().split('\n'));
+  }
+
+  resetUserSimpleClasses = () => {
+    this.setState({
+      ...this.state,
+      simpleClasses: ''
+    }, () => {
+      const { simpleClasses } = this.state;
+      console.log('simple classes in callback ', simpleClasses);
+      window.lampix.saveUserSimpleClasses(simpleClasses);
+    });
+  }
+
+  updateUserPositionClasses = (event) => {
+    this.setState({
+      ...this.state,
+      positionClasses: event.target.value
+    });
+  }
+  saveUserPositionClasses = () => {
+    const { positionClasses } = this.state;
+    window.lampix.saveUserPositionClasses(positionClasses.trim().split('\n'));
+  }
+
+  resetUserPositionClasses = () => {
+    this.setState({
+      ...this.state,
+      positionClasses: ''
+    }, () => {
+      const { positionClasses } = this.state;
+      console.log('positionClasses classes in callback ', positionClasses);
+      window.lampix.saveUserPositionClasses(positionClasses);
+    });
   }
 
   render() {
@@ -333,6 +384,86 @@ class Settings extends React.Component {
               }
             >
               Save
+            </Button>
+          </Paper>
+
+          <Paper className={classes.paper}>
+            <Typography variant="title">
+              Set custom classes
+            </Typography>
+            <Typography variant="subheading">
+              This allows setting custom values in the recognized class dropdown for simple and position classifiers
+            </Typography>
+            <Typography variant="body1">
+              Please put each custom class on a separate line
+            </Typography>
+
+            <Separator />
+            <TextField
+              label="Simple classes"
+              multiline
+              rows="2"
+              rowsMax="4"
+              className={classes.textField}
+              margin="normal"
+              value={this.state.simpleClasses}
+              onChange={this.updateUserSimpleClasses}
+            />
+
+            <Button
+              variant="contained"
+              color="default"
+              size="small"
+              onClick={(e) => this.saveSettings(
+                  e, this.saveUserSimpleClasses, 'Simple classes',
+                  this.state.simpleClasses.trim().split('\n')
+                )
+              }
+            >
+              Save
+            </Button>
+
+            <Button
+              variant="contained"
+              color="default"
+              size="small"
+              onClick={() => this.resetUserSimpleClasses()}
+            >
+              Reset
+            </Button>
+
+            <Separator />
+            <TextField
+              label="Position classes"
+              multiline
+              rows="2"
+              rowsMax="4"
+              className={classes.textField}
+              margin="normal"
+              value={this.state.positionClasses}
+              onChange={this.updateUserPositionClasses}
+            />
+
+            <Button
+              variant="contained"
+              color="default"
+              size="small"
+              onClick={(e) => this.saveSettings(
+                  e, this.saveUserPositionClasses, 'Position classes',
+                  this.state.positionClasses.trim().split('\n')
+                )
+              }
+            >
+              Save
+            </Button>
+
+            <Button
+              variant="contained"
+              color="default"
+              size="small"
+              onClick={() => this.resetUserPositionClasses()}
+            >
+              Reset
             </Button>
           </Paper>
         </div>
