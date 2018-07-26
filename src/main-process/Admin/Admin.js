@@ -19,8 +19,6 @@ const {
   APP_CONFIG
 } = require('../ipcEvents');
 
-// const electronLocalshortcut = require('electron-localshortcut');
-
 const logSimulatorNotFound = (url) => Logger.info(`Simulator for ${url} not found. Doing nothing.`);
 
 const errors = {
@@ -39,24 +37,9 @@ class Admin {
       this.browser = null;
     });
 
-    // electronLocalshortcut.register(this.browser, 'Ctrl+Shift+R', () => {
-    //   console.log('pressed ctrl+shift+r');
-    // });
-    // console.log('this browser ', this.browser);
-    // console.log('this.browser.webContents ', this.browser.webContents);
-    // this.browser.webContents.on('will-navigate', (event, string) => {
-    //   console.log('event ', event);
-    //   console.log('string ', string);
-    // });
-    // this.browser.on('app-command', (e, cmd) => {
-    //   // Navigate the window back when the user hits their mouse back button
-    //   console.log('event ', e);
-    //   console.log('cmd ', cmd);
-    // });
-    // this.browser.webContents.on('will-navigate', (event, string) => {
-    //   Logger.info('event in Admin ', event);
-    //   Logger.info('string in Admin ', string);
-    // });
+    this.browser.on('close', () => {
+      this.browser.destroy();
+    });
     handleAdminUIReady.call(
       this,
       this.updateRendererURLs,
