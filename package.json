@@ -73,6 +73,12 @@
     "directories": {
       "output": "release",
       "buildResources": "resources"
+    },
+    "publish": {
+      "provider": "s3",
+      "bucket": "simulator.lampix.com",
+      "region": "us-east-1",
+      "acl": "public-read"
     }
   },
   "license": "ISC",
