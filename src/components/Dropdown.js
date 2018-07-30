@@ -2,7 +2,6 @@ import React from 'react';
 import Select from '@material-ui/core/Select';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
 
 const styles = () => ({
   dropdown: {
@@ -12,14 +11,16 @@ const styles = () => ({
 
 class Dropdown extends React.Component {
   render() {
-    const { classes, children } = this.props;
+    const {
+      classes,
+      children,
+      style,
+      ...other
+    } = this.props;
     return (
       <Select
-        disabled={this.props.disabled}
-        value={this.props.value}
-        onChange={(evt) => this.props.onChange(evt, this.props.url)}
-        input={<Input fullWidth />}
         MenuProps={{ classes: { paper: classes.dropdown } }}
+        {...other}
         style={this.props.style}
       >
         {children}

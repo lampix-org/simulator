@@ -248,10 +248,9 @@ class Simulator extends React.Component {
               <FormControl fullWidth>
                 <InputLabel>Classifier</InputLabel>
                 <Dropdown
-                  url={url}
                   disabled={simpleClassifiers.length === 0}
                   value={emptyStringIfNil(simulatorData.settings.simple.classifier)}
-                  onChange={this.props.onSimpleClassifierChange}
+                  onChange={(evt) => this.props.onSimpleClassifierChange(evt, url)}
                 >
                   {classifierSimpleMenuItems}
                 </Dropdown>
@@ -259,10 +258,9 @@ class Simulator extends React.Component {
               <FormControl fullWidth>
                 <InputLabel>Recognized class</InputLabel>
                 <Dropdown
-                  url={url}
                   disabled={simpleClassifiers.length === 0}
                   value={emptyStringIfNil(simulatorData.settings.simple.recognizedClass)}
-                  onChange={this.props.onSimpleRecognizedClassChange}
+                  onChange={(evt) => this.props.onSimpleRecognizedClassChange(evt, url)}
                 >
                   {recognizedSimpleClassMenuItems}
                 </Dropdown>
@@ -282,10 +280,9 @@ class Simulator extends React.Component {
               <FormControl fullWidth>
                 <InputLabel>Classifier</InputLabel>
                 <Dropdown
-                  url={url}
                   disabled={positionClassifiers.length === 0}
                   value={emptyStringIfNil(simulatorData.settings.position.classifier)}
-                  onChange={this.props.onPositionClassifierChange}
+                  onChange={(evt) => this.props.onPositionClassifierChange(evt, url)}
                 >
                   {classifierPositionMenuItems}
                 </Dropdown>
@@ -293,10 +290,9 @@ class Simulator extends React.Component {
               <FormControl fullWidth>
                 <InputLabel>Recognized class</InputLabel>
                 <Dropdown
-                  url={url}
                   disabled={positionClassifiers.length === 0}
                   value={emptyStringIfNil(simulatorData.settings.position.recognizedClass)}
-                  onChange={this.props.onPositionRecognizedClassChange}
+                  onChange={(evt) => this.props.onPositionRecognizedClassChange(evt, url)}
                 >
                   {recognizedPositionClassMenuItems}
                 </Dropdown>
