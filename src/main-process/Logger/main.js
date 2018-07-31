@@ -1,5 +1,8 @@
 const winston = require('winston');
 const { ipcMain } = require('electron');
+const { app } = require('electron');
+
+const path = require('path');
 
 const {
   combine,
@@ -22,6 +25,9 @@ const {
 
 const logLevel = configStore.get('logLevel');
 
+// const fileLocation = app.getPath('userData') + '/' + app.getName() + '/lampix-simulator.log';
+// console.log('fileLocation ', fileLocation);
+
 class Logger {
   constructor() {
     this._ = winston.createLogger({
@@ -34,7 +40,7 @@ class Logger {
       ),
       transports: [
         new winston.transports.File({
-          filename: 'lampix-simulator.log',
+          filename: path.join(app.getPath('appData'), app.getName(), './lampix-simulator.log'),
           maxsize,
           maxfiles
         })
