@@ -11,12 +11,10 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Switch from '@material-ui/core/Switch';
-import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -30,6 +28,7 @@ import CardContent from '@material-ui/core/CardContent';
 
 // Custom components
 import Separator from './Separator';
+import Dropdown from './Dropdown';
 
 import {
   SIMPLE,
@@ -248,25 +247,23 @@ class Simulator extends React.Component {
 
               <FormControl fullWidth>
                 <InputLabel>Classifier</InputLabel>
-                <Select
+                <Dropdown
                   disabled={simpleClassifiers.length === 0}
                   value={emptyStringIfNil(simulatorData.settings.simple.classifier)}
                   onChange={(evt) => this.props.onSimpleClassifierChange(evt, url)}
-                  input={<Input fullWidth />}
                 >
                   {classifierSimpleMenuItems}
-                </Select>
+                </Dropdown>
               </FormControl>
               <FormControl fullWidth>
                 <InputLabel>Recognized class</InputLabel>
-                <Select
+                <Dropdown
                   disabled={simpleClassifiers.length === 0}
                   value={emptyStringIfNil(simulatorData.settings.simple.recognizedClass)}
                   onChange={(evt) => this.props.onSimpleRecognizedClassChange(evt, url)}
-                  input={<Input fullWidth />}
                 >
                   {recognizedSimpleClassMenuItems}
-                </Select>
+                </Dropdown>
               </FormControl>
               <TextField
                 disabled={simpleClassifiers.length === 0}
@@ -282,25 +279,23 @@ class Simulator extends React.Component {
 
               <FormControl fullWidth>
                 <InputLabel>Classifier</InputLabel>
-                <Select
+                <Dropdown
                   disabled={positionClassifiers.length === 0}
                   value={emptyStringIfNil(simulatorData.settings.position.classifier)}
                   onChange={(evt) => this.props.onPositionClassifierChange(evt, url)}
-                  input={<Input fullWidth />}
                 >
                   {classifierPositionMenuItems}
-                </Select>
+                </Dropdown>
               </FormControl>
               <FormControl fullWidth>
                 <InputLabel>Recognized class</InputLabel>
-                <Select
+                <Dropdown
                   disabled={positionClassifiers.length === 0}
                   value={emptyStringIfNil(simulatorData.settings.position.recognizedClass)}
                   onChange={(evt) => this.props.onPositionRecognizedClassChange(evt, url)}
-                  input={<Input fullWidth />}
                 >
                   {recognizedPositionClassMenuItems}
-                </Select>
+                </Dropdown>
               </FormControl>
               <TextField
                 disabled={positionClassifiers.length === 0}
