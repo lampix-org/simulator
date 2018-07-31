@@ -1,5 +1,7 @@
 const winston = require('winston');
 const { ipcMain } = require('electron');
+const { app } = require('electron');
+const path = require('path');
 
 const {
   combine,
@@ -34,7 +36,7 @@ class Logger {
       ),
       transports: [
         new winston.transports.File({
-          filename: 'lampix-simulator.log',
+          filename: path.join(app.getPath('userData'), './lampix-simulator.log'),
           maxsize,
           maxfiles
         })
