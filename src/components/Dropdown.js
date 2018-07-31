@@ -21,7 +21,6 @@ class Dropdown extends React.Component {
       <Select
         MenuProps={{ classes: { paper: classes.dropdown } }}
         {...other}
-        style={this.props.style}
       >
         {children}
       </Select>
@@ -29,21 +28,11 @@ class Dropdown extends React.Component {
   }
 }
 
-Dropdown.defaultProps = {
-  disabled: false,
-  style: {}
-};
-
 Dropdown.propTypes = {
   classes: PropTypes.shape({
     dropdown: PropTypes.string
   }).isRequired,
-  children: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  disabled: PropTypes.bool,
-  url: PropTypes.string.isRequired,
-  style: PropTypes.shape({})
+  ...Select.propTypes
 };
 
 export default withStyles(styles)(Dropdown);
