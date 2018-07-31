@@ -84,6 +84,15 @@ async function createWindow() {
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
 
+// app.on('ready', () => {
+//   globalShortcut.register('CommandOrControl+R', () => {
+//     console.log('CommandOrControl+R is pressed');
+//   });
+//   globalShortcut.register('Control+Shift+R', () => {
+//     console.log('Control+Shift+R is pressed');
+//   });
+// });
+
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
   // On OS X it is common for applications and their menu bar

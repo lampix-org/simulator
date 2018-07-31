@@ -21,6 +21,8 @@ const Logger = require('../Logger');
 window.Logger = Logger;
 window.ipcRenderer = ipcRenderer;
 
+window.onbeforeunload = () => false;
+
 window.lampix = {
   loadApp: (url) => ipcRenderer.send(LOAD_APP, { url }),
   toggleMovement: (url) => ipcRenderer.send(TOGGLE_MOVEMENT, { url }),

@@ -37,6 +37,9 @@ class Admin {
       this.browser = null;
     });
 
+    this.browser.on('close', () => {
+      this.browser.destroy();
+    });
     handleAdminUIReady.call(
       this,
       this.updateRendererURLs,
