@@ -14,7 +14,6 @@ class Dropdown extends React.Component {
     const {
       classes,
       children,
-      style,
       ...other
     } = this.props;
     return (
