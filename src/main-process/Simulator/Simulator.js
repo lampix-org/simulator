@@ -141,9 +141,7 @@ class Simulator {
             posY: mouseY
           },
           outline: {
-            points: paperClassifier ?
-              outline.map((pair) => ({ posX: pair[0], posY: pair[1] })) :
-              outline
+            points: outline.map((pair) => ({ posX: pair[0], posY: pair[1] }))
           }
         });
 
