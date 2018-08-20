@@ -39,7 +39,7 @@ class ButtonAppBar extends React.Component {
     };
 
     window.ipcRenderer.on(UPDATE_URL_LIST, (event, urlAddresses) => {
-      window.Logger.info('URL list received.');
+      window.Logger.info('UPDATE_URL_LIST event received.');
       window.Logger.verbose(`URL list: ${JSON.stringify(urlAddresses, null, 2)}`);
 
       this.setState({ urlAddresses });
