@@ -1,5 +1,5 @@
 const { distance } = require('./distance');
 
-const pointInCircle = (point, cx, cy, r) => distance(point.x, point.y, cx, cy) < r;
+const pointInCircle = (p, c) => distance(p.x, p.y, c.x, c.y) < c.r;
 
 exports.pointInCircle = pointInCircle;
