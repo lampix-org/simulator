@@ -16,7 +16,7 @@ const {
   SAVE_USER_SIMPLE_CLASSES,
   SAVE_USER_POSITION_CLASSES
 } = require('../ipcEvents');
-const Logger = require('../Logger');
+const { Logger } = require('../Logger');
 
 window.Logger = Logger;
 window.ipcRenderer = ipcRenderer;

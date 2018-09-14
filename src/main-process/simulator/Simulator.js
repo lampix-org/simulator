@@ -15,7 +15,6 @@ const { configStore } = require('../config');
 const { isDev } = require('../utils/envCheck');
 
 const pluckUniqueClassifiersFromArray = (data) => [...new Set(data.map((rect) => rect.classifier))];
-const preloadName = isDev ? 'preload.js' : 'preload-simulator.js';
 
 const { Logger } = require('../Logger');
 
@@ -64,7 +63,7 @@ class Simulator {
       options: {
         resizable: false,
         webPreferences: {
-          preload: path.join(__dirname, preloadName)
+          preload: path.join(__dirname, preloadName(isDev, 'v0'))
         }
       },
       width: simulator.viewport.width,
@@ -147,7 +146,7 @@ class Simulator {
 
         this.browser.webContents.executeJavaScript(`onPrePositionClassifier(${i}, ${JSON.stringify(data)})`);
 
-        // TODO: Make the time of this timeout configurableeslint --fix --ignore-pattern internals/
+        // TODO: Make the time of this timeout configurable
         setTimeout(() => {
           data[data.length - 1].classTag = recognizedClass;
           this.browser.webContents

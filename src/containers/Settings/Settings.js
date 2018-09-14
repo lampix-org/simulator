@@ -78,14 +78,24 @@ class Settings extends React.Component {
 
   componentDidMount() {
     window.ipcRenderer.on(APP_CONFIG, (event, settings) => {
-      this.setState({ settings });
-      this.state.scaleFactor = this.state.settings.simulator.coordinateConversion.scaleFactor;
-      this.state.endpoint = this.state.settings.pix.endpoint;
-      this.state.token = this.state.settings.pix.token;
-      this.state.simpleClasses = this.state.settings.userSimpleClasses.length > 0 ?
-        this.state.settings.userSimpleClasses.join('\n') : '';
-      this.state.positionClasses = this.state.settings.userPositionClasses.length > 0 ?
-        this.state.settings.userPositionClasses.join('\n') : '';
+      const {
+        simulator: {
+          coordinateConversion: {
+            scaleFactor
+          }
+        },
+        pix,
+        userSimpleClasses,
+        userPositionClasses
+      } = settings;
+
+      this.setState({
+        scaleFactor,
+        endpoint: pix.endpoint,
+        token: pix.token,
+        classifierNames: userSimpleClasses && userSimpleClasses.length ? userSimpleClasses.join('\n') : '',
+        segmenterNames: userPositionClasses && userPositionClasses.length ? userPositionClasses.join('\n') : ''
+      });
     });
   }
 
@@ -234,7 +244,7 @@ class Settings extends React.Component {
               variant="title"
               color="inherit"
             >
-            Settings
+              Settings
             </Typography>
           </Toolbar>
         </AppBar>
@@ -260,7 +270,7 @@ class Settings extends React.Component {
                 (e) => this.saveSettings(
                   e, this.addNewAssociation, 'Name and URL',
                   [this.state.association.name, this.state.association.url]
-               )
+                )
               }
               value={this.state.association.name}
             />
@@ -275,7 +285,7 @@ class Settings extends React.Component {
                 (e) => this.saveSettings(
                   e, this.addNewAssociation, 'Name and URL',
                   [this.state.association.name, this.state.association.url]
-               )
+                )
               }
               value={this.state.association.url}
             />
@@ -289,7 +299,7 @@ class Settings extends React.Component {
                 (e) => this.saveSettings(
                   e, this.addNewAssociation, 'Name and URL',
                   [this.state.association.name, this.state.association.url]
-               )
+                )
               }
             >
               Add
@@ -422,9 +432,9 @@ class Settings extends React.Component {
               color="default"
               size="small"
               onClick={(e) => this.saveSettings(
-                  e, this.saveUserSimpleClasses, 'Simple classes',
-                  this.state.simpleClasses.trim().split('\n')
-                )
+                e, this.saveUserSimpleClasses, 'Simple classes',
+                this.state.simpleClasses.trim().split('\n')
+              )
               }
             >
               Save
@@ -458,9 +468,9 @@ class Settings extends React.Component {
               color="default"
               size="small"
               onClick={(e) => this.saveSettings(
-                  e, this.saveUserPositionClasses, 'Position classes',
-                  this.state.positionClasses.trim().split('\n')
-                )
+                e, this.saveUserPositionClasses, 'Position classes',
+                this.state.positionClasses.trim().split('\n')
+              )
               }
             >
               Save

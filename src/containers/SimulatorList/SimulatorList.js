@@ -172,7 +172,7 @@ class SimulatorList extends React.Component {
         <Simulator
           key={url}
           url={url}
-          simulatorData={this.state.simulatorList[url]}
+          data={this.state.simulatorList[url]}
           onMovementDetectorChange={this.handleMovementDetectorChange}
           onSimpleClassifierChange={this.handleSimpleClassifierChange}
           onSimpleRecognizedClassChange={this.handleSimpleRecognizedClassChange}

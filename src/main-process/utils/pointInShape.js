@@ -1,8 +1,8 @@
-const { pointInRectangle } = require('../../utils/pointInRectangle');
-const { pointInCircle } = require('../../utils/pointInCircle');
-const { pointInPolygon } = require('../../utils/pointInPolygon');
+const { pointInRectangle } = require('./pointInRectangle');
+const { pointInCircle } = require('./pointInCircle');
+const { pointInPolygon } = require('./pointInPolygon');
 
-const { Shapes } = require('../../constants');
+const { Shapes } = require('../constants');
 
 const handlers = {
   [Shapes.Rectangle]: pointInRectangle,

@@ -16,7 +16,7 @@ function initSimulatorClientEventListeners() {
   // Data should contain the simulator URL, mouseX and mouseY for client events
   ipcMain.on(MOUSE_MOVE, (event, data) => {
     if (this.simulators[data.url]) {
-      this.simulators[data.url].handleMouseMove(data.mouseX, data.mouseY);
+      this.simulators[data.url].handleMovement(data.mouseX, data.mouseY);
     } else {
       debounceSimulatorError();
     }
@@ -24,7 +24,7 @@ function initSimulatorClientEventListeners() {
 
   ipcMain.on(SIMPLE_CLICK, (event, data) => {
     if (this.simulators[data.url]) {
-      this.simulators[data.url].handleSimpleClassifier(data.mouseX, data.mouseY);
+      this.simulators[data.url].handleClassifierWatchers(data.mouseX, data.mouseY);
     } else {
       debounceSimulatorError();
     }
@@ -32,7 +32,7 @@ function initSimulatorClientEventListeners() {
 
   ipcMain.on(POSITION_CLICK, (event, data) => {
     if (this.simulators[data.url]) {
-      this.simulators[data.url].handlePositionClassifier(data.mouseX, data.mouseY);
+      this.simulators[data.url].handleSegmenterWatchers(data.mouseX, data.mouseY);
     } else {
       debounceSimulatorError();
     }

@@ -3,22 +3,22 @@ const paperOutline = (cx, cy, width = 320, height = 400) => {
   const heightOffsetFromCenter = height / 2;
 
   return [
-    [
-      cx + widthOffsetFromCenter,
-      cy + heightOffsetFromCenter
-    ],
-    [
-      cx - widthOffsetFromCenter,
-      cy + heightOffsetFromCenter
-    ],
-    [
-      cx - widthOffsetFromCenter,
-      cy - heightOffsetFromCenter
-    ],
-    [
-      cx + widthOffsetFromCenter,
-      cy - heightOffsetFromCenter
-    ]
+    {
+      x: cx + widthOffsetFromCenter,
+      y: cy + heightOffsetFromCenter
+    },
+    {
+      x: cx - widthOffsetFromCenter,
+      y: cy + heightOffsetFromCenter
+    },
+    {
+      x: cx - widthOffsetFromCenter,
+      y: cy - heightOffsetFromCenter
+    },
+    {
+      x: cx + widthOffsetFromCenter,
+      y: cy - heightOffsetFromCenter
+    }
   ];
 };
 

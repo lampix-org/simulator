@@ -1,9 +1,13 @@
-const { Simulator } = require('../Simulator');
+// Simulators
+const { simulatorV0 } = require('../simulator');
+const { simulatorV1 } = require('../simulator');
+
 const { createAdminBrowser } = require('./createAdminBrowser');
 const { store } = require('../store');
 const { configStore } = require('../config');
 const { checkURL } = require('./checkURL');
 const { Logger } = require('../Logger');
+const { isDev } = require('../utils/envCheck');
 const {
   initSimulatorSettingsListeners,
   initAppManagementListeners,
@@ -28,8 +32,17 @@ const errors = {
 let simulatorPosition = 30;
 const simulatorPositionStep = 15;
 
+const simulatorsByVersion = {
+  v0: simulatorV0,
+  v1: simulatorV1
+};
+
 class Admin {
   constructor() {
+    // Assume this is the version for now
+    // TODO: Implement support for changing version
+    this.selectedSimulatorVersion = 'v0';
+
     this.storedURLs = new Set(store.get('urls') || []);
     this.config = configStore.store;
     this.simulators = {};
@@ -87,12 +100,15 @@ class Admin {
       checkedURL
     );
 
-    this.simulators[checkedURL] = new Simulator(checkedURL, {
+    this.simulators[checkedURL] = simulatorsByVersion[this.selectedSimulatorVersion](url, {
+      store,
+      configStore,
+      isDev,
       onClosed,
       updateAdminUI
     });
 
-    const options = process.env.NODE_ENV === 'development' ? { extraHeaders: 'pragma: no-cache\n' } : {};
+    const options = isDev ? { extraHeaders: 'pragma: no-cache\n' } : {};
 
     Logger.info(`Loading app at ${checkedURL}`);
     simulatorPosition += simulatorPositionStep;

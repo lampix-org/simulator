@@ -10,13 +10,19 @@ const {
   TRANSFORM_COORDINATES,
   GET_APPS,
   SWITCH_TO_APP
-} = require('../ipcEvents');
+} = require('../../../ipcEvents');
+const { Logger } = require('../../../Logger');
 
 
 window.ipcRenderer = ipcRenderer;
 
 const urlQueryParams = new URLSearchParams(global.location.search);
 const appUrl = urlQueryParams.get('url');
+
+const logRegisteredAreas = (rectangles) => {
+  Logger.verbose('Data to register:');
+  Logger.verbose(JSON.stringify(rectangles, null, 2));
+};
 
 const createClientEventPayload = (event) => ({
   url: appUrl,
@@ -43,12 +49,18 @@ window.addEventListener('contextmenu', (event) => {
 
 window._lampix_internal = {
   registerMovement: (rectangles) => {
+    Logger.info('registerMovement called');
+    logRegisteredAreas(rectangles);
     ipcRenderer.send(REGISTER_MOVEMENT, createRegisterPayload(rectangles));
   },
   registerSimpleClassifier: (rectangles) => {
+    Logger.info('registerSimpleClassifier called');
+    logRegisteredAreas(rectangles);
     ipcRenderer.send(REGISTER_SIMPLE, createRegisterPayload(rectangles));
   },
   registerPositionClassifier: (rectangles) => {
+    Logger.info('registerPositionClassifier called');
+    logRegisteredAreas(rectangles);
     ipcRenderer.send(REGISTER_POSITION, createRegisterPayload(rectangles));
   },
   getLampixInfo: () => ipcRenderer.send(GET_LAMPIX_INFO, {
@@ -61,13 +73,6 @@ window._lampix_internal = {
   getApps: () => ipcRenderer.send(GET_APPS, {
     url: appUrl
   }),
-  /**
-   * The switchToApp method receives an app NAME or a URL
-   *
-   * NOTE: Currently, it will take app names into account only after the implementation of
-   * task 92862
-   * @param {string} app
-   */
   switchToApp: (newApp) => ipcRenderer.send(SWITCH_TO_APP, {
     toClose: appUrl,
     toOpen: newApp
