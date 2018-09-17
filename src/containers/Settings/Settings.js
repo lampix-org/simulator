@@ -189,7 +189,6 @@ class Settings extends React.Component {
       simpleClasses: ''
     }, () => {
       const { simpleClasses } = this.state;
-      console.log('simple classes in callback ', simpleClasses);
       window.lampix.saveUserSimpleClasses(simpleClasses);
     });
   }
@@ -211,7 +210,6 @@ class Settings extends React.Component {
       positionClasses: ''
     }, () => {
       const { positionClasses } = this.state;
-      console.log('positionClasses classes in callback ', positionClasses);
       window.lampix.saveUserPositionClasses(positionClasses);
     });
   }
