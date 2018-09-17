@@ -14,12 +14,14 @@ const appSettings = ({
     data = defaults();
   }
 
-  return {
-    ...data,
-    save() {
-      store.set(storeLocation, data);
-    }
-  };
+  return Object.assign(
+    {
+      save() {
+        store.set(storeLocation, data);
+      }
+    },
+    data
+  );
 };
 
 exports.appSettings = appSettings;
