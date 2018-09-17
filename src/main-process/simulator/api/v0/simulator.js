@@ -13,6 +13,7 @@ const { createSettings } = require('../../createSettings');
 // API
 const { sendsLampixInfo } = require('../common/sendsLampixInfo');
 const { sendsApps } = require('../common/sendsApps');
+const { transformsCoordinates } = require('../common/transformsCoordinates');
 const { handlesMovement } = require('../common/watcher-management/handlesMovement');
 const { handlesClassifierWatchers } = require('../common/watcher-management/handlesClassifierWatchers');
 const { handlesSegmenterWatchers } = require('../common/watcher-management/handlesSegmenterWatchers');
@@ -66,8 +67,6 @@ const simulator = (url, {
     preloadPath: path.join(__dirname, preloadName(isDev, state.apiVersion))
   });
 
-  console.log(browser);
-
   return Object.assign(
     {
       browser,
@@ -96,7 +95,11 @@ const simulator = (url, {
       logger: Logger,
       onSegmentationStart: onPrePositionClassifierCall,
       onSegmentationEnd: onPositionClassifierCall
-    })
+    }),
+    transformsCoordinates(
+      browser,
+      configStore
+    )
   );
 };
 
