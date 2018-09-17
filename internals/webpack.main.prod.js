@@ -13,7 +13,7 @@ module.exports = {
   target: 'electron-main',
   entry: {
     main: path.join(cwd, 'src', 'main-process', 'main.js'),
-    'preload-simulator': path.resolve(cwd, 'src/main-process/Simulator/preload.js'),
+    'preload-simulator-v0': path.resolve(cwd, 'src/main-process/simulator/api/v0/preload.js'),
     'preload-admin': path.resolve(cwd, 'src/main-process/Admin/preload.js')
   },
   output: {
@@ -42,7 +42,7 @@ module.exports = {
 
   /**
    * Disables webpack processing of __dirname and __filename.
-   * If you run the bundle in node.js it falls back to these values of node.js.
+   * If you run the bundle in node.js it falls back to the values of node.js.
    * https://github.com/webpack/webpack/issues/2010
    */
   node: {
