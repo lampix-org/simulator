@@ -38,7 +38,6 @@ const handlesSegmenterWatchers = ({
     }
 
     // Lampix creates IDs iteratively, and never repeats them
-    // TODO: Or does it still?
     const objectId = idCounter++;
 
     watchers.forEach((watcher, i) => {
