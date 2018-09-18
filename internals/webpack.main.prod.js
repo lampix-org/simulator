@@ -14,6 +14,7 @@ module.exports = {
   entry: {
     main: path.join(cwd, 'src', 'main-process', 'main.js'),
     'preload-simulator-v0': path.resolve(cwd, 'src/main-process/simulator/api/v0/preload.js'),
+    'preload-simulator-v1': path.resolve(cwd, 'src/main-process/simulator/api/v1/preload.js'),
     'preload-admin': path.resolve(cwd, 'src/main-process/Admin/preload.js')
   },
   output: {
