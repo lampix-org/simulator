@@ -40,14 +40,14 @@ const handlesSegmenterWatchers = ({
     // Lampix creates IDs iteratively, and never repeats them
     const objectId = idCounter++;
 
-    watchers.forEach((watcher, i) => {
-      if (getWatcherName(watcher) !== classifier) {
+    watchers.forEach((w, i) => {
+      if (getWatcherName(w) !== classifier) {
         return;
       }
 
       const data = [];
 
-      if (somePointsInShape(polygon, getWatcherShape(watcher))) {
+      if (somePointsInShape(polygon, getWatcherShape(w))) {
         logger.info('Outline in watcher');
 
         /**
@@ -65,15 +65,15 @@ const handlesSegmenterWatchers = ({
           }
         });
 
-        logger.info('Calling segmentation start callback (v0: onPrePositionClassifier)');
-        browser.webContents.executeJavaScript(onObjectsLocated(i, data));
+        logger.info('Calling objects located callback (former onPrePosition)');
+        browser.webContents.executeJavaScript(onObjectsLocated(w.id || i, data));
 
         // TODO: Make the time of this timeout configurable
         setTimeout(() => {
           data[data.length - 1].classTag = recognizedClass;
 
-          logger.info('Calling segmentation end callback (v0: onPositionClassifier)');
-          browser.webContents.executeJavaScript(onObjectsDetected(i, data, metadata));
+          logger.info('Calling objects detected callback (former onPosition)');
+          browser.webContents.executeJavaScript(onObjectsDetected(w.id || i, data, metadata));
         }, 500);
       }
     });

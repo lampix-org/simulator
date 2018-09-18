@@ -175,9 +175,10 @@ class Simulator extends React.Component {
       names: segmenterNames,
       watchers: segmenterWatchers
     } = watcherData.segmenters;
+
     const {
       watchers: movementWatchers
-    } = watcherData.movement;
+    } = watcherData.movement || { watchers: [] };
 
     const classifierClasses = (userSimpleClasses && userSimpleClasses.length > 0) ?
       userSimpleClasses : watcherData.classifiers.classes;

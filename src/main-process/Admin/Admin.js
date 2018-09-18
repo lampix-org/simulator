@@ -41,7 +41,7 @@ class Admin {
   constructor() {
     // Assume this is the version for now
     // TODO: Implement support for changing version
-    this.selectedSimulatorVersion = 'v0';
+    this.selectedSimulatorVersion = 'v1';
 
     this.storedURLs = new Set(store.get('urls') || []);
     this.config = configStore.store;

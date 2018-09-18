@@ -36,6 +36,9 @@ exports.GET_LAMPIX_INFO = 'lx/simulator/IPC/GET_LAMPIX_INFO';
 exports.GET_APPS = 'lx-simulator/IPC/GET_APPS';
 exports.SWITCH_TO_APP = 'lx-simulator/IPC/SWITCH_TO_APP';
 
+// lampixjs v1 events
+exports.REMOVE_WATCHERS = 'lx-simulator/IPC/REMOVE_WATCHERS';
+
 // Logger
 exports.LOG_R_TO_M = 'lx-simulator/IPC/LOG_R_TO_M';
 exports.LOG_M_TO_R = 'lx-simulator/IPC/LOG_M_TO_R';

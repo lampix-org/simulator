@@ -15,12 +15,12 @@ const handlesClassifierWatchers = ({
     const { classifier, recognizedClass, metadata } = settings;
     const { watchers } = watcherData.classifiers;
 
-    watchers.forEach((watcher, i) => {
+    watchers.forEach((w, i) => {
       const point = { x, y };
 
-      if (getWatcherName(watcher) === classifier && pointInShape(point, getWatcherShape(watcher))) {
+      if (getWatcherName(w) === classifier && pointInShape(point, getWatcherShape(w))) {
         logger.verbose('Point inside watcher area, calling onSimpleClassifier in the browser window');
-        browser.webContents.executeJavaScript(onObjectClassified(i, recognizedClass, metadata));
+        browser.webContents.executeJavaScript(onObjectClassified(w.id || i, recognizedClass, metadata));
       }
     });
   }

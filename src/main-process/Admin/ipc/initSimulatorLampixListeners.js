@@ -6,7 +6,8 @@ const {
   GET_LAMPIX_INFO,
   TRANSFORM_COORDINATES,
   GET_APPS,
-  SWITCH_TO_APP
+  SWITCH_TO_APP,
+  REMOVE_WATCHERS
 } = require('../../ipcEvents');
 
 function initSimulatorLampixListeners() {
@@ -47,6 +48,14 @@ function initSimulatorLampixListeners() {
   ipcMain.on(SWITCH_TO_APP, (event, data) => {
     const { toClose, toOpen } = data;
     this.switchToApp(toClose, toOpen);
+  });
+
+  // lampixjs v1
+  ipcMain.on(REMOVE_WATCHERS, (event, data) => {
+    const { watcherIds, url } = data;
+    const simulator = this.simulators[url];
+    simulator.removeWatchers(watcherIds);
+    simulator.sendSettingsToAdmin();
   });
 }
 

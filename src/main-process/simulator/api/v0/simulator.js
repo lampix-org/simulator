@@ -74,8 +74,8 @@ const simulator = (url, {
       watcherData
     },
     setsMovementWatchers(state),
-    setsClassifierWatchers(state, 'classifier'),
-    setsSegmenterWatchers(state, 'classifier'),
+    setsClassifierWatchers(state),
+    setsSegmenterWatchers(state),
     sendsLampixInfo(state, browser, configStore),
     sendsApps(state, browser, configStore),
     sendsSettingsToAdmin(state, updateAdminUI),

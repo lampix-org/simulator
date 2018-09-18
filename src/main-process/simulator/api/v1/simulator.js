@@ -18,6 +18,7 @@ const { handlesClassifierWatchers } = require('../common/watcher-management/hand
 const { handlesSegmenterWatchers } = require('../common/watcher-management/handlesSegmenterWatchers');
 const { setsClassifierWatchers } = require('../common/watcher-management/setsClassifierWatchers');
 const { setsSegmenterWatchers } = require('../common/watcher-management/setsSegmenterWatchers');
+const { removesWatchers } = require('./removesWatchers');
 
 // Calls to browser
 const { onObjectClassified } = require('./onObjectClassified');
@@ -28,9 +29,9 @@ const { onObjectsLocated } = require('./onObjectsLocated');
 const { sendsSettingsToAdmin } = require('../../internal/sendsSettingsToAdmin');
 
 // Settings
-const { defaultSettings } = require('./defaultSettings');
+const { defaultSettings } = require('../v0/defaultSettings');
 
-const version = 'v0';
+const version = 'v1';
 
 const simulator = (url, {
   store,
@@ -49,7 +50,7 @@ const simulator = (url, {
   // Registered data represents volatile information, not persisted
   // All of this information comes strictly from the simulated application
   // through register events
-  const watcherData = createWatcherDataCategories(true);
+  const watcherData = createWatcherDataCategories();
 
   const state = {
     updateAdminUI,
@@ -73,6 +74,7 @@ const simulator = (url, {
     },
     setsClassifierWatchers(state),
     setsSegmenterWatchers(state),
+    removesWatchers(state),
     handlesClassifierWatchers({
       state,
       browser,
