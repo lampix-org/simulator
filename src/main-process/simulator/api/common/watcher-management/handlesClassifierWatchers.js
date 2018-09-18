@@ -6,7 +6,7 @@ const handlesClassifierWatchers = ({
   state,
   browser,
   logger,
-  onClassification
+  onObjectClassified
 }) => ({
   handleClassifierWatchers(x, y) {
     logger.verbose(`Handling click / simple classification at x: ${x}, y: ${y}`);
@@ -20,7 +20,7 @@ const handlesClassifierWatchers = ({
 
       if (getWatcherName(watcher) === classifier && pointInShape(point, getWatcherShape(watcher))) {
         logger.verbose('Point inside watcher area, calling onSimpleClassifier in the browser window');
-        browser.webContents.executeJavaScript(onClassification(i, recognizedClass, metadata));
+        browser.webContents.executeJavaScript(onObjectClassified(i, recognizedClass, metadata));
       }
     });
   }

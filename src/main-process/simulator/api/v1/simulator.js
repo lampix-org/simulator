@@ -20,9 +20,9 @@ const { setsClassifierWatchers } = require('../common/watcher-management/setsCla
 const { setsSegmenterWatchers } = require('../common/watcher-management/setsSegmenterWatchers');
 
 // Calls to browser
-const { onClassification } = require('./onClassification');
-const { onSegmentationStart } = require('./onSegmentationStart');
-const { onSegmentationEnd } = require('./onSegmentationEnd');
+const { onObjectClassified } = require('./onObjectClassified');
+const { onObjectsDetected } = require('./onObjectsDetected');
+const { onObjectsLocated } = require('./onObjectsLocated');
 
 // Internals
 const { sendsSettingsToAdmin } = require('../../internal/sendsSettingsToAdmin');
@@ -77,14 +77,14 @@ const simulator = (url, {
       state,
       browser,
       logger: Logger,
-      onClassification
+      onObjectClassified
     }),
     handlesSegmenterWatchers({
       state,
       browser,
       logger: Logger,
-      onSegmentationStart,
-      onSegmentationEnd
+      onObjectsLocated,
+      onObjectsDetected
     }),
     sendsLampixInfo(state, browser, configStore),
     sendsApps(state, browser, configStore),

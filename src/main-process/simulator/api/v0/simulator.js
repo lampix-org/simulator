@@ -87,14 +87,14 @@ const simulator = (url, {
       state,
       browser,
       logger: Logger,
-      onClassification: onSimpleClassifierCall
+      onObjectClassified: onSimpleClassifierCall
     }),
     handlesSegmenterWatchers({
       state,
       browser,
       logger: Logger,
-      onSegmentationStart: onPrePositionClassifierCall,
-      onSegmentationEnd: onPositionClassifierCall
+      onObjectsLocated: onPrePositionClassifierCall,
+      onObjectsDetected: onPositionClassifierCall
     }),
     transformsCoordinates(
       browser,

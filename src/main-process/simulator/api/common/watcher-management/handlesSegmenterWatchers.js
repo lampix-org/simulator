@@ -8,8 +8,8 @@ const handlesSegmenterWatchers = ({
   state,
   browser,
   logger,
-  onSegmentationStart,
-  onSegmentationEnd
+  onObjectsLocated,
+  onObjectsDetected
 }) => ({
   handleSegmenterWatchers(x, y) {
     logger.verbose(`Handling right click / segmentation at x: ${x}, y: ${y}`);
@@ -66,14 +66,14 @@ const handlesSegmenterWatchers = ({
         });
 
         logger.info('Calling segmentation start callback (v0: onPrePositionClassifier)');
-        browser.webContents.executeJavaScript(onSegmentationStart(i, data));
+        browser.webContents.executeJavaScript(onObjectsLocated(i, data));
 
         // TODO: Make the time of this timeout configurable
         setTimeout(() => {
           data[data.length - 1].classTag = recognizedClass;
 
           logger.info('Calling segmentation end callback (v0: onPositionClassifier)');
-          browser.webContents.executeJavaScript(onSegmentationEnd(i, data, metadata));
+          browser.webContents.executeJavaScript(onObjectsDetected(i, data, metadata));
         }, 500);
       }
     });
