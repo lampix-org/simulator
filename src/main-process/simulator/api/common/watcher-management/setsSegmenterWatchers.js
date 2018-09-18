@@ -1,12 +1,12 @@
 const { parseIfString } = require('../../../../utils/parseIfString');
-const { pluckUniqFromList } = require('../../../../utils/pluckUniqFromList');
+const { getWatcherName } = require('../../compatibility/getWatcherName');
 
-const setsSegmenterWatchers = (state, watcherNameProp) => ({
+const setsSegmenterWatchers = (state) => ({
   setSegmenterWatchers(data = []) {
     const { watcherData } = state;
 
     const parsedData = parseIfString(data);
-    watcherData.segmenters.names = pluckUniqFromList(watcherNameProp, parsedData);
+    watcherData.segmenters.names = [...new Set(data.map((w) => getWatcherName(w)))];
     watcherData.segmenters.watchers = parsedData;
   }
 });
