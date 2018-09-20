@@ -1,4 +1,4 @@
-const onObjectsClassified = (watcherId, recognizedClass, metadata) =>
-  `onObjectsClassified('${watcherId}', '${recognizedClass}', '${metadata}')`;
+const onObjectClassified = (watcherId, recognizedClass, metadata) =>
+  `onObjectClassified('${watcherId}', '${recognizedClass}', '${metadata}')`;
 
-exports.onObjectsClassified = onObjectsClassified;
+exports.onObjectClassified = onObjectClassified;

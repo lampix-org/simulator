@@ -74,7 +74,10 @@ const simulator = (url, {
     },
     setsClassifierWatchers(state),
     setsSegmenterWatchers(state),
-    removesWatchers(state),
+    removesWatchers(
+      state,
+      browser
+    ),
     handlesClassifierWatchers({
       state,
       browser,
