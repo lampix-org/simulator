@@ -16,9 +16,8 @@ const { sendsApps } = require('../common/sendsApps');
 const { transformsCoordinates } = require('../common/transformsCoordinates');
 const { handlesClassifierWatchers } = require('../common/watcher-management/handlesClassifierWatchers');
 const { handlesSegmenterWatchers } = require('../common/watcher-management/handlesSegmenterWatchers');
-const { setsClassifierWatchers } = require('../common/watcher-management/setsClassifierWatchers');
-const { setsSegmenterWatchers } = require('../common/watcher-management/setsSegmenterWatchers');
 const { removesWatchers } = require('./removesWatchers');
+const { addsWatchers } = require('./addsWatchers');
 
 // Calls to browser
 const { onObjectClassified } = require('./onObjectClassified');
@@ -50,14 +49,12 @@ const simulator = (url, {
   // Registered data represents volatile information, not persisted
   // All of this information comes strictly from the simulated application
   // through register events
-  const watcherData = createWatcherDataCategories();
-
   const state = {
     updateAdminUI,
-    id: naiveIDGenerator(),
-    apiVersion: version,
     settings,
-    watcherData
+    apiVersion: version,
+    id: naiveIDGenerator(),
+    watcherData: createWatcherDataCategories()
   };
 
   const browser = createOwnBrowser({
@@ -70,10 +67,15 @@ const simulator = (url, {
     {
       browser,
       settings,
-      watcherData
+      watcherData: state.watcherData,
+      resetData() {
+        state.watcherData = Object.assign(state.watcherData, createWatcherDataCategories());
+      }
     },
-    setsClassifierWatchers(state),
-    setsSegmenterWatchers(state),
+    addsWatchers(
+      state,
+      browser
+    ),
     removesWatchers(
       state,
       browser
@@ -97,7 +99,7 @@ const simulator = (url, {
     transformsCoordinates(
       browser,
       configStore
-    )
+    ),
   );
 };
 

@@ -3,7 +3,8 @@ const {
   LOAD_APP,
   CLOSE_SIMULATOR,
   FOCUS_SIMULATOR,
-  OPEN_DEV_TOOLS
+  OPEN_DEV_TOOLS,
+  BEFORE_UNLOAD
 } = require('../../ipcEvents');
 
 function initAppManagementListeners() {
@@ -25,6 +26,11 @@ function initAppManagementListeners() {
   ipcMain.on(OPEN_DEV_TOOLS, (event, data) => {
     const { url } = data;
     this.openDevTools(url);
+  });
+
+  ipcMain.on(BEFORE_UNLOAD, (event, data) => {
+    const { url } = data;
+    this.simulators[url].resetData();
   });
 }
 
