@@ -41,6 +41,8 @@ exports.SWITCH_TO_APP = event('SWITCH_TO_APP');
 // lampixjs v1 events
 exports.ADD_WATCHERS = event('ADD_WATCHERS');
 exports.REMOVE_WATCHERS = event('REMOVE_WATCHERS');
+exports.PAUSE_WATCHERS = event('PAUSE_WATCHERS');
+exports.RESUME_WATCHERS = event('RESUME_WATCHERS');
 
 // Logger
 exports.LOG_R_TO_M = event('LOG_R_TO_M');

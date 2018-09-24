@@ -18,6 +18,10 @@ const handlesClassifierWatchers = ({
     watchers.forEach((w, i) => {
       const point = { x, y };
 
+      if (watcherData.paused.includes(w.id)) {
+        return;
+      }
+
       if (getWatcherName(w) === classifier && pointInShape(point, getWatcherShape(w))) {
         logger.verbose('Point inside watcher area, calling onSimpleClassifier in the browser window');
         browser.webContents.executeJavaScript(onObjectClassified(w.id || i, recognizedClass, metadata));

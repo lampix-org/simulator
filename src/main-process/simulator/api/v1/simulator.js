@@ -18,6 +18,8 @@ const { handlesClassifierWatchers } = require('../common/watcher-management/hand
 const { handlesSegmenterWatchers } = require('../common/watcher-management/handlesSegmenterWatchers');
 const { removesWatchers } = require('./removesWatchers');
 const { addsWatchers } = require('./addsWatchers');
+const { pausesWatchers } = require('./pausesWatchers');
+const { resumesWatchers } = require('./resumesWatchers');
 
 // Calls to browser
 const { onObjectClassified } = require('./onObjectClassified');
@@ -31,6 +33,9 @@ const { sendsSettingsToAdmin } = require('../../internal/sendsSettingsToAdmin');
 const { defaultSettings } = require('../v0/defaultSettings');
 
 const version = 'v1';
+const v1SpecificWatcherData = () => Object.assign(createWatcherDataCategories(), {
+  paused: []
+});
 
 const simulator = (url, {
   store,
@@ -53,8 +58,8 @@ const simulator = (url, {
     updateAdminUI,
     settings,
     apiVersion: version,
-    id: naiveIDGenerator(),
-    watcherData: createWatcherDataCategories()
+    watcherData: v1SpecificWatcherData(),
+    id: naiveIDGenerator()
   };
 
   const browser = createOwnBrowser({
@@ -69,17 +74,13 @@ const simulator = (url, {
       settings,
       watcherData: state.watcherData,
       resetData() {
-        state.watcherData = Object.assign(state.watcherData, createWatcherDataCategories());
+        state.watcherData = Object.assign(state.watcherData, v1SpecificWatcherData());
       }
     },
-    addsWatchers(
-      state,
-      browser
-    ),
-    removesWatchers(
-      state,
-      browser
-    ),
+    addsWatchers(state, browser),
+    removesWatchers(state, browser),
+    pausesWatchers(state, browser),
+    resumesWatchers(state, browser),
     handlesClassifierWatchers({
       state,
       browser,

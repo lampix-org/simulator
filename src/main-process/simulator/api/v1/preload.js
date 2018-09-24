@@ -8,6 +8,8 @@ const {
   SWITCH_TO_APP,
   ADD_WATCHERS,
   REMOVE_WATCHERS,
+  PAUSE_WATCHERS,
+  RESUME_WATCHERS,
   BEFORE_UNLOAD
 } = require('../../../ipcEvents');
 
@@ -49,6 +51,14 @@ window._lampix_internal = {
   remove_watchers: (watcherIds = []) => {
     Logger.info('remove_watchers called');
     ipcRenderer.send(REMOVE_WATCHERS, payload({ watcherIds }));
+  },
+  pause_watchers: (watcherIds = []) => {
+    Logger.info('pause_watchers called');
+    ipcRenderer.send(PAUSE_WATCHERS, payload({ watcherIds }));
+  },
+  resume_watchers: (watcherIds = []) => {
+    Logger.info('resume_watchers called');
+    ipcRenderer.send(RESUME_WATCHERS, payload({ watcherIds }));
   },
   getLampixInfo: () => ipcRenderer.send(GET_LAMPIX_INFO, {
     url: appUrl

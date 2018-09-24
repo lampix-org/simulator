@@ -8,7 +8,9 @@ const {
   GET_APPS,
   SWITCH_TO_APP,
   ADD_WATCHERS,
-  REMOVE_WATCHERS
+  REMOVE_WATCHERS,
+  PAUSE_WATCHERS,
+  RESUME_WATCHERS
 } = require('../../ipcEvents');
 
 function initSimulatorLampixListeners() {
@@ -63,6 +65,20 @@ function initSimulatorLampixListeners() {
     const { watcherIds, url } = data;
     const simulator = this.simulators[url];
     simulator.removeWatchers(watcherIds);
+    simulator.sendSettingsToAdmin();
+  });
+
+  ipcMain.on(PAUSE_WATCHERS, (event, data) => {
+    const { watcherIds, url } = data;
+    const simulator = this.simulators[url];
+    simulator.pauseWatchers(watcherIds);
+    simulator.sendSettingsToAdmin();
+  });
+
+  ipcMain.on(RESUME_WATCHERS, (event, data) => {
+    const { watcherIds, url } = data;
+    const simulator = this.simulators[url];
+    simulator.resumeWatchers(watcherIds);
     simulator.sendSettingsToAdmin();
   });
 }
