@@ -10,7 +10,8 @@ const {
   REMOVE_WATCHERS,
   PAUSE_WATCHERS,
   RESUME_WATCHERS,
-  BEFORE_UNLOAD
+  BEFORE_UNLOAD,
+  UPDATE_WATCHER_SHAPE
 } = require('../../../ipcEvents');
 
 const { Logger } = require('../../../Logger');
@@ -59,6 +60,10 @@ window._lampix_internal = {
   resume_watchers: (watcherIds = []) => {
     Logger.info('resume_watchers called');
     ipcRenderer.send(RESUME_WATCHERS, payload({ watcherIds }));
+  },
+  update_watcher_shape: (watcherId, shape) => {
+    Logger.info('update_watcher_shape called');
+    ipcRenderer.send(UPDATE_WATCHER_SHAPE, payload({ watcherId, shape }));
   },
   getLampixInfo: () => ipcRenderer.send(GET_LAMPIX_INFO, {
     url: appUrl

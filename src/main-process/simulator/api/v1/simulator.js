@@ -20,6 +20,7 @@ const { removesWatchers } = require('./removesWatchers');
 const { addsWatchers } = require('./addsWatchers');
 const { pausesWatchers } = require('./pausesWatchers');
 const { resumesWatchers } = require('./resumesWatchers');
+const { updatesWatcherShape } = require('./updatesWatcherShape');
 
 // Calls to browser
 const { onObjectClassified } = require('./onObjectClassified');
@@ -81,6 +82,7 @@ const simulator = (url, {
     removesWatchers(state, browser),
     pausesWatchers(state, browser),
     resumesWatchers(state, browser),
+    updatesWatcherShape(state, browser),
     handlesClassifierWatchers({
       state,
       browser,

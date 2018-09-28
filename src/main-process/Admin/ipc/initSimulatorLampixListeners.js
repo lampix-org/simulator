@@ -10,7 +10,8 @@ const {
   ADD_WATCHERS,
   REMOVE_WATCHERS,
   PAUSE_WATCHERS,
-  RESUME_WATCHERS
+  RESUME_WATCHERS,
+  UPDATE_WATCHER_SHAPE
 } = require('../../ipcEvents');
 
 function initSimulatorLampixListeners() {
@@ -79,6 +80,13 @@ function initSimulatorLampixListeners() {
     const { watcherIds, url } = data;
     const simulator = this.simulators[url];
     simulator.resumeWatchers(watcherIds);
+    simulator.sendSettingsToAdmin();
+  });
+
+  ipcMain.on(UPDATE_WATCHER_SHAPE, (event, data) => {
+    const { watcherId, shape, url } = data;
+    const simulator = this.simulators[url];
+    simulator.updateWatcherShape(watcherId, shape);
     simulator.sendSettingsToAdmin();
   });
 }

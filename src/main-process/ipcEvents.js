@@ -43,6 +43,7 @@ exports.ADD_WATCHERS = event('ADD_WATCHERS');
 exports.REMOVE_WATCHERS = event('REMOVE_WATCHERS');
 exports.PAUSE_WATCHERS = event('PAUSE_WATCHERS');
 exports.RESUME_WATCHERS = event('RESUME_WATCHERS');
+exports.UPDATE_WATCHER_SHAPE = event('UPDATE_WATCHER_SHAPE');
 
 // Logger
 exports.LOG_R_TO_M = event('LOG_R_TO_M');
