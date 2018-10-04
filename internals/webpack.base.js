@@ -5,7 +5,7 @@ const cwd = process.cwd();
 
 module.exports = (options) => ({
   entry: Object.assign({
-    app: path.join(cwd, 'src', 'index.js')
+    app: path.join(cwd, 'src', 'renderer', 'index.js')
   }, options.entry),
   output: Object.assign({}, options.output),
   module: {

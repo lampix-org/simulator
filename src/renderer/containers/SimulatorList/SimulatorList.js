@@ -2,8 +2,8 @@ import React from 'react';
 
 import Typography from '@material-ui/core/Typography';
 
-import { UPDATE_SIMULATOR_LIST, UPDATE_SIMULATOR_SETTINGS, APP_CONFIG } from '../../main-process/ipcEvents';
-import { SIMPLE, POSITION } from '../../common/constants';
+import { UPDATE_SIMULATOR_LIST, UPDATE_SIMULATOR_SETTINGS, APP_CONFIG } from '../../../main/ipcEvents';
+import { SIMPLE, POSITION } from '../../../common/constants';
 
 import Simulator from '../../components/Simulator';
 import Separator from '../../components/Separator';

@@ -25,7 +25,7 @@ import Separator from '../../components/Separator';
 import AppNameURLAssociation from './AppNameURLAssociation';
 
 // IPC Events
-import { APP_CONFIG } from '../../main-process/ipcEvents';
+import { APP_CONFIG } from '../../../main/ipcEvents';
 
 // Actions
 import { queue } from '../Notifications/actions';

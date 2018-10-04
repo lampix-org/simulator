@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 import Settings from '@material-ui/icons/Settings';
-import { UPDATE_URL_LIST } from '../main-process/ipcEvents';
+import { UPDATE_URL_LIST } from '../../main/ipcEvents';
 
 import AutoComplete from './AutoComplete';
 import HelpDialog from './HelpDialog';

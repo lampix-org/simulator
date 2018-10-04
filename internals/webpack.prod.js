@@ -66,7 +66,7 @@ module.exports = baseConfig({
     }),
     // Extract app code to own file
     new HtmlWebpackPlugin({
-      template: path.join(cwd, 'src', 'index.html')
+      template: path.join(cwd, 'src', 'renderer', 'index.html')
     }),
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'production',

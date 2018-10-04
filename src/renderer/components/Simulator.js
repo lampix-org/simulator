@@ -34,12 +34,12 @@ import {
   SIMPLE,
   POSITION,
   MOVEMENT
-} from '../common/constants';
+} from '../../common/constants';
 
 const {
   DEFAULT_WINDOW_WIDTH,
   DEFAULT_WINDOW_HEIGHT
-} = require('../main-process/constants');
+} = require('../../main/constants');
 
 const DEFAULT_DISPLAY_SIZE = 5;
 

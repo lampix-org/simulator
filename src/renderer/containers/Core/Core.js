@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import {
   ADMIN_UI_READY,
   ERROR
-} from '../../main-process/ipcEvents';
+} from '../../../main/ipcEvents';
 
 import ButtonAppBar from '../../components/ButtonAppBar';
 import SimulatorList from '../SimulatorList';

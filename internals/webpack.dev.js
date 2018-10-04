@@ -37,7 +37,7 @@ module.exports = baseConfig({
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(cwd, 'src', 'index.html')
+      template: path.join(cwd, 'src', 'renderer', 'index.html')
     })
   ],
   devServer: {
