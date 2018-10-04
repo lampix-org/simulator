@@ -1,3 +1,5 @@
+const { parseIfString } = require('../../../utils/parseIfString');
+
 const updatesWatcherShape = (state, browser) => ({
   updateWatcherShape(watcherId, shape) {
     const {
@@ -16,7 +18,8 @@ const updatesWatcherShape = (state, browser) => ({
 
     // This is a naive implementation leading to unwanted results
     // TODO: Check shape integrity
-    watcher.shape = Object.assign(watcher.shape, shape);
+    const parsedData = parseIfString(shape);
+    watcher.shape = Object.assign(watcher.shape, parsedData);
 
     browser.webContents.executeJavaScript(`onWatcherUpdated('${watcherId}')`);
   }
