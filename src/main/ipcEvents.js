@@ -22,6 +22,7 @@ exports.SAVE_SCALE_FACTOR = event('IPC/SAVE_SCALE_FACTOR');
 exports.SAVE_PIX = event('IPC/SAVE_PIX');
 exports.SAVE_USER_SIMPLE_CLASSES = event('SAVE_USER_SIMPLE_CLASSES');
 exports.SAVE_USER_POSITION_CLASSES = event('SAVE_USER_POSITION_CLASSES');
+exports.CHANGE_CORE_VERSION = event('CHANGE_CORE_VERSION');
 
 // Simulated app events
 exports.MOUSE_MOVE = event('MOUSE_MOVE');

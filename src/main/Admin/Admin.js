@@ -39,10 +39,6 @@ const simulatorsByVersion = {
 
 class Admin {
   constructor() {
-    // Assume this is the version for now
-    // TODO: Implement support for changing version
-    this.selectedSimulatorVersion = 'v1';
-
     this.storedURLs = new Set(store.get('urls') || []);
     this.config = configStore.store;
     this.simulators = {};
@@ -100,7 +96,7 @@ class Admin {
       checkedURL
     );
 
-    this.simulators[checkedURL] = simulatorsByVersion[this.selectedSimulatorVersion](url, {
+    this.simulators[checkedURL] = simulatorsByVersion[this.config.simulator.coreVersion](url, {
       store,
       configStore,
       isDev,
@@ -219,6 +215,11 @@ class Admin {
   updateUserPositionClasses(userPositionClasses) {
     configStore.set('userPositionClasses', userPositionClasses);
     this.config.userPositionClasses = userPositionClasses;
+  }
+
+  updateCoreVersion(v) {
+    configStore.set('simulator.coreVersion', v);
+    this.config.simulator.coreVersion = v;
   }
 }
 

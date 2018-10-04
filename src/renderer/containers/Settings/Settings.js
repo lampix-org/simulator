@@ -16,12 +16,14 @@ import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import MenuItem from '@material-ui/core/MenuItem';
 
 // Utils
 import get from 'lodash.get';
 
 // Custom components
 import Separator from '../../components/Separator';
+import Dropdown from '../../components/Dropdown';
 import AppNameURLAssociation from './AppNameURLAssociation';
 
 // IPC Events
@@ -73,7 +75,8 @@ class Settings extends React.Component {
     endpoint: '',
     token: '',
     simpleClasses: '',
-    positionClasses: ''
+    positionClasses: '',
+    coreVersion: 1
   };
 
   componentDidMount() {
@@ -82,7 +85,8 @@ class Settings extends React.Component {
         simulator: {
           coordinateConversion: {
             scaleFactor
-          }
+          },
+          coreVersion
         },
         pix,
         userSimpleClasses,
@@ -91,6 +95,7 @@ class Settings extends React.Component {
 
       this.setState({
         scaleFactor,
+        coreVersion,
         endpoint: pix.endpoint,
         token: pix.token,
         classifierNames: userSimpleClasses && userSimpleClasses.length ? userSimpleClasses.join('\n') : '',
@@ -126,11 +131,11 @@ class Settings extends React.Component {
   }
 
   removeAssociation = (name) => {
-    window.lampix.removeAssociation(name);
+    window.admin.removeAssociation(name);
   };
 
   saveAssociation = (name, url) => {
-    window.lampix.addAssociation(name, url);
+    window.admin.addAssociation(name, url);
   }
 
   updateScaleFactor = (event) => {
@@ -141,7 +146,7 @@ class Settings extends React.Component {
   }
 
   saveScaleFactor = () => {
-    window.lampix.saveScaleFactor(this.state.scaleFactor);
+    window.admin.saveScaleFactor(this.state.scaleFactor);
   }
 
   updatePix = (label, event) => {
@@ -153,7 +158,7 @@ class Settings extends React.Component {
 
   savePix = () => {
     const { endpoint, token } = this.state;
-    window.lampix.savePix({ endpoint, token });
+    window.admin.savePix({ endpoint, token });
   }
 
   areSettingsValid = (settings) => settings.findIndex(element => element === '') === -1
@@ -180,7 +185,7 @@ class Settings extends React.Component {
 
   saveUserSimpleClasses = () => {
     const { simpleClasses } = this.state;
-    window.lampix.saveUserSimpleClasses(simpleClasses.trim().split('\n'));
+    window.admin.saveUserSimpleClasses(simpleClasses.trim().split('\n'));
   }
 
   resetUserSimpleClasses = () => {
@@ -189,7 +194,7 @@ class Settings extends React.Component {
       simpleClasses: ''
     }, () => {
       const { simpleClasses } = this.state;
-      window.lampix.saveUserSimpleClasses(simpleClasses);
+      window.admin.saveUserSimpleClasses(simpleClasses);
     });
   }
 
@@ -199,10 +204,15 @@ class Settings extends React.Component {
       positionClasses: event.target.value
     });
   }
+
   saveUserPositionClasses = () => {
     const { positionClasses } = this.state;
-    window.lampix.saveUserPositionClasses(positionClasses.trim().split('\n'));
+    window.admin.saveUserPositionClasses(positionClasses.trim().split('\n'));
   }
+
+  selectCoreVersion = (event) => {
+    window.admin.changeCoreVersion(event.target.value);
+  };
 
   resetUserPositionClasses = () => {
     this.setState({
@@ -210,7 +220,7 @@ class Settings extends React.Component {
       positionClasses: ''
     }, () => {
       const { positionClasses } = this.state;
-      window.lampix.saveUserPositionClasses(positionClasses);
+      window.admin.saveUserPositionClasses(positionClasses);
     });
   }
 
@@ -248,6 +258,22 @@ class Settings extends React.Component {
         </AppBar>
 
         <div className={classes.container}>
+          <Paper className={classes.paper}>
+            <Typography variant="title">
+              @lampix/core version
+            </Typography>
+
+            <Separator />
+
+            <Dropdown
+              value={this.state.coreVersion}
+              onChange={this.selectCoreVersion}
+            >
+              <MenuItem value="v0">0.x</MenuItem>
+              <MenuItem value="v1">1.x (alpha)</MenuItem>
+            </Dropdown>
+          </Paper>
+
           <Paper className={classes.paper}>
             <Typography variant="title">
               Associate URLs with app names

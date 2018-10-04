@@ -48,7 +48,7 @@ class ButtonAppBar extends React.Component {
 
   loadApp = () => {
     if (this.state.inputValue) {
-      window.lampix.loadApp(this.state.inputValue);
+      window.admin.loadApp(this.state.inputValue);
     }
   }
 

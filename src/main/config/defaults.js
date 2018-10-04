@@ -10,7 +10,8 @@ module.exports = {
     appSwitcher: {
       numberOfDummyApps: 5,
       nameToURLAssociations: {}
-    }
+    },
+    coreVersion: 'v1'
   },
   pix: {
     endpoint: '',

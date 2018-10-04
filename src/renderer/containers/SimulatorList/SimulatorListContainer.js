@@ -46,7 +46,7 @@ class SimulatorListContainer extends React.Component {
     const { path } = event.dataTransfer.files[0];
 
     const url = `file://${path}`;
-    window.lampix.loadApp(url);
+    window.admin.loadApp(url);
 
     this.setState({
       dragging: false

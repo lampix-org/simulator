@@ -10,7 +10,8 @@ const {
   SAVE_SCALE_FACTOR,
   SAVE_PIX,
   SAVE_USER_SIMPLE_CLASSES,
-  SAVE_USER_POSITION_CLASSES
+  SAVE_USER_POSITION_CLASSES,
+  CHANGE_CORE_VERSION
 } = require('../../ipcEvents');
 const {
   SIMPLE,
@@ -105,6 +106,11 @@ function initSimulatorSettingsListeners() {
 
   ipcMain.on(SAVE_USER_POSITION_CLASSES, (event, userPositionClasses) => {
     this.updateUserPositionClasses(userPositionClasses);
+    this.sendConfig();
+  });
+
+  ipcMain.on(CHANGE_CORE_VERSION, (event, version) => {
+    this.updateCoreVersion(version);
     this.sendConfig();
   });
 }

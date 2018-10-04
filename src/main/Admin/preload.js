@@ -14,16 +14,19 @@ const {
   SAVE_SCALE_FACTOR,
   SAVE_PIX,
   SAVE_USER_SIMPLE_CLASSES,
-  SAVE_USER_POSITION_CLASSES
+  SAVE_USER_POSITION_CLASSES,
+  CHANGE_CORE_VERSION
 } = require('../ipcEvents');
 const { Logger } = require('../Logger');
 
 window.Logger = Logger;
 window.ipcRenderer = ipcRenderer;
 
-window.onbeforeunload = () => false;
+if (process.env.NODE_ENV === 'production') {
+  window.onbeforeunload = () => false;
+}
 
-window.lampix = {
+window.admin = {
   loadApp: (url) => ipcRenderer.send(LOAD_APP, { url }),
   toggleMovement: (url) => ipcRenderer.send(TOGGLE_MOVEMENT, { url }),
   setClassifier: (url, type, classifier) => ipcRenderer.send(SET_CLASSIFIER, {
@@ -58,4 +61,5 @@ window.lampix = {
   savePix: (object) => ipcRenderer.send(SAVE_PIX, object),
   saveUserSimpleClasses: (simpleClasses) => ipcRenderer.send(SAVE_USER_SIMPLE_CLASSES, simpleClasses),
   saveUserPositionClasses: (positionClasses) => ipcRenderer.send(SAVE_USER_POSITION_CLASSES, positionClasses),
+  changeCoreVersion: (version) => ipcRenderer.send(CHANGE_CORE_VERSION, version)
 };

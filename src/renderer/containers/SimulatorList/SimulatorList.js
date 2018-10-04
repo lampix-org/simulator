@@ -63,7 +63,7 @@ class SimulatorList extends React.Component {
     this.setState({
       simulatorList
     }, () => {
-      window.lampix.toggleMovement(url);
+      window.admin.toggleMovement(url);
     });
   }
 
@@ -74,7 +74,7 @@ class SimulatorList extends React.Component {
     this.setState({
       simulatorList
     }, () => {
-      window.lampix.setClassifier(url, SIMPLE, classifier);
+      window.admin.setClassifier(url, SIMPLE, classifier);
     });
   }
 
@@ -85,7 +85,7 @@ class SimulatorList extends React.Component {
     this.setState({
       simulatorList
     }, () => {
-      window.lampix.setRecognizedClass(url, SIMPLE, recognizedClass);
+      window.admin.setRecognizedClass(url, SIMPLE, recognizedClass);
     });
   }
 
@@ -96,7 +96,7 @@ class SimulatorList extends React.Component {
     this.setState({
       simulatorList
     }, () => {
-      window.lampix.setMetadata(url, SIMPLE, metadata);
+      window.admin.setMetadata(url, SIMPLE, metadata);
     });
   }
 
@@ -107,7 +107,7 @@ class SimulatorList extends React.Component {
     this.setState({
       simulatorList
     }, () => {
-      window.lampix.setClassifier(url, POSITION, classifier);
+      window.admin.setClassifier(url, POSITION, classifier);
     });
   }
 
@@ -118,7 +118,7 @@ class SimulatorList extends React.Component {
     this.setState({
       simulatorList
     }, () => {
-      window.lampix.setRecognizedClass(url, POSITION, recognizedClass);
+      window.admin.setRecognizedClass(url, POSITION, recognizedClass);
     });
   }
 
@@ -129,7 +129,7 @@ class SimulatorList extends React.Component {
     this.setState({
       simulatorList
     }, () => {
-      window.lampix.setMetadata(url, POSITION, metadata);
+      window.admin.setMetadata(url, POSITION, metadata);
     });
   }
 
@@ -158,12 +158,12 @@ class SimulatorList extends React.Component {
   }
 
   handleRegisteredAreaClick = (url, category, classifier) => {
-    window.lampix.changeCategoryClassifier(url, category, classifier);
+    window.admin.changeCategoryClassifier(url, category, classifier);
   };
 
-  closeSimulator = (url) => window.lampix.closeSimulator(url);
-  focusSimulator = (url) => window.lampix.focusSimulator(url);
-  openDevTools = (url) => window.lampix.openDevTools(url);
+  closeSimulator = (url) => window.admin.closeSimulator(url);
+  focusSimulator = (url) => window.admin.focusSimulator(url);
+  openDevTools = (url) => window.admin.openDevTools(url);
 
   render() {
     const simulatorListArr = Object.values(this.state.simulatorList);
