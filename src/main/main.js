@@ -52,8 +52,7 @@ async function createWindow() {
         label: 'View',
         submenu: [
           { role: 'reload' },
-          { role: 'forcereload' },
-          { role: 'toggledevtools' }
+          { role: 'forcereload' }
         ]
       },
       {

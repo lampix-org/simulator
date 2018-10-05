@@ -108,8 +108,8 @@ class Admin {
 
     Logger.info(`Loading app at ${checkedURL}`);
     simulatorPosition += simulatorPositionStep;
-    this.simulators[checkedURL].browser.setPosition(simulatorPosition, simulatorPosition, true);
-    this.simulators[checkedURL].browser.loadURL(`${checkedURL}?url=${checkedURL}`, options);
+    this.simulators[checkedURL].window.setPosition(simulatorPosition, simulatorPosition, true);
+    this.simulators[checkedURL].appBrowser.webContents.loadURL(`${checkedURL}?url=${checkedURL}`, options);
     this.updateURLListOrder(alias || url);
     this.sendSimulators();
     this.updateRendererURLs();
@@ -119,7 +119,7 @@ class Admin {
     Logger.info(`Attempting to close simulator for ${url}...`);
     if (this.simulators[url]) {
       Logger.info('Simulator found. Closing... ');
-      this.simulators[url].browser.close();
+      this.simulators[url].window.close();
       return;
     }
 
@@ -130,7 +130,7 @@ class Admin {
     Logger.info(`Attempting to focus simulator for ${url}...`);
     if (this.simulators[url]) {
       Logger.info('Simulator found. Focusing... ');
-      this.simulators[url].browser.focus();
+      this.simulators[url].window.focus();
       return;
     }
 
@@ -147,7 +147,7 @@ class Admin {
     Logger.info(`Attempting to open dev tools for ${url}...`);
     if (this.simulators[url]) {
       Logger.info('Simulator found. Opening dev tools');
-      this.simulators[url].browser.webContents.openDevTools();
+      this.simulators[url].appBrowser.webContents.openDevTools();
       return;
     }
 

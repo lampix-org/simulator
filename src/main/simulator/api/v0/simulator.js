@@ -61,7 +61,7 @@ const simulator = (url, {
     watcherData
   };
 
-  const browser = createOwnBrowser({
+  const { window, appBrowser } = createOwnBrowser({
     configStore,
     onClosed,
     preloadPath: path.join(__dirname, preloadName(isDev, state.apiVersion))
@@ -69,35 +69,36 @@ const simulator = (url, {
 
   return Object.assign(
     {
-      browser,
+      window,
+      appBrowser,
       settings,
       watcherData
     },
     setsMovementWatchers(state),
     setsClassifierWatchers(state),
     setsSegmenterWatchers(state),
-    sendsLampixInfo(state, browser, configStore),
-    sendsApps(state, browser, configStore),
+    sendsLampixInfo(state, appBrowser, configStore),
+    sendsApps(state, appBrowser, configStore),
     sendsSettingsToAdmin(state, updateAdminUI),
     handlesMovement({
       state,
-      browser
+      browser: appBrowser
     }),
     handlesClassifierWatchers({
       state,
-      browser,
+      browser: appBrowser,
       logger: Logger,
       onObjectClassified: onSimpleClassifierCall
     }),
     handlesSegmenterWatchers({
       state,
-      browser,
+      browser: appBrowser,
       logger: Logger,
       onObjectsLocated: onPrePositionClassifierCall,
       onObjectsDetected: onPositionClassifierCall
     }),
     transformsCoordinates(
-      browser,
+      appBrowser,
       configStore
     )
   );

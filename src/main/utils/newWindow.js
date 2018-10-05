@@ -39,6 +39,7 @@ const newWindow = ({
       nodeIntegration: false
     }
   });
+
   const window = new BrowserWindow(windowOptions);
 
   // Emitted when the window is closed.

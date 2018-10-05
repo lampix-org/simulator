@@ -63,7 +63,7 @@ const simulator = (url, {
     id: naiveIDGenerator()
   };
 
-  const browser = createOwnBrowser({
+  const { window, appBrowser } = createOwnBrowser({
     configStore,
     onClosed,
     preloadPath: path.join(__dirname, preloadName(isDev, state.apiVersion))
@@ -71,36 +71,37 @@ const simulator = (url, {
 
   return Object.assign(
     {
-      browser,
+      window,
+      appBrowser,
       settings,
       watcherData: state.watcherData,
       resetData() {
         state.watcherData = Object.assign(state.watcherData, v1SpecificWatcherData());
       }
     },
-    addsWatchers(state, browser),
-    removesWatchers(state, browser),
-    pausesWatchers(state, browser),
-    resumesWatchers(state, browser),
-    updatesWatcherShape(state, browser),
+    addsWatchers(state, appBrowser),
+    removesWatchers(state, appBrowser),
+    pausesWatchers(state, appBrowser),
+    resumesWatchers(state, appBrowser),
+    updatesWatcherShape(state, appBrowser),
     handlesClassifierWatchers({
       state,
-      browser,
+      browser: appBrowser,
       logger: Logger,
       onObjectClassified
     }),
     handlesSegmenterWatchers({
       state,
-      browser,
+      browser: appBrowser,
       logger: Logger,
       onObjectsLocated,
       onObjectsDetected
     }),
-    sendsLampixInfo(state, browser, configStore),
-    sendsApps(state, browser, configStore),
+    sendsLampixInfo(state, appBrowser, configStore),
+    sendsApps(state, appBrowser, configStore),
     sendsSettingsToAdmin(state, updateAdminUI),
     transformsCoordinates(
-      browser,
+      appBrowser,
       configStore
     ),
   );
