@@ -18,7 +18,7 @@ const handlesClassifierWatchers = ({
     watchers.forEach((w, i) => {
       const point = { x, y };
 
-      if (watcherData.paused.includes(w.id)) {
+      if (watcherData.paused && watcherData.paused.includes(w.id)) {
         return;
       }
 

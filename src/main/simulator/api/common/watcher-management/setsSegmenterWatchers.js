@@ -6,7 +6,7 @@ const setsSegmenterWatchers = (state) => ({
     const { watcherData } = state;
 
     const parsedData = parseIfString(data);
-    watcherData.segmenters.names = [...new Set(data.map((w) => getWatcherName(w)))];
+    watcherData.segmenters.names = [...new Set(parsedData.map((w) => getWatcherName(w)))];
     watcherData.segmenters.watchers = parsedData;
   }
 });

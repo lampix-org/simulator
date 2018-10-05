@@ -41,7 +41,7 @@ const handlesSegmenterWatchers = ({
     const objectId = idCounter++;
 
     watchers.forEach((w, i) => {
-      if (watcherData.paused.includes(w.id) || getWatcherName(w) !== classifier) {
+      if ((watcherData.paused && watcherData.paused.includes(w.id)) || getWatcherName(w) !== classifier) {
         return;
       }
 
