@@ -119,7 +119,7 @@
     "css-loader": "^0.28.9",
     "dotenv": "^5.0.0",
     "electron": "^2.0.5",
-    "electron-builder": "^20.18.0",
+    "electron-builder": "^20.28.4",
     "electron-devtools-installer": "^2.2.3",
     "electron-publisher-s3": "^20.15.0",
     "eslint": "^4.17.0",
