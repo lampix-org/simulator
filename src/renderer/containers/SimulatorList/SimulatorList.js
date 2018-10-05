@@ -14,7 +14,8 @@ class SimulatorList extends React.Component {
     this.state = {
       simulatorList: {},
       userSimpleClasses: {},
-      userPositionClasses: {}
+      userPositionClasses: {},
+      coreVersion: 'v1'
     };
     window.ipcRenderer.on(UPDATE_SIMULATOR_LIST, (event, data) => {
       const simulatorList = data;
@@ -49,11 +50,24 @@ class SimulatorList extends React.Component {
       });
     });
     window.ipcRenderer.on(APP_CONFIG, (event, settings) => {
-      const userSimpleClasses = settings.userSimpleClasses && settings.userSimpleClasses[0] !== '' ?
-        settings.userSimpleClasses : undefined;
-      const userPositionClasses = settings.userPositionClasses && settings.userPositionClasses[0] !== '' ?
-        settings.userPositionClasses : undefined;
-      this.setState({ userSimpleClasses, userPositionClasses });
+      const userSimpleClasses = (
+        settings.userSimpleClasses && settings.userSimpleClasses[0] !== '' ?
+          settings.userSimpleClasses :
+          undefined
+      );
+      const userPositionClasses = (
+        settings.userPositionClasses && settings.userPositionClasses[0] !== '' ?
+          settings.userPositionClasses :
+          undefined
+      );
+
+      const { simulator: { coreVersion } } = settings;
+
+      this.setState({
+        userSimpleClasses,
+        userPositionClasses,
+        coreVersion
+      });
     });
   }
 
@@ -172,6 +186,7 @@ class SimulatorList extends React.Component {
         <Simulator
           key={url}
           url={url}
+          version={this.state.coreVersion}
           data={this.state.simulatorList[url]}
           onMovementDetectorChange={this.handleMovementDetectorChange}
           onSimpleClassifierChange={this.handleSimpleClassifierChange}
@@ -193,7 +208,7 @@ class SimulatorList extends React.Component {
       )) : (
         <React.Fragment>
           <Typography variant="display1">
-            { 'Looks like you haven\'t loaded any simulators :(' }
+            {'Looks like you haven\'t loaded any simulators :('}
           </Typography>
 
           <Separator />
