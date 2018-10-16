@@ -14,7 +14,7 @@ const updatesWatcherShape = (state, browser) => ({
       ...segmenters.watchers
     ];
 
-    const watcher = watchers.find((w) => w.id);
+    const watcher = watchers.find((w) => w.id === watcherId);
 
     // This is a naive implementation leading to unwanted results
     // TODO: Check shape integrity
