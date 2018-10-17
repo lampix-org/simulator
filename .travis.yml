@@ -26,6 +26,7 @@ before_install:
     fi
 
 install:
+  - npm i -g npm@6.4.1
   - npm ci
 
 before_script:
