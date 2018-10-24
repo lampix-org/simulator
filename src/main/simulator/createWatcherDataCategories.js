@@ -10,11 +10,21 @@ const watcherData = () => {
   return data;
 };
 
-const createWatcherDataCategories = (includeMovementWatchers) => ({
-  classifiers: watcherData(),
-  segmenters: watcherData(),
-  movement: includeMovementWatchers ?
-    { watchers: [] } : undefined
-});
+const createWatcherDataCategories = (version) => {
+  const dataByVersion = {
+    v0: {
+      classifiers: watcherData(),
+      segmenters: watcherData(),
+      movement: { watchers: [] }
+    },
+    v1: {
+      watchers: {},
+      get names() { return Object.keys(this.watchers).map((wKey) => this.watchers[wKey].name); },
+      get classes() { return Object.keys(this.watchers).length ? DEFAULT_CLASSES : []; }
+    }
+  };
+
+  return dataByVersion[version];
+};
 
 exports.createWatcherDataCategories = createWatcherDataCategories;

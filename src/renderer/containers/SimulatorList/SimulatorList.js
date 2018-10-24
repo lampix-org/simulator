@@ -3,9 +3,9 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 
 import { UPDATE_SIMULATOR_LIST, UPDATE_SIMULATOR_SETTINGS, APP_CONFIG } from '../../../main/ipcEvents';
-import { SIMPLE, POSITION } from '../../../common/constants';
 
-import Simulator from '../../components/Simulator';
+import SimulatorVZero from '../Simulator/Simulator-v0';
+import SimulatorVOne from '../Simulator/Simulator-v1';
 import Separator from '../../components/Separator';
 
 class SimulatorList extends React.Component {
@@ -17,169 +17,86 @@ class SimulatorList extends React.Component {
       userPositionClasses: {},
       coreVersion: 'v1'
     };
-    window.ipcRenderer.on(UPDATE_SIMULATOR_LIST, (event, data) => {
-      const simulatorList = data;
-      Object.keys(data).forEach((url) => {
-        simulatorList[url].settings.movementRegisteredAreasOpen = false;
-        simulatorList[url].settings.simpleRegisteredAreasOpen = false;
-        simulatorList[url].settings.positionRegisteredAreasOpen = false;
-      });
-      this.setState({
-        simulatorList
-      });
+
+    window.ipcRenderer.on(APP_CONFIG, this.setAppConfig);
+    window.ipcRenderer.on(UPDATE_SIMULATOR_LIST, this.setV0SimulatorListData);
+    window.ipcRenderer.on(UPDATE_SIMULATOR_SETTINGS, this.setV0SimulatorSettings);
+  }
+
+  setAppConfig = (event, settings) => {
+    const userSimpleClasses = (
+      settings.userSimpleClasses && settings.userSimpleClasses[0] !== '' ?
+        settings.userSimpleClasses :
+        undefined
+    );
+
+    const userPositionClasses = (
+      settings.userPositionClasses && settings.userPositionClasses[0] !== '' ?
+        settings.userPositionClasses :
+        undefined
+    );
+
+    const { simulator: { coreVersion } } = settings;
+
+    this.setState({
+      userSimpleClasses,
+      userPositionClasses,
+      coreVersion
     });
-    window.ipcRenderer.on(UPDATE_SIMULATOR_SETTINGS, (event, data) => {
-      const {
-        movementRegisteredAreasOpen,
-        simpleRegisteredAreasOpen,
-        positionRegisteredAreasOpen
-      } = this.state.simulatorList[data.url].settings;
+  }
 
-      data.settings.movementRegisteredAreasOpen = movementRegisteredAreasOpen;
-      data.settings.simpleRegisteredAreasOpen = simpleRegisteredAreasOpen;
-      data.settings.positionRegisteredAreasOpen = positionRegisteredAreasOpen;
+  setV0SimulatorListData = (event, data) => {
+    Object.keys(data).forEach((url) => {
+      data[url].settings.movementRegisteredAreasOpen = false;
+      data[url].settings.simpleRegisteredAreasOpen = false;
+      data[url].settings.positionRegisteredAreasOpen = false;
+    });
 
-      this.setState({
-        simulatorList: {
-          ...this.state.simulatorList,
-          [data.url]: {
-            ...this.state.simulatorList[data.url],
-            ...data
-          }
+    this.setState({
+      simulatorList: data
+    });
+  }
+
+  setV0SimulatorSettings = (event, data) => {
+    const {
+      movementRegisteredAreasOpen,
+      simpleRegisteredAreasOpen,
+      positionRegisteredAreasOpen
+    } = this.state.simulatorList[data.url].settings;
+
+    data.settings.movementRegisteredAreasOpen = movementRegisteredAreasOpen;
+    data.settings.simpleRegisteredAreasOpen = simpleRegisteredAreasOpen;
+    data.settings.positionRegisteredAreasOpen = positionRegisteredAreasOpen;
+
+    this.setState({
+      simulatorList: {
+        ...this.state.simulatorList,
+        [data.url]: {
+          ...this.state.simulatorList[data.url],
+          ...data
         }
-      });
-    });
-    window.ipcRenderer.on(APP_CONFIG, (event, settings) => {
-      const userSimpleClasses = (
-        settings.userSimpleClasses && settings.userSimpleClasses[0] !== '' ?
-          settings.userSimpleClasses :
-          undefined
-      );
-      const userPositionClasses = (
-        settings.userPositionClasses && settings.userPositionClasses[0] !== '' ?
-          settings.userPositionClasses :
-          undefined
-      );
-
-      const { simulator: { coreVersion } } = settings;
-
-      this.setState({
-        userSimpleClasses,
-        userPositionClasses,
-        coreVersion
-      });
+      }
     });
   }
-
-  handleMovementDetectorChange = (event, url) => {
-    const simulatorList = { ...this.state.simulatorList };
-    simulatorList[url].settings.movementDetector = event.target.checked;
-    this.setState({
-      simulatorList
-    }, () => {
-      window.admin.toggleMovement(url);
-    });
-  }
-
-  handleSimpleClassifierChange = (event, url) => {
-    const simulatorList = { ...this.state.simulatorList };
-    const classifier = event.target.value;
-    simulatorList[url].settings.simple.classifier = classifier;
-    this.setState({
-      simulatorList
-    }, () => {
-      window.admin.setClassifier(url, SIMPLE, classifier);
-    });
-  }
-
-  handleSimpleRecognizedClassChange = (event, url) => {
-    const simulatorList = { ...this.state.simulatorList };
-    const recognizedClass = event.target.value;
-    simulatorList[url].settings.simple.recognizedClass = recognizedClass;
-    this.setState({
-      simulatorList
-    }, () => {
-      window.admin.setRecognizedClass(url, SIMPLE, recognizedClass);
-    });
-  }
-
-  handleSimpleMetadataChange = (event, url) => {
-    const simulatorList = { ...this.state.simulatorList };
-    const metadata = event.target.value;
-    simulatorList[url].settings.simple.metadata = metadata;
-    this.setState({
-      simulatorList
-    }, () => {
-      window.admin.setMetadata(url, SIMPLE, metadata);
-    });
-  }
-
-  handlePositionClassifierChange = (event, url) => {
-    const simulatorList = { ...this.state.simulatorList };
-    const classifier = event.target.value;
-    simulatorList[url].settings.position.classifier = classifier;
-    this.setState({
-      simulatorList
-    }, () => {
-      window.admin.setClassifier(url, POSITION, classifier);
-    });
-  }
-
-  handlePositionRecognizedClassChange = (event, url) => {
-    const simulatorList = { ...this.state.simulatorList };
-    const recognizedClass = event.target.value;
-    simulatorList[url].settings.position.recognizedClass = recognizedClass;
-    this.setState({
-      simulatorList
-    }, () => {
-      window.admin.setRecognizedClass(url, POSITION, recognizedClass);
-    });
-  }
-
-  handlePositionMetadataChange = (event, url) => {
-    const simulatorList = { ...this.state.simulatorList };
-    const metadata = event.target.value;
-    simulatorList[url].settings.position.metadata = metadata;
-    this.setState({
-      simulatorList
-    }, () => {
-      window.admin.setMetadata(url, POSITION, metadata);
-    });
-  }
-
-  handleMovementRegisteredAreasClick = (url) => {
-    const simulatorList = { ...this.state.simulatorList };
-    simulatorList[url].settings.movementRegisteredAreasOpen = !simulatorList[url].settings.movementRegisteredAreasOpen;
-    this.setState({
-      simulatorList
-    });
-  }
-
-  handleSimpleRegisteredAreasClick = (url) => {
-    const simulatorList = { ...this.state.simulatorList };
-    simulatorList[url].settings.simpleRegisteredAreasOpen = !simulatorList[url].settings.simpleRegisteredAreasOpen;
-    this.setState({
-      simulatorList
-    });
-  }
-
-  handlePositionRegisteredAreasClick = (url) => {
-    const simulatorList = { ...this.state.simulatorList };
-    simulatorList[url].settings.positionRegisteredAreasOpen = !simulatorList[url].settings.positionRegisteredAreasOpen;
-    this.setState({
-      simulatorList
-    });
-  }
-
-  handleRegisteredAreaClick = (url, category, classifier) => {
-    window.admin.changeCategoryClassifier(url, category, classifier);
-  };
 
   closeSimulator = (url) => window.admin.closeSimulator(url);
   focusSimulator = (url) => window.admin.focusSimulator(url);
   openDevTools = (url) => window.admin.openDevTools(url);
 
+  updateSimulatorSettings = (url, settings) => new Promise((resolve) => {
+    this.setState({
+      simulatorList: {
+        ...this.state.simulatorList,
+        [url]: {
+          ...this.state.simulatorList[url],
+          ...settings
+        }
+      }
+    }, resolve);
+  });
+
   render() {
+    const Simulator = this.state.coreVersion === 'v1' ? SimulatorVOne : SimulatorVZero;
     const simulatorListArr = Object.values(this.state.simulatorList);
     const simulators = simulatorListArr.length > 0 ?
       Object.keys(this.state.simulatorList).map((url) => (
@@ -188,22 +105,12 @@ class SimulatorList extends React.Component {
           url={url}
           version={this.state.coreVersion}
           data={this.state.simulatorList[url]}
-          onMovementDetectorChange={this.handleMovementDetectorChange}
-          onSimpleClassifierChange={this.handleSimpleClassifierChange}
-          onSimpleRecognizedClassChange={this.handleSimpleRecognizedClassChange}
-          onSimpleMetadataChange={this.handleSimpleMetadataChange}
-          onPositionClassifierChange={this.handlePositionClassifierChange}
-          onPositionRecognizedClassChange={this.handlePositionRecognizedClassChange}
-          onPositionMetadataChange={this.handlePositionMetadataChange}
           onCloseSimulator={this.closeSimulator}
           onFocusSimulator={this.focusSimulator}
-          onMovementRegisteredAreasClick={this.handleMovementRegisteredAreasClick}
-          onSimpleRegisteredAreasClick={this.handleSimpleRegisteredAreasClick}
-          onPositionRegisteredAreasClick={this.handlePositionRegisteredAreasClick}
           openDevTools={this.openDevTools}
-          handleRegisteredAreaClick={this.handleRegisteredAreaClick}
           userSimpleClasses={this.state.userSimpleClasses}
           userPositionClasses={this.state.userPositionClasses}
+          updateSimulatorSettings={this.updateSimulatorSettings}
         />
       )) : (
         <React.Fragment>

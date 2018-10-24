@@ -14,12 +14,12 @@ const { createSettings } = require('../../createSettings');
 const { sendsLampixInfo } = require('../common/sendsLampixInfo');
 const { sendsApps } = require('../common/sendsApps');
 const { transformsCoordinates } = require('../common/transformsCoordinates');
-const { handlesMovement } = require('../common/watcher-management/handlesMovement');
-const { handlesClassifierWatchers } = require('../common/watcher-management/handlesClassifierWatchers');
-const { handlesSegmenterWatchers } = require('../common/watcher-management/handlesSegmenterWatchers');
-const { setsMovementWatchers } = require('../common/watcher-management/setsMovementWatchers');
-const { setsClassifierWatchers } = require('../common/watcher-management/setsClassifierWatchers');
-const { setsSegmenterWatchers } = require('../common/watcher-management/setsSegmenterWatchers');
+const { handlesMovement } = require('./watcher-management/handlesMovement');
+const { handlesClassifierWatchers } = require('./watcher-management/handlesClassifierWatchers');
+const { handlesSegmenterWatchers } = require('./watcher-management/handlesSegmenterWatchers');
+const { setsMovementWatchers } = require('./watcher-management/setsMovementWatchers');
+const { setsClassifierWatchers } = require('./watcher-management/setsClassifierWatchers');
+const { setsSegmenterWatchers } = require('./watcher-management/setsSegmenterWatchers');
 
 // Calls to browser
 const { onSimpleClassifierCall } = require('./onSimpleClassifierCall');
@@ -51,7 +51,7 @@ const simulator = (url, {
   // Registered data represents volatile information, not persisted
   // All of this information comes strictly from the simulated application
   // through register events
-  const watcherData = createWatcherDataCategories(true);
+  const watcherData = createWatcherDataCategories('v0');
 
   const state = {
     updateAdminUI,

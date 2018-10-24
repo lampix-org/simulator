@@ -14,29 +14,25 @@ const { createSettings } = require('../../createSettings');
 const { sendsLampixInfo } = require('../common/sendsLampixInfo');
 const { sendsApps } = require('../common/sendsApps');
 const { transformsCoordinates } = require('../common/transformsCoordinates');
-const { handlesClassifierWatchers } = require('../common/watcher-management/handlesClassifierWatchers');
-const { handlesSegmenterWatchers } = require('../common/watcher-management/handlesSegmenterWatchers');
-const { removesWatchers } = require('./removesWatchers');
-const { addsWatchers } = require('./addsWatchers');
-const { pausesWatchers } = require('./pausesWatchers');
-const { resumesWatchers } = require('./resumesWatchers');
+const { removesWatchers } = require('./watcher-management/removesWatchers');
+const { addsWatchers } = require('./watcher-management/addsWatchers');
+const { pausesWatchers } = require('./watcher-management/pausesWatchers');
+const { resumesWatchers } = require('./watcher-management/resumesWatchers');
 const { updatesWatcherShape } = require('./updatesWatcherShape');
+const { handlesClassification } = require('./watcher-management/handlesClassification');
 
 // Calls to browser
-const { onObjectClassified } = require('./onObjectClassified');
-const { onObjectsDetected } = require('./onObjectsDetected');
+const { onObjectsClassified } = require('./onObjectsClassified');
 const { onObjectsLocated } = require('./onObjectsLocated');
 
 // Internals
 const { sendsSettingsToAdmin } = require('../../internal/sendsSettingsToAdmin');
 
 // Settings
-const { defaultSettings } = require('../v0/defaultSettings');
+const { defaultSettings } = require('./defaultSettings');
 
 const version = 'v1';
-const v1SpecificWatcherData = () => Object.assign(createWatcherDataCategories(), {
-  paused: []
-});
+const watcherData = () => createWatcherDataCategories('v1');
 
 const simulator = (url, {
   store,
@@ -59,7 +55,7 @@ const simulator = (url, {
     updateAdminUI,
     settings,
     apiVersion: version,
-    watcherData: v1SpecificWatcherData(),
+    watcherData: watcherData(),
     id: naiveIDGenerator()
   };
 
@@ -76,7 +72,7 @@ const simulator = (url, {
       settings,
       watcherData: state.watcherData,
       resetData() {
-        state.watcherData = Object.assign(state.watcherData, v1SpecificWatcherData());
+        state.watcherData = Object.assign(state.watcherData, watcherData());
       }
     },
     addsWatchers(state, appBrowser),
@@ -84,19 +80,6 @@ const simulator = (url, {
     pausesWatchers(state, appBrowser),
     resumesWatchers(state, appBrowser),
     updatesWatcherShape(state, appBrowser),
-    handlesClassifierWatchers({
-      state,
-      browser: appBrowser,
-      logger: Logger,
-      onObjectClassified
-    }),
-    handlesSegmenterWatchers({
-      state,
-      browser: appBrowser,
-      logger: Logger,
-      onObjectsLocated,
-      onObjectsDetected
-    }),
     sendsLampixInfo(state, appBrowser, configStore),
     sendsApps(state, appBrowser, configStore),
     sendsSettingsToAdmin(state, updateAdminUI),
@@ -104,6 +87,13 @@ const simulator = (url, {
       appBrowser,
       configStore
     ),
+    handlesClassification({
+      state,
+      onObjectsLocated,
+      onObjectsClassified,
+      logger: Logger,
+      browser: appBrowser
+    })
   );
 };
 

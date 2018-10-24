@@ -3,23 +3,13 @@ const { parseIfString } = require('../../../utils/parseIfString');
 const updatesWatcherShape = (state, browser) => ({
   updateWatcherShape(watcherId, shape) {
     const {
-      watcherData: {
-        classifiers,
-        segmenters
-      }
+      watcherData: { watchers }
     } = state;
-
-    const watchers = [
-      ...classifiers.watchers,
-      ...segmenters.watchers
-    ];
-
-    const watcher = watchers.find((w) => w.id === watcherId);
 
     // This is a naive implementation leading to unwanted results
     // TODO: Check shape integrity
     const parsedData = parseIfString(shape);
-    watcher.shape = Object.assign(watcher.shape, parsedData);
+    watchers[watcherId].shape = Object.assign(watchers[watcherId].shape, parsedData);
 
     browser.webContents.executeJavaScript(`onWatcherUpdated('${watcherId}')`);
   }

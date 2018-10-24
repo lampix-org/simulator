@@ -27,19 +27,19 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 
 // Custom components
-import Separator from './Separator';
-import Dropdown from './Dropdown';
+import Separator from '../../components/Separator';
+import Dropdown from '../../components/Dropdown';
 
 import {
   SIMPLE,
   POSITION,
   MOVEMENT
-} from '../../common/constants';
+} from '../../../common/constants';
 
 const {
   DEFAULT_WINDOW_WIDTH,
   DEFAULT_WINDOW_HEIGHT
-} = require('../../main/constants');
+} = require('../../../main/constants');
 
 const DEFAULT_DISPLAY_SIZE = 5;
 
@@ -97,10 +97,115 @@ const emptyStringIfNil = (value) => {
 };
 
 class Simulator extends React.Component {
-  coreVersionIs0 = () => this.props.version === 'v0';
+  handleMovementDetectorChange = (event) => {
+    const { updateSimulatorSettings, data, url } = this.props;
+    const simulator = { ...data };
+    simulator.settings.movementDetector = event.target.checked;
+
+    updateSimulatorSettings(url, simulator).then(() => {
+      window.admin.toggleMovement(url);
+    });
+  }
+
+  handleSimpleClassifierChange = (event) => {
+    const { updateSimulatorSettings, data, url } = this.props;
+    const classifier = event.target.value;
+    const simulator = { ...data };
+    simulator.settings.simple.classifier = classifier;
+
+    updateSimulatorSettings(url, simulator).then(() => {
+      window.admin.setClassifier(url, SIMPLE, classifier);
+    });
+  }
+
+  handleSimpleRecognizedClassChange = (event) => {
+    const { updateSimulatorSettings, data, url } = this.props;
+    const recognizedClass = event.target.value;
+    const simulator = { ...data };
+    simulator.settings.simple.recognizedClass = recognizedClass;
+
+    updateSimulatorSettings(url, simulator).then(() => {
+      window.admin.setRecognizedClass(url, SIMPLE, recognizedClass);
+    });
+  }
+
+  handleSimpleMetadataChange = (event) => {
+    const { updateSimulatorSettings, data, url } = this.props;
+    const metadata = event.target.value;
+    const simulator = { ...data };
+    simulator.settings.simple.metadata = metadata;
+
+    updateSimulatorSettings(url, simulator).then(() => {
+      window.admin.setMetadata(url, SIMPLE, metadata);
+    });
+  }
+
+  handlePositionClassifierChange = (event) => {
+    const { updateSimulatorSettings, data, url } = this.props;
+    const classifier = event.target.value;
+    const simulator = { ...data };
+    simulator.settings.position.classifier = classifier;
+
+    updateSimulatorSettings(url, simulator).then(() => {
+      window.admin.setClassifier(url, POSITION, classifier);
+    });
+  }
+
+  handlePositionRecognizedClassChange = (event) => {
+    const { updateSimulatorSettings, data, url } = this.props;
+    const recognizedClass = event.target.value;
+    const simulator = { ...data };
+    simulator.settings.position.recognizedClass = recognizedClass;
+
+    updateSimulatorSettings(url, simulator).then(() => {
+      window.admin.setRecognizedClass(url, POSITION, recognizedClass);
+    });
+  }
+
+  handlePositionMetadataChange = (event) => {
+    const { updateSimulatorSettings, data, url } = this.props;
+    const metadata = event.target.value;
+    const simulator = { ...data };
+    simulator.settings.position.metadata = metadata;
+
+    updateSimulatorSettings(url, simulator).then(() => {
+      window.admin.setMetadata(url, POSITION, metadata);
+    });
+  }
+
+  handleMovementRegisteredAreasClick = () => {
+    const { updateSimulatorSettings, data, url } = this.props;
+
+    const simulator = { ...data };
+    simulator.settings.movementRegisteredAreasOpen = !simulator.settings.movementRegisteredAreasOpen;
+
+    updateSimulatorSettings(url, simulator);
+  }
+
+  handleSimpleRegisteredAreasClick = () => {
+    const { updateSimulatorSettings, data, url } = this.props;
+
+    const simulator = { ...data };
+    simulator.settings.simpleRegisteredAreasOpen = !simulator.settings.simpleRegisteredAreasOpen;
+
+    updateSimulatorSettings(url, simulator);
+  }
+
+  handlePositionRegisteredAreasClick = () => {
+    const { updateSimulatorSettings, data, url } = this.props;
+
+    const simulator = { ...data };
+    data.settings.positionRegisteredAreasOpen = !data.settings.positionRegisteredAreasOpen;
+
+    updateSimulatorSettings(url, simulator);
+  }
+
+  handleRegisteredAreaClick = (url, category, classifier) => {
+    window.admin.changeCategoryClassifier(url, category, classifier);
+  };
 
   renderWatcher(rect, category) {
-    const { handleRegisteredAreaClick, url, classes } = this.props;
+    const { url, classes } = this.props;
 
     const divHeightConvertedToPx = (window.innerHeight * DEFAULT_DISPLAY_SIZE) / 100;
     const divWidthConvertedToPx = (window.innerWidth * DEFAULT_DISPLAY_SIZE) / 100;
@@ -128,7 +233,7 @@ class Simulator extends React.Component {
       <Card
         key={`${rect.posX}/${rect.posY}`}
         className={`${classes.registeredArea} ${classes.clickableCard}`}
-        onClick={() => handleRegisteredAreaClick(url, category, rect.classifier)}
+        onClick={() => this.handleRegisteredAreaClick(url, category, rect.classifier)}
       >
         <CardContent >
           {
@@ -156,7 +261,6 @@ class Simulator extends React.Component {
           </div>
         </CardContent>
       </Card>
-
     );
   }
 
@@ -177,16 +281,16 @@ class Simulator extends React.Component {
     return (
       <Grid item xs={6}>
         <Typography variant="title">
-          {this.coreVersionIs0() ? 'Simple' : 'Classifier'}
+          Simple
         </Typography>
         <Separator />
 
         <FormControl fullWidth>
-          <InputLabel>Name</InputLabel>
+          <InputLabel>Classifier</InputLabel>
           <Dropdown
             disabled={classifierNames.length === 0}
             value={emptyStringIfNil(data.settings.simple.classifier)}
-            onChange={(evt) => this.props.onSimpleClassifierChange(evt, url)}
+            onChange={(evt) => this.handleMovementDetectorChange(evt, url)}
           >
             {
               classifierNames ?
@@ -207,7 +311,7 @@ class Simulator extends React.Component {
           <Dropdown
             disabled={classifierNames.length === 0}
             value={emptyStringIfNil(data.settings.simple.recognizedClass)}
-            onChange={(evt) => this.props.onSimpleRecognizedClassChange(evt, url)}
+            onChange={(evt) => this.handleSimpleRecognizedClassChange(evt, url)}
           >
             {
               classifierClasses ?
@@ -225,7 +329,7 @@ class Simulator extends React.Component {
         <TextField
           disabled={classifierNames.length === 0}
           value={emptyStringIfNil(data.settings.simple.metadata)}
-          onChange={(evt) => this.props.onSimpleMetadataChange(evt, url)}
+          onChange={(evt) => this.handleSimpleMetadataChange(evt, url)}
           label="Metadata"
           fullWidth
         />
@@ -269,16 +373,16 @@ class Simulator extends React.Component {
     return (
       <Grid item xs={6}>
         <Typography variant="title">
-          {this.coreVersionIs0() ? 'Position' : 'Segmenter'}
+          Position
         </Typography>
         <Separator />
 
         <FormControl fullWidth>
-          <InputLabel>Name</InputLabel>
+          <InputLabel>Classifier</InputLabel>
           <Dropdown
             disabled={segmenterNames.length === 0}
             value={emptyStringIfNil(data.settings.position.classifier)}
-            onChange={(evt) => this.props.onPositionClassifierChange(evt, url)}
+            onChange={(evt) => this.handlePositionClassifierChange(evt, url)}
           >
             {classifierPositionMenuItems}
           </Dropdown>
@@ -288,7 +392,7 @@ class Simulator extends React.Component {
           <Dropdown
             disabled={segmenterNames.length === 0}
             value={emptyStringIfNil(data.settings.position.recognizedClass)}
-            onChange={(evt) => this.props.onPositionRecognizedClassChange(evt, url)}
+            onChange={(evt) => this.handlePositionRecognizedClassChange(evt, url)}
           >
             {recognizedPositionClassMenuItems}
           </Dropdown>
@@ -296,7 +400,7 @@ class Simulator extends React.Component {
         <TextField
           disabled={segmenterNames.length === 0}
           value={emptyStringIfNil(data.settings.position.metadata)}
-          onChange={(evt) => this.props.onPositionMetadataChange(evt, url)}
+          onChange={(evt) => this.handlePositionMetadataChange(evt, url)}
           label="Metadata"
           fullWidth
         />
@@ -307,27 +411,23 @@ class Simulator extends React.Component {
   renderMovementSection() {
     const { data, url } = this.props;
     return (
-      this.coreVersionIs0() ?
-        <React.Fragment>
-          <Grid item xs={12}>
-            <FormControlLabel
-              label="Movement detector"
-              control={
-                <Switch
-                  checked={data.settings.movementDetector}
-                  onChange={(evt) => this.props.onMovementDetectorChange(evt, url)}
-                />
-              }
-            />
-          </Grid>
-        </React.Fragment> :
-        null
+      <React.Fragment>
+        <Grid item xs={12}>
+          <FormControlLabel
+            label="Movement detector"
+            control={
+              <Switch
+                checked={data.settings.movementDetector}
+                onChange={(evt) => this.handleMovementDetectorChange(evt, url)}
+              />
+            }
+          />
+        </Grid>
+      </React.Fragment>
     );
   }
 
   renderRegisteredMovementWatchersSection() {
-    if (!this.coreVersionIs0()) return null;
-
     const { data, url, classes } = this.props;
     const { watcherData } = data;
     const { watchers: movementWatchers } = watcherData.movement;
@@ -335,11 +435,11 @@ class Simulator extends React.Component {
     const MovementWatchers = movementWatchers ?
       movementWatchers.map((rect) => this.renderWatcher(rect, MOVEMENT)) : null;
 
-    return this.coreVersionIs0() ?
+    return (
       <React.Fragment>
         <ListItem
           button
-          onClick={() => this.props.onMovementRegisteredAreasClick(url)}
+          onClick={() => this.handleMovementRegisteredAreasClick(url)}
           disabled={!movementWatchers.length}
         >
           <ListItemText primary="Movement" />
@@ -354,8 +454,8 @@ class Simulator extends React.Component {
             {MovementWatchers}
           </div>
         </Collapse>
-      </React.Fragment> :
-      null;
+      </React.Fragment>
+    );
   }
 
   renderRegisteredClassifierWatchersSection() {
@@ -370,10 +470,10 @@ class Simulator extends React.Component {
       <React.Fragment>
         <ListItem
           button
-          onClick={() => this.props.onSimpleRegisteredAreasClick(url)}
+          onClick={() => this.handleSimpleRegisteredAreasClick(url)}
           disabled={!classifierWatchers.length}
         >
-          <ListItemText primary={this.coreVersionIs0() ? 'Simple' : 'Classifier'} />
+          <ListItemText primary="Simple" />
           {data.settings.simpleRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <Collapse in={data.settings.simpleRegisteredAreasOpen} timeout="auto" unmountOnExit>
@@ -400,10 +500,10 @@ class Simulator extends React.Component {
       <React.Fragment>
         <ListItem
           button
-          onClick={() => this.props.onPositionRegisteredAreasClick(url)}
+          onClick={() => this.handlePositionRegisteredAreasClick(url)}
           disabled={!segmenterWatchers.length}
         >
-          <ListItemText primary={this.coreVersionIs0() ? 'Position' : 'Segmenter'} />
+          <ListItemText primary="Position" />
           {data.settings.positionRegisteredAreasOpen ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <Collapse
@@ -443,7 +543,7 @@ class Simulator extends React.Component {
           <Typography variant="title">Registered areas by type</Typography>
           <List>
             {this.renderRegisteredMovementWatchersSection()}
-            {this.coreVersionIs0() ? <Divider /> : null}
+            <Divider />
             {this.renderRegisteredClassifierWatchersSection()}
             <Divider />
             {this.renderRegisteredSegmenterWatchersSection()}
@@ -478,7 +578,6 @@ class Simulator extends React.Component {
 
 Simulator.propTypes = {
   data: PropTypes.object.isRequired, // eslint-disable-line
-  version: PropTypes.oneOf(['v0', 'v1']).isRequired,
   classes: PropTypes.shape({
     clickableCard: PropTypes.string,
     registeredArea: PropTypes.string,
@@ -486,22 +585,12 @@ Simulator.propTypes = {
     expansionPanelDetails: PropTypes.string
   }).isRequired,
   url: PropTypes.string.isRequired,
-  onMovementDetectorChange: PropTypes.func.isRequired,
-  onSimpleClassifierChange: PropTypes.func.isRequired,
-  onSimpleRecognizedClassChange: PropTypes.func.isRequired,
-  onSimpleMetadataChange: PropTypes.func.isRequired,
-  onPositionClassifierChange: PropTypes.func.isRequired,
-  onPositionRecognizedClassChange: PropTypes.func.isRequired,
-  onPositionMetadataChange: PropTypes.func.isRequired,
   onCloseSimulator: PropTypes.func.isRequired,
   onFocusSimulator: PropTypes.func.isRequired,
-  onMovementRegisteredAreasClick: PropTypes.func.isRequired,
-  onSimpleRegisteredAreasClick: PropTypes.func.isRequired,
-  onPositionRegisteredAreasClick: PropTypes.func.isRequired,
   openDevTools: PropTypes.func.isRequired,
-  handleRegisteredAreaClick: PropTypes.func.isRequired,
   userSimpleClasses: PropTypes.string.isRequired,
-  userPositionClasses: PropTypes.string.isRequired
+  userPositionClasses: PropTypes.string.isRequired,
+  updateSimulatorSettings: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(Simulator);
