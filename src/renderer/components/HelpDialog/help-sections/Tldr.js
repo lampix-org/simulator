@@ -15,22 +15,14 @@ const Tldr = ({ className }) => (
     <Separator divider />
 
     <Typography variant="body1">
-      <strong>Left click</strong> for simple classification. <br />
-      <strong>Right click</strong> for position classification. <br />
+      <strong>Left click</strong> - simulate placement of an object. <br />
+    </Typography>
+
+    <Typography variant="body1">
+      <strong>Opening dev tools</strong> - expand simulator settings, click <i>DEV TOOLS</i>.
     </Typography>
 
     <Separator />
-
-    <Typography variant="body1">
-      <strong>Dev tools</strong>: expand simulator settings, click <i>DEV TOOLS</i>.
-    </Typography>
-
-    <Separator />
-
-    <Typography variant="body1">
-      Click on a registered area card (in the simulator settings) to automatically
-      &nbsp;choose the settings for it. The <i>recognized class</i> may differ, if applicable.
-    </Typography>
   </Paper>
 );
 

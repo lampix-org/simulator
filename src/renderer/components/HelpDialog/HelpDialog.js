@@ -17,8 +17,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Tldr from './help-sections/Tldr';
 import WhatIsASimulator from './help-sections/WhatIsASimulator';
 import LoadingAnApp from './help-sections/LoadingAnApp';
-import SimulatorSettings from './help-sections/SimulatorSettings';
-import RegisteredAreas from './help-sections/RegisteredAreas';
 import UsingTheSimulator from './help-sections/UsingTheSimulator';
 import DevTools from './help-sections/DevTools';
 
@@ -84,11 +82,6 @@ const HelpDialog = ({
         className={classes.paper}
         imageClass={classes.image}
       />
-      <SimulatorSettings
-        className={classes.paper}
-        imageClass={classes.image}
-      />
-      <RegisteredAreas className={classes.paper} />
       <UsingTheSimulator className={classes.paper} />
       <DevTools className={classes.paper} />
     </div>

@@ -10,58 +10,45 @@ import Typography from '@material-ui/core/Typography';
 import Separator from '../../Separator';
 import InlineCode from '../../InlineCode';
 
-const RegisteredAreas = ({ className }) => (
+const UsingTheSimulator = ({ className }) => (
   <Paper className={className}>
     <Typography variant="title">How to use the simulator?</Typography>
     <Separator divider />
 
-    <Typography variant="subheading">Movement</Typography>
+    <Separator />
+
+    <Typography variant="subheading">Watcher Options</Typography>
     <Separator />
 
     <Typography variant="body1">
-      Movement is fairly simple and straightforward. You only need to register areas with
-      &nbsp;<InlineCode>registerMovement</InlineCode> and activate the movement detector seen in
-      &nbsp;the settings image, then move your mouse through the rectangles you registered.
-    </Typography>
-
-    <Separator />
-    <Typography variant="body1">Note that this functionality is not yet available on the device.</Typography>
-
-    <Separator />
-
-    <Typography variant="subheading">Simple and position classification</Typography>
-    <Separator />
-
-    <Typography variant="body1">
-      Using <InlineCode>registerSimpleClassifier</InlineCode> or <InlineCode>registerPositionClassifier</InlineCode>
-      &nbsp;will make the simulator go through the <InlineCode>classifier</InlineCode>
-      &nbsp;property of each registered rectangle and provide them to you in the <strong>Classifier</strong>
-      &nbsp;select field in either the <strong>simple</strong> or <strong>position</strong>
-      &nbsp;categories.
+      Using <InlineCode>watchers.add</InlineCode>
+      &nbsp;will make the simulator go through the <InlineCode>name</InlineCode>
+      &nbsp;property of each registered rectangle and provide them to you in the <strong>Name</strong>
+      &nbsp;select field.
 
       <br />
       <br />
 
-      The <strong>Recognized class</strong> select field in both categories
-          &nbsp;will show values from 0-10 and 100-110, by default.<br />
-      This is by design, as most classifiers only have classes between 0-10, and the values of some QR codes
-      &nbsp;we have used are between 100-110.
+      The <strong>Recognized class</strong> select field in
+      &nbsp;will show values from 0-10 and 100-110, by default.<br />
+      This is by design, as most (of our) classifiers only have classes between 0-10, and the values of some markers
+      &nbsp;we have used are between 100-110. <br />
+
+      This is customizable through the settings.
     </Typography>
     <Separator />
 
-    <Typography variant="subheading">Actually using simple and position classification</Typography>
+    <Typography variant="subheading">Triggering classification events in the simulator</Typography>
     <Separator />
 
     <Typography variant="body1">
-      <strong>Left click</strong> for simple classification. <br />
-      <strong>Right click</strong> for position classification. <br />
-      <br />
+      <strong>Left click</strong> to trigger classification (<InlineCode>onClassification</InlineCode>)
     </Typography>
   </Paper>
 );
 
-RegisteredAreas.propTypes = {
+UsingTheSimulator.propTypes = {
   className: PropTypes.string.isRequired
 };
 
-export default RegisteredAreas;
+export default UsingTheSimulator;

@@ -17,6 +17,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import Typography from '@material-ui/core/Typography';
 
 // Custom components
+import Separator from '../../components/Separator';
 import Dropdown from '../../components/Dropdown';
 
 const styles = () => ({
@@ -105,6 +106,8 @@ class Simulator extends React.Component {
           Watcher options
         </Typography>
 
+        <Separator spacing={7} />
+
         <FormControl fullWidth>
           <InputLabel>Name</InputLabel>
           <Dropdown
@@ -115,6 +118,9 @@ class Simulator extends React.Component {
             {watcherNamesMenuItems}
           </Dropdown>
         </FormControl>
+
+        <Separator spacing={7} />
+
         <FormControl fullWidth>
           <InputLabel>Recognized class</InputLabel>
           <Dropdown
@@ -125,6 +131,9 @@ class Simulator extends React.Component {
             {recognizedClassMenuItems}
           </Dropdown>
         </FormControl>
+
+        <Separator spacing={7} />
+
         <TextField
           disabled={watcherNames.length === 0}
           value={emptyStringIfNil(settings.metadata)}
