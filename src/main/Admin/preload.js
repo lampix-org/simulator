@@ -1,7 +1,7 @@
 const { ipcRenderer } = require('electron');
 const {
   TOGGLE_MOVEMENT,
-  SET_CLASSIFIER,
+  SET_WATCHER_NAME,
   SET_RECOGNIZED_CLASS,
   SET_METADATA,
   CLOSE_SIMULATOR,
@@ -13,9 +13,7 @@ const {
   REMOVE_APP_NAME_URL_ASSOCIATION,
   SAVE_SCALE_FACTOR,
   SAVE_PIX,
-  SAVE_USER_SIMPLE_CLASSES,
-  SAVE_USER_POSITION_CLASSES,
-  CHANGE_CORE_VERSION
+  SAVE_USER_DEFINED_CLASSES
 } = require('../ipcEvents');
 const { Logger } = require('../Logger');
 
@@ -29,28 +27,24 @@ if (process.env.NODE_ENV === 'production') {
 window.admin = {
   loadApp: (url) => ipcRenderer.send(LOAD_APP, { url }),
   toggleMovement: (url) => ipcRenderer.send(TOGGLE_MOVEMENT, { url }),
-  setClassifier: (url, type, classifier) => ipcRenderer.send(SET_CLASSIFIER, {
+  setWatcherName: (url, watcherName) => ipcRenderer.send(SET_WATCHER_NAME, {
     url,
-    classifier,
-    type
+    watcherName
   }),
-  setRecognizedClass: (url, type, recognizedClass) => ipcRenderer.send(SET_RECOGNIZED_CLASS, {
+  setRecognizedClass: (url, recognizedClass) => ipcRenderer.send(SET_RECOGNIZED_CLASS, {
     url,
-    recognizedClass,
-    type
+    recognizedClass
   }),
-  setMetadata: (url, type, metadata) => ipcRenderer.send(SET_METADATA, {
+  setMetadata: (url, metadata) => ipcRenderer.send(SET_METADATA, {
     url,
-    metadata,
-    type
+    metadata
   }),
   closeSimulator: (url) => ipcRenderer.send(CLOSE_SIMULATOR, { url }),
   focusSimulator: (url) => ipcRenderer.send(FOCUS_SIMULATOR, { url }),
   openDevTools: (url) => ipcRenderer.send(OPEN_DEV_TOOLS, { url }),
-  changeCategoryClassifier: (url, category, classifier) => ipcRenderer.send(CHANGE_CATEGORY_SETTINGS, {
+  changeCategoryClassifier: (url, watcherName) => ipcRenderer.send(CHANGE_CATEGORY_SETTINGS, {
     url,
-    category,
-    classifier
+    watcherName
   }),
   addAssociation: (name, url) => ipcRenderer.send(ADD_APP_NAME_URL_ASSOCIATION, {
     name,
@@ -59,7 +53,5 @@ window.admin = {
   removeAssociation: (name) => ipcRenderer.send(REMOVE_APP_NAME_URL_ASSOCIATION, name),
   saveScaleFactor: (value) => ipcRenderer.send(SAVE_SCALE_FACTOR, value),
   savePix: (object) => ipcRenderer.send(SAVE_PIX, object),
-  saveUserSimpleClasses: (simpleClasses) => ipcRenderer.send(SAVE_USER_SIMPLE_CLASSES, simpleClasses),
-  saveUserPositionClasses: (positionClasses) => ipcRenderer.send(SAVE_USER_POSITION_CLASSES, positionClasses),
-  changeCoreVersion: (version) => ipcRenderer.send(CHANGE_CORE_VERSION, version)
+  saveUserDefinedClasses: (userDefinedClasses) => ipcRenderer.send(SAVE_USER_DEFINED_CLASSES, userDefinedClasses)
 };

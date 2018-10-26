@@ -2,19 +2,17 @@ const { appSettings } = require('./app-settings');
 const { onChange } = require('../utils/onChange');
 
 const createSettings = ({
-  version,
   url,
   store,
   defaults
 }) => {
   const settings = appSettings({
     url,
-    version,
     store,
     defaults
   });
 
-  return onChange(settings, () => settings.save());
+  return onChange(settings.data, () => settings.save(settings.data));
 };
 
 exports.createSettings = createSettings;

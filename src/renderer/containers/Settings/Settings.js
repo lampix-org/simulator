@@ -16,14 +16,12 @@ import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import MenuItem from '@material-ui/core/MenuItem';
 
 // Utils
 import get from 'lodash.get';
 
 // Custom components
 import Separator from '../../components/Separator';
-import Dropdown from '../../components/Dropdown';
 import AppNameURLAssociation from './AppNameURLAssociation';
 
 // IPC Events
@@ -74,8 +72,7 @@ class Settings extends React.Component {
     scaleFactor: '',
     endpoint: '',
     token: '',
-    simpleClasses: '',
-    positionClasses: '',
+    userDefinedClasses: '',
     coreVersion: 1
   };
 
@@ -89,8 +86,7 @@ class Settings extends React.Component {
           coreVersion
         },
         pix,
-        userSimpleClasses,
-        userPositionClasses
+        userDefinedClasses
       } = settings;
 
       this.setState({
@@ -98,8 +94,7 @@ class Settings extends React.Component {
         coreVersion,
         endpoint: pix.endpoint,
         token: pix.token,
-        classifierNames: userSimpleClasses && userSimpleClasses.length ? userSimpleClasses.join('\n') : '',
-        segmenterNames: userPositionClasses && userPositionClasses.length ? userPositionClasses.join('\n') : ''
+        userDefinedClasses: userDefinedClasses && userDefinedClasses.length ? userDefinedClasses.join('\n') : ''
       });
     });
   }
@@ -176,51 +171,29 @@ class Settings extends React.Component {
     }
   }
 
-  updateUserSimpleClasses = (event) => {
+  updateUserDefinedClasses = (event) => {
     this.setState({
       ...this.state,
-      simpleClasses: event.target.value
+      userDefinedClasses: event.target.value
     });
   }
 
-  saveUserSimpleClasses = () => {
-    const { simpleClasses } = this.state;
-    window.admin.saveUserSimpleClasses(simpleClasses.trim().split('\n'));
-  }
-
-  resetUserSimpleClasses = () => {
-    this.setState({
-      ...this.state,
-      simpleClasses: ''
-    }, () => {
-      const { simpleClasses } = this.state;
-      window.admin.saveUserSimpleClasses(simpleClasses);
-    });
-  }
-
-  updateUserPositionClasses = (event) => {
-    this.setState({
-      ...this.state,
-      positionClasses: event.target.value
-    });
-  }
-
-  saveUserPositionClasses = () => {
-    const { positionClasses } = this.state;
-    window.admin.saveUserPositionClasses(positionClasses.trim().split('\n'));
+  saveUserDefinedClasses = () => {
+    const { userDefinedClasses } = this.state;
+    window.admin.saveUserDefinedClasses(userDefinedClasses.trim().split('\n'));
   }
 
   selectCoreVersion = (event) => {
     window.admin.changeCoreVersion(event.target.value);
   };
 
-  resetUserPositionClasses = () => {
+  resetUserDefinedClasses = () => {
     this.setState({
       ...this.state,
-      positionClasses: ''
+      userDefinedClasses: ''
     }, () => {
-      const { positionClasses } = this.state;
-      window.admin.saveUserPositionClasses(positionClasses);
+      const { userDefinedClasses } = this.state;
+      window.admin.saveUserDefinedClasses(userDefinedClasses);
     });
   }
 
@@ -258,22 +231,6 @@ class Settings extends React.Component {
         </AppBar>
 
         <div className={classes.container}>
-          <Paper className={classes.paper}>
-            <Typography variant="title">
-              @lampix/core version
-            </Typography>
-
-            <Separator />
-
-            <Dropdown
-              value={this.state.coreVersion}
-              onChange={this.selectCoreVersion}
-            >
-              <MenuItem value="v0">0.x</MenuItem>
-              <MenuItem value="v1">1.x (alpha)</MenuItem>
-            </Dropdown>
-          </Paper>
-
           <Paper className={classes.paper}>
             <Typography variant="title">
               Associate URLs with app names
@@ -432,22 +389,22 @@ class Settings extends React.Component {
               Set custom classes
             </Typography>
             <Typography variant="subheading">
-              This allows setting custom values in the recognized class dropdown for simple and position classifiers
+              This allows setting custom values as recognized classes
             </Typography>
             <Typography variant="body1">
-              Please put each custom class on a separate line
+              Each value must be on a separate line
             </Typography>
 
             <Separator />
             <TextField
-              label="Simple classes"
+              label="Custom classes"
               multiline
               rows="2"
               rowsMax="4"
               className={classes.textField}
               margin="normal"
-              value={this.state.simpleClasses}
-              onChange={this.updateUserSimpleClasses}
+              value={this.state.userDefinedClasses}
+              onChange={this.updateUserDefinedClasses}
             />
 
             <Button
@@ -456,8 +413,8 @@ class Settings extends React.Component {
               color="default"
               size="small"
               onClick={(e) => this.saveSettings(
-                e, this.saveUserSimpleClasses, 'Simple classes',
-                this.state.simpleClasses.trim().split('\n')
+                e, this.saveUserDefinedClasses, 'Custom classes',
+                this.state.userDefinedClasses.trim().split('\n')
               )
               }
             >
@@ -469,43 +426,7 @@ class Settings extends React.Component {
               variant="contained"
               color="default"
               size="small"
-              onClick={() => this.resetUserSimpleClasses()}
-            >
-              Reset
-            </Button>
-
-            <Separator />
-            <TextField
-              label="Position classes"
-              multiline
-              rows="2"
-              rowsMax="4"
-              className={classes.textField}
-              margin="normal"
-              value={this.state.positionClasses}
-              onChange={this.updateUserPositionClasses}
-            />
-
-            <Button
-              className={classes.button}
-              variant="contained"
-              color="default"
-              size="small"
-              onClick={(e) => this.saveSettings(
-                e, this.saveUserPositionClasses, 'Position classes',
-                this.state.positionClasses.trim().split('\n')
-              )
-              }
-            >
-              Save
-            </Button>
-
-            <Button
-              className={classes.button}
-              variant="contained"
-              color="default"
-              size="small"
-              onClick={() => this.resetUserPositionClasses()}
+              onClick={() => this.resetUserDefinedClasses()}
             >
               Reset
             </Button>

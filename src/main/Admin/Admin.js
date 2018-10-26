@@ -1,6 +1,4 @@
-// Simulators
-const { simulatorV0 } = require('../simulator');
-const { simulatorV1 } = require('../simulator');
+const { simulator } = require('../simulator');
 
 const { createAdminBrowser } = require('./createAdminBrowser');
 const { store } = require('../store');
@@ -32,11 +30,6 @@ const errors = {
 let simulatorPosition = 30;
 const simulatorPositionStep = 15;
 
-const simulatorsByVersion = {
-  v0: simulatorV0,
-  v1: simulatorV1
-};
-
 class Admin {
   constructor() {
     this.storedURLs = new Set(store.get('urls') || []);
@@ -49,6 +42,7 @@ class Admin {
     this.browser.on('close', () => {
       this.browser.destroy();
     });
+
     handleAdminUIReady.call(
       this,
       this.updateRendererURLs,
@@ -96,7 +90,7 @@ class Admin {
       checkedURL
     );
 
-    this.simulators[checkedURL] = simulatorsByVersion[this.config.simulator.coreVersion](url, {
+    this.simulators[checkedURL] = simulator(url, {
       store,
       configStore,
       isDev,
@@ -207,19 +201,9 @@ class Admin {
     this.config.pix = pixObject;
   }
 
-  updateUserSimpleClasses(userSimpleClasses) {
-    configStore.set('userSimpleClasses', userSimpleClasses);
-    this.config.userSimpleClasses = userSimpleClasses;
-  }
-
-  updateUserPositionClasses(userPositionClasses) {
-    configStore.set('userPositionClasses', userPositionClasses);
-    this.config.userPositionClasses = userPositionClasses;
-  }
-
-  updateCoreVersion(v) {
-    configStore.set('simulator.coreVersion', v);
-    this.config.simulator.coreVersion = v;
+  updateUserDefinedClasses(userDefinedClasses) {
+    configStore.set('userDefinedClasses', userDefinedClasses);
+    this.config.userDefinedClasses = userDefinedClasses;
   }
 }
 

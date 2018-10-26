@@ -1,7 +1,6 @@
 const { ipcMain } = require('electron');
 const {
-  TOGGLE_MOVEMENT,
-  SET_CLASSIFIER,
+  SET_WATCHER_NAME,
   SET_RECOGNIZED_CLASS,
   SET_METADATA,
   CHANGE_CATEGORY_SETTINGS,
@@ -9,32 +8,16 @@ const {
   REMOVE_APP_NAME_URL_ASSOCIATION,
   SAVE_SCALE_FACTOR,
   SAVE_PIX,
-  SAVE_USER_SIMPLE_CLASSES,
-  SAVE_USER_POSITION_CLASSES,
-  CHANGE_CORE_VERSION
+  SAVE_USER_DEFINED_CLASSES
 } = require('../../ipcEvents');
-const {
-  SIMPLE,
-  MOVEMENT
-} = require('../../../common/constants');
 const { sendSettingsBack } = require('./sendSettingsBack');
 
 function initSimulatorSettingsListeners() {
-  // Data should contain the simulator URL
-  // And whether the target is of type 'simple' or 'position'
-  ipcMain.on(TOGGLE_MOVEMENT, (event, data) => {
+  ipcMain.on(SET_WATCHER_NAME, (event, data) => {
     const { settings, registeredData } = this.simulators[data.url];
-    settings.movementDetector = !settings.movementDetector;
+    settings.watcherName = data.watcherName;
 
-    sendSettingsBack(event.sender, data.url, {
-      settings,
-      registeredData
-    });
-  });
-
-  ipcMain.on(SET_CLASSIFIER, (event, data) => {
-    const { settings, registeredData } = this.simulators[data.url];
-    settings[data.type].classifier = data.classifier;
+    console.log(settings.watcherName);
 
     sendSettingsBack(event.sender, data.url, {
       settings,
@@ -44,7 +27,7 @@ function initSimulatorSettingsListeners() {
 
   ipcMain.on(SET_RECOGNIZED_CLASS, (event, data) => {
     const { settings, registeredData } = this.simulators[data.url];
-    settings[data.type].recognizedClass = data.recognizedClass;
+    settings.recognizedClass = data.recognizedClass;
 
     sendSettingsBack(event.sender, data.url, {
       settings,
@@ -54,7 +37,7 @@ function initSimulatorSettingsListeners() {
 
   ipcMain.on(SET_METADATA, (event, data) => {
     const { settings, registeredData } = this.simulators[data.url];
-    settings[data.type].metadata = data.metadata;
+    settings.metadata = data.metadata;
 
     sendSettingsBack(event.sender, data.url, {
       settings,
@@ -63,16 +46,11 @@ function initSimulatorSettingsListeners() {
   });
 
   ipcMain.on(CHANGE_CATEGORY_SETTINGS, (event, data) => {
-    const { url, category, classifier } = data;
+    const { url, watcherName } = data;
     const { settings } = this.simulators[url];
 
-    if (category === MOVEMENT) {
-      settings.movementDetector = true;
-    } else {
-      settings[category].classifier = classifier;
-      settings[category].recognizedClass = category === SIMPLE ?
-        '1' : '0';
-    }
+    settings.watcherName = watcherName;
+    settings.recognizedClass = '1';
 
     sendSettingsBack(event.sender, url, {
       settings
@@ -99,18 +77,8 @@ function initSimulatorSettingsListeners() {
     this.sendConfig();
   });
 
-  ipcMain.on(SAVE_USER_SIMPLE_CLASSES, (event, userSimpleClasses) => {
-    this.updateUserSimpleClasses(userSimpleClasses);
-    this.sendConfig();
-  });
-
-  ipcMain.on(SAVE_USER_POSITION_CLASSES, (event, userPositionClasses) => {
-    this.updateUserPositionClasses(userPositionClasses);
-    this.sendConfig();
-  });
-
-  ipcMain.on(CHANGE_CORE_VERSION, (event, version) => {
-    this.updateCoreVersion(version);
+  ipcMain.on(SAVE_USER_DEFINED_CLASSES, (event, userDefinedClasses) => {
+    this.updateUserDefinedClasses(userDefinedClasses);
     this.sendConfig();
   });
 }

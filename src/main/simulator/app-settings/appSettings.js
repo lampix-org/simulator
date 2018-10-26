@@ -1,11 +1,10 @@
-const storeURLTemplate = (version, url) => `settings/${version}/${url}`;
+const storeURLTemplate = (url) => `settings/${url}`.replace(/\./g, '\\.');
 const appSettings = ({
-  version,
   url,
   store,
   defaults
 }) => {
-  const storeLocation = storeURLTemplate(version, url);
+  const storeLocation = storeURLTemplate(url);
   let data = null;
 
   if (store.has(storeLocation)) {
@@ -14,14 +13,12 @@ const appSettings = ({
     data = defaults();
   }
 
-  return Object.assign(
-    {
-      save() {
-        store.set(storeLocation, data);
-      }
+  return {
+    save(toSave) {
+      store.set(storeLocation, toSave);
     },
     data
-  );
+  };
 };
 
 exports.appSettings = appSettings;

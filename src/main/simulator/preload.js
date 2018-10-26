@@ -1,7 +1,6 @@
 const { ipcRenderer } = require('electron');
 const {
-  SIMPLE_CLICK,
-  POSITION_CLICK,
+  LEFT_CLICK,
   GET_LAMPIX_INFO,
   TRANSFORM_COORDINATES,
   GET_APPS,
@@ -12,9 +11,9 @@ const {
   RESUME_WATCHERS,
   BEFORE_UNLOAD,
   UPDATE_WATCHER_SHAPE
-} = require('../../../ipcEvents');
+} = require('../ipcEvents');
 
-const { Logger } = require('../../../Logger');
+const { Logger } = require('../Logger');
 
 window.ipcRenderer = ipcRenderer;
 
@@ -31,11 +30,7 @@ const createClientEventPayload = (event) => payload({
 });
 
 window.addEventListener('click', (event) => {
-  ipcRenderer.send(SIMPLE_CLICK, createClientEventPayload(event));
-});
-
-window.addEventListener('contextmenu', (event) => {
-  ipcRenderer.send(POSITION_CLICK, createClientEventPayload(event));
+  ipcRenderer.send(LEFT_CLICK, createClientEventPayload(event));
 });
 
 window.onbeforeunload = () => {

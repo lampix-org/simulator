@@ -1,4 +1,4 @@
-const { parseIfString } = require('../../../../utils/parseIfString');
+const { parseIfString } = require('../../../utils/parseIfString');
 
 const resumesWatchers = (state, browser) => ({
   resumeWatchers(watcherIds = []) {

@@ -1,8 +1,6 @@
-const { getWatcherName } = require('../../compatibility/getWatcherName');
-const { getWatcherShape } = require('../../compatibility/getWatcherShape');
-const { paperOutline } = require('../../../../utils/paperOutline');
-const { hexagonOutline } = require('../../../../utils/hexagonOutline');
-const { somePointsInShape } = require('../../../../utils/somePointsInShape');
+const { paperOutline } = require('../../../utils/paperOutline');
+const { hexagonOutline } = require('../../../utils/hexagonOutline');
+const { somePointsInShape } = require('../../../utils/somePointsInShape');
 
 const handlesClassification = ({
   state,
@@ -12,7 +10,7 @@ const handlesClassification = ({
   onObjectsClassified
 }) => ({
   handleClassification(x, y) {
-    logger.verbose(`Handling right click / segmentation at x: ${x}, y: ${y}`);
+    logger.verbose(`Handling click at x: ${x}, y: ${y}`);
 
     const { watcherData, settings } = state;
     const { watchers } = watcherData;
@@ -43,17 +41,17 @@ const handlesClassification = ({
     Object.keys(watchers).forEach((wKey, i) => {
       const w = watchers[wKey];
 
-      if (w.paused || getWatcherName(w) !== watcherName) {
+      if (w.paused || w.name !== watcherName) {
         return;
       }
 
       const data = [];
 
-      if (somePointsInShape(polygon, getWatcherShape(w))) {
+      if (somePointsInShape(polygon, w.shape)) {
         logger.info('Outline in watcher');
 
         /**
-         * The preposition callback doesn't have the classTag attribute because
+         * The onLocation callback doesn't have the classTag attribute because
          * it's launched before the classification is complete
          */
         data.push({
@@ -67,14 +65,14 @@ const handlesClassification = ({
           }
         });
 
-        logger.info('Calling objects located callback (former onPrePosition)');
+        logger.info('Calling onObjectsLocated');
         browser.webContents.executeJavaScript(onObjectsLocated(w.id || i, data));
 
         // TODO: Make the time of this timeout configurable
         setTimeout(() => {
           data[data.length - 1].classTag = recognizedClass;
 
-          logger.info('Calling objects detected callback (former onPosition)');
+          logger.info('Calling onObjectsClassified');
           browser.webContents.executeJavaScript(onObjectsClassified(w.id || i, data, metadata));
         }, 0);
       }

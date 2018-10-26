@@ -1,8 +1,7 @@
 const { ipcMain } = require('electron');
 const {
   MOUSE_MOVE,
-  SIMPLE_CLICK,
-  POSITION_CLICK,
+  LEFT_CLICK
 } = require('../../ipcEvents');
 const debounce = require('lodash.debounce');
 
@@ -22,17 +21,9 @@ function initSimulatorClientEventListeners() {
     }
   });
 
-  ipcMain.on(SIMPLE_CLICK, (event, data) => {
+  ipcMain.on(LEFT_CLICK, (event, data) => {
     if (this.simulators[data.url]) {
-      this.simulators[data.url].handleClassifierWatchers(data.mouseX, data.mouseY);
-    } else {
-      debounceSimulatorError();
-    }
-  });
-
-  ipcMain.on(POSITION_CLICK, (event, data) => {
-    if (this.simulators[data.url]) {
-      this.simulators[data.url].handleSegmenterWatchers(data.mouseX, data.mouseY);
+      this.simulators[data.url].handleClassification(data.mouseX, data.mouseY);
     } else {
       debounceSimulatorError();
     }

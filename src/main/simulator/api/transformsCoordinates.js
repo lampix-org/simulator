@@ -1,4 +1,4 @@
-const { parseIfString } = require('../../../utils/parseIfString');
+const { parseIfString } = require('../../utils/parseIfString');
 
 const transformsCoordinates = (
   browser,
