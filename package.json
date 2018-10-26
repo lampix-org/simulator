@@ -66,10 +66,8 @@
       "main.map.js",
       "preload-admin.js",
       "preload-admin.js.map",
-      "preload-simulator-v0.js",
-      "preload-simulator-v0.js.map",
-      "preload-simulator-v1.js",
-      "preload-simulator-v1.js.map",
+      "preload-simulator.js",
+      "preload-simulator.js.map",
       "package.json"
     ],
     "directories": {
