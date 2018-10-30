@@ -1,4 +1,4 @@
-const { ipcRenderer } = require('electron');
+const { ipcRenderer, webFrame } = require('electron');
 const {
   LEFT_CLICK,
   GET_LAMPIX_INFO,
@@ -14,6 +14,11 @@ const {
 } = require('../ipcEvents');
 
 const { Logger } = require('../Logger');
+
+// Allow simulator:// requests
+webFrame.registerURLSchemeAsPrivileged('simulator', {
+  bypassCSP: false
+});
 
 window.ipcRenderer = ipcRenderer;
 
