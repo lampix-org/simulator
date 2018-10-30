@@ -16,7 +16,6 @@ const enableFileServing = (port) => {
     fs.mkdirSync(pathToWebapps);
   }
 
-  // Serve up public/ftp folder
   const serve = serveStatic(pathToWebapps, { index: ['index.html'] });
 
   // Create server
