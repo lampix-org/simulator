@@ -13,6 +13,7 @@ const { createSettings } = require('./createSettings');
 // API
 const { sendsLampixInfo } = require('./api/sendsLampixInfo');
 const { sendsApps } = require('./api/sendsApps');
+const { sendsAppConfig } = require('./api/sendsAppConfig');
 const { transformsCoordinates } = require('./api/transformsCoordinates');
 const { removesWatchers } = require('./api/watcher-management/removesWatchers');
 const { addsWatchers } = require('./api/watcher-management/addsWatchers');
@@ -38,7 +39,8 @@ const simulator = (url, {
   configStore,
   isDev,
   onClosed,
-  updateAdminUI
+  updateAdminUI,
+  localServerOrigin
 }) => {
   const settings = createSettings({
     store,
@@ -79,6 +81,11 @@ const simulator = (url, {
     updatesWatcherShape(state, appBrowser),
     sendsLampixInfo(state, appBrowser, configStore),
     sendsApps(state, appBrowser, configStore),
+    sendsAppConfig({
+      browser: appBrowser,
+      url,
+      localServerOrigin
+    }),
     sendsSettingsToAdmin(state, updateAdminUI),
     transformsCoordinates(
       appBrowser,

@@ -3,6 +3,7 @@ const {
   GET_LAMPIX_INFO,
   TRANSFORM_COORDINATES,
   GET_APPS,
+  GET_APP_CONFIG,
   SWITCH_TO_APP,
   ADD_WATCHERS,
   REMOVE_WATCHERS,
@@ -30,6 +31,11 @@ function initSimulatorLampixListeners() {
   ipcMain.on(SWITCH_TO_APP, (event, data) => {
     const { toClose, toOpen } = data;
     this.switchToApp(toClose, toOpen);
+  });
+
+  ipcMain.on(GET_APP_CONFIG, (event, data) => {
+    const simulator = this.simulators[data.url];
+    simulator.sendAppConfig();
   });
 
   // Watcher Management

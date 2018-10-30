@@ -10,7 +10,8 @@ const {
   PAUSE_WATCHERS,
   RESUME_WATCHERS,
   BEFORE_UNLOAD,
-  UPDATE_WATCHER_SHAPE
+  UPDATE_WATCHER_SHAPE,
+  GET_APP_CONFIG
 } = require('../ipcEvents');
 
 const { Logger } = require('../Logger');
@@ -73,6 +74,9 @@ window._lampix_internal = {
     rect
   }),
   get_apps: () => ipcRenderer.send(GET_APPS, {
+    url: appUrl
+  }),
+  get_config_data: () => ipcRenderer.send(GET_APP_CONFIG, {
     url: appUrl
   }),
   switch_to_app: (newApp) => ipcRenderer.send(SWITCH_TO_APP, {
