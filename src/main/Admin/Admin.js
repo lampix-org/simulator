@@ -1,9 +1,10 @@
-const { simulator } = require('../simulator');
+const { URL } = require('url');
 
+const { simulator } = require('../simulator');
 const { createAdminBrowser } = require('./createAdminBrowser');
 const { store } = require('../store');
 const { configStore } = require('../config');
-const { checkURL } = require('./checkURL');
+const { handleURLScheme } = require('./handleURLScheme');
 const { Logger } = require('../Logger');
 const { isDev } = require('../utils/envCheck');
 const {
@@ -34,7 +35,9 @@ class Admin {
   constructor() {
     this.storedURLs = new Set(store.get('urls') || []);
     this.config = configStore.store;
+    this.localServerOrigin = null;
     this.simulators = {};
+    this.localServerOrigin = null;
     this.browser = createAdminBrowser(() => {
       this.browser = null;
     });
@@ -68,7 +71,7 @@ class Admin {
       success,
       error,
       url: checkedURL
-    } = await checkURL(url);
+    } = await handleURLScheme(url, this.localServerOrigin);
 
     if (!success) {
       Logger.error(`URL check failed with message: ${error}`);
@@ -79,18 +82,21 @@ class Admin {
 
     Logger.info('Creating new simulator...');
 
+    // inputURL refers to the string the user entered in the address bar
+    const inputURL = checkedURL.href;
+
     const onClosed = () => {
-      delete this.simulators[checkedURL];
+      delete this.simulators[inputURL];
       this.sendSimulators();
       simulatorPosition -= simulatorPositionStep;
     };
     const updateAdminUI = sendSettingsBack.bind(
       null,
       this.browser.webContents,
-      checkedURL
+      inputURL
     );
 
-    this.simulators[checkedURL] = simulator(url, {
+    this.simulators[inputURL] = simulator(url, {
       store,
       configStore,
       isDev,
@@ -100,10 +106,17 @@ class Admin {
 
     const options = isDev ? { extraHeaders: 'pragma: no-cache\n' } : {};
 
-    Logger.info(`Loading app at ${checkedURL}`);
+    Logger.info(`Loading app at ${inputURL}`);
     simulatorPosition += simulatorPositionStep;
-    this.simulators[checkedURL].window.setPosition(simulatorPosition, simulatorPosition, true);
-    this.simulators[checkedURL].appBrowser.webContents.loadURL(`${checkedURL}?url=${checkedURL}`, options);
+    this.simulators[inputURL].window.setPosition(simulatorPosition, simulatorPosition, true);
+
+    const urlToLoad = new URL(checkedURL);
+    urlToLoad.searchParams.append('url', urlToLoad.href);
+
+    this.simulators[inputURL]
+      .appBrowser.webContents
+      .loadURL(urlToLoad.href, options);
+
     this.updateURLListOrder(alias || url);
     this.sendSimulators();
     this.updateRendererURLs();
