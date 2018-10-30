@@ -101,7 +101,8 @@ class Admin {
       configStore,
       isDev,
       onClosed,
-      updateAdminUI
+      updateAdminUI,
+      localServerOrigin: this.localServerOrigin
     });
 
     const options = isDev ? { extraHeaders: 'pragma: no-cache\n' } : {};
