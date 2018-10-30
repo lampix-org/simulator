@@ -2,6 +2,9 @@
 const { app, Menu } = require('electron');
 const url = require('url');
 const path = require('path');
+const getPort = require('get-port');
+
+const { enableFileServing } = require('./enableFileServing');
 const { isDev, isProd, isDebuggingProd } = require('./utils/envCheck');
 const { enableUpdates } = require('./enableUpdates');
 const { Logger } = require('./Logger');
@@ -74,6 +77,16 @@ async function createWindow() {
   // Create the admin window and load the index.html of the app.
   const { admin } = require('./Admin'); // eslint-disable-line
   admin.browser.loadURL(appURL);
+
+  // TL;DR: simulator://<app-name> => http://localhost:<port>/app-name
+  // Get available port
+  // Make it known to Admin for protocol forwarding
+  // Enable file serving
+  getPort().then((port) => {
+    admin.localServerOrigin = `http://localhost:${port}`;
+    enableFileServing(port);
+  });
+
   Logger.setAdminBrowser(admin.browser);
   enableUpdates();
 }

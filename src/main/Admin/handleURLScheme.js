@@ -5,10 +5,16 @@ const { URL } = require('url');
 const respond = (success, error, url) => ({
   success,
   error,
-  url: url ? decodeURIComponent(url.href) : null
+  url: url || null
 });
 
-async function checkURL(inputURL) {
+const acceptedProtocols = [
+  'file',
+  'http',
+  'https',
+];
+
+async function handleURLScheme(inputURL) {
   try {
     const url = new URL(inputURL);
 
@@ -22,10 +28,10 @@ async function checkURL(inputURL) {
       return respond(true, null, url);
     }
 
-    throw new Error('Expected file, http or https protocols');
+    throw new Error(`Expected ${acceptedProtocols.join(', ')} protocols, but got ${url.protocol}`);
   } catch (err) {
     return respond(false, err.message);
   }
 }
 
-exports.checkURL = checkURL;
+exports.handleURLScheme = handleURLScheme;
