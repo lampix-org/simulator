@@ -9,12 +9,13 @@ const respond = (success, error, url) => ({
 });
 
 const acceptedProtocols = [
-  'file',
-  'http',
-  'https',
+  'file:',
+  'http:',
+  'https:',
+  'simulator:'
 ];
 
-async function handleURLScheme(inputURL) {
+async function handleURLScheme(inputURL, localServerOrigin) {
   try {
     const url = new URL(inputURL);
 
@@ -25,6 +26,11 @@ async function handleURLScheme(inputURL) {
 
     if (url.protocol === 'http:' || url.protocol === 'https:') {
       await checkHTTPConnection(url);
+      return respond(true, null, url);
+    }
+
+    if (url.protocol === 'simulator:') {
+      await checkHTTPConnection(new URL(`${localServerOrigin}/${url.host}`));
       return respond(true, null, url);
     }
 

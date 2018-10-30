@@ -1,10 +1,11 @@
 // Module to control application life.
-const { app, Menu } = require('electron');
+const { app, Menu, protocol } = require('electron');
 const url = require('url');
 const path = require('path');
 const getPort = require('get-port');
 
 const { enableFileServing } = require('./enableFileServing');
+const { registerSimulatorProtocol } = require('./registerSimulatorProtocol');
 const { isDev, isProd, isDebuggingProd } = require('./utils/envCheck');
 const { enableUpdates } = require('./enableUpdates');
 const { Logger } = require('./Logger');
@@ -12,6 +13,11 @@ const { Logger } = require('./Logger');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+const schemePrefix = 'simulator';
+
+// Register simulator:// as standard scheme
+// https://electronjs.org/docs/api/protocol#protocolregisterstandardschemesschemes-options
+protocol.registerStandardSchemes([schemePrefix]);
 
 const installExtensions = async () => {
   const installer = require('electron-devtools-installer'); // eslint-disable-line
@@ -83,7 +89,9 @@ async function createWindow() {
   // Make it known to Admin for protocol forwarding
   // Enable file serving
   getPort().then((port) => {
-    admin.localServerOrigin = `http://localhost:${port}`;
+    const serverUrl = `http://localhost:${port}`;
+    admin.localServerOrigin = serverUrl;
+    registerSimulatorProtocol(schemePrefix, serverUrl);
     enableFileServing(port);
   });
 

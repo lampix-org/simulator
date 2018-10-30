@@ -35,6 +35,7 @@ class Admin {
   constructor() {
     this.storedURLs = new Set(store.get('urls') || []);
     this.config = configStore.store;
+    this.localServerOrigin = null;
     this.simulators = {};
     this.localServerOrigin = null;
     this.browser = createAdminBrowser(() => {
@@ -70,7 +71,7 @@ class Admin {
       success,
       error,
       url: checkedURL
-    } = await handleURLScheme(url);
+    } = await handleURLScheme(url, this.localServerOrigin);
 
     if (!success) {
       Logger.error(`URL check failed with message: ${error}`);
