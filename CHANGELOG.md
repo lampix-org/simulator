@@ -1,3 +1,11 @@
+## 2.1.2
+###### *Oct 31, 2018*
+
+Captain's log:
+
+- fixed cache.directories indentation in .travis.yml
+
+
 ## 2.1.1
 ###### *Oct 30, 2018*
 
