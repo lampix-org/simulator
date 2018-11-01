@@ -3,16 +3,14 @@ const path = require('path');
 const baseConfig = require('./webpack.base');
 const vendors = require('./vendors.json');
 
-require('dotenv').config();
-
 const cwd = process.cwd();
 
 // Plugins
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = baseConfig({
+  mode: 'production',
   target: 'electron-renderer',
   entry: {
     vendor: vendors
@@ -25,52 +23,68 @@ module.exports = baseConfig({
     rules: [
       {
         test: /\.s?css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            {
-              loader: 'css-loader',
-              options: Object.assign({
-                minimize: true
-              }, process.env.CSS_MODULES_ENABLED ? {
-                modules: true,
-                localIdentName: '[name]__[local]__[hash:base64:5]',
-                camelCase: true
-              } : {}),
-            },
-            {
-              loader: 'sass-loader'
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader'
+        ],
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        use: [
+          { loader: 'file-loader?name=[name].[ext]' },
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              pngquant: {
+                quality: '65-90',
+                speed: 4
+              },
+              optipng: {
+                optimizationLevel: 7
+              },
+              mozjpeg: {
+                progressive: true
+              },
+              gifsicle: {
+                interlaced: false
+              }
             }
-          ]
-        })
+          }
+        ]
       }
     ]
   },
   plugins: [
-    new ExtractTextPlugin({
-      filename: '[name].[chunkhash].css'
-    }),
-    // Extract vendor code to own file
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      filename: '[name].[chunkhash].js',
-      minChunks: Infinity
-    }),
-    new UglifyJsPlugin({
-      test: /\.js($|\?)/i,
-      uglifyOptions: {
-        compress: {
-          warnings: false
-        }
-      }
+    new MiniCssExtractPlugin({
+      filename: '[name].[hash].css',
+      chunkFilename: '[id].[hash].css',
     }),
     // Extract app code to own file
     new HtmlWebpackPlugin({
       template: path.join(cwd, 'src', 'renderer', 'index.html')
     }),
     new webpack.EnvironmentPlugin({
-      NODE_ENV: 'production',
       DEBUG_PROD: process.env.DEBUG_PROD || 'false'
     })
-  ]
+  ],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          chunks: 'initial',
+          minChunks: 2,
+          maxInitialRequests: 5, // The default limit is too small to showcase the effect
+          minSize: 0 // This is example is too small to create commons chunks
+        },
+        vendor: {
+          test: /node_modules/,
+          chunks: 'initial',
+          name: 'vendor',
+          priority: 10,
+          enforce: true
+        }
+      }
+    }
+  }
 });
