@@ -1,16 +1,12 @@
-## 2.1.4
-##### *Nov 1, 2018*
-
-Captains' log:
-
-- use `10.13.0` as Node version in Travis CI
-
-## 2.1.3
+## 2.1.5
 ##### *Nov 1, 2018*
 
 Captain's log:
 
 - replaced `request` with `got` due to seemingly unresolved issue with callback sometimes not being called (at all)
+- use `10.13.0` as Node version in Travis CI
+- updated infrastructure to Webpack 4
+- removed `dotenv` as a dependency
 
 ## 2.1.2
 ###### *Oct 31, 2018*
