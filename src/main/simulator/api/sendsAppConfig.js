@@ -1,7 +1,7 @@
 const { URL } = require('url');
 const { promisify } = require('util');
 const fs = require('fs');
-const request = require('request');
+const got = require('got');
 
 const readFile = promisify(fs.readFile);
 const access = promisify(fs.access);
@@ -37,7 +37,7 @@ const handleFileScheme = async (url) => {
 };
 
 const requestConfigJson = (url) => new Promise((resolve) => {
-  request(url, (err, res, body) => {
+  got(url, (err, res, body) => {
     let data = null;
 
     if (!err && res.statusCode === 200) {
