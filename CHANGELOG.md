@@ -1,3 +1,10 @@
+## 2.1.6
+##### *Nov 2, 2018*
+
+Captain's log:
+
+- fixed request for `config.json` under HTTP and HTTPs protocols
+
 ## 2.1.5
 ##### *Nov 1, 2018*
 
