@@ -1,10 +1,9 @@
-const { URL } = require('url');
+const { URL, resolve: urlResolve } = require('url');
 const { promisify } = require('util');
 const fs = require('fs');
 const got = require('got');
 
 const readFile = promisify(fs.readFile);
-const access = promisify(fs.access);
 
 const requestConfigJson = async (logger, url) => {
   let data = null;
@@ -27,21 +26,18 @@ const handleFileScheme = async (logger, url) => {
     appPath = appPath.slice(0, lastIndex);
   }
 
+  if (appPath[appPath.length - 1] === '/') {
+    appPath = appPath.slice(0, -1);
+  }
 
   const configJsonPath = `${appPath}/config.json`;
   let config = null;
 
-  // Check if the file exists in the specified directory.
-  const doesNotExist = !!await access(configJsonPath, fs.constants.F_OK);
-  if (doesNotExist) {
-    return config;
-  }
-
-  config = await readFile(configJsonPath, { encoding: 'utf8' });
-
   try {
+    config = await readFile(configJsonPath, { encoding: 'utf8' });
     config = JSON.parse(config);
   } catch (e) {
+    logger.error(e);
     config = null;
   }
 
@@ -51,7 +47,7 @@ const handleFileScheme = async (logger, url) => {
 const handleSimulatorScheme = async (logger, url, localServerOrigin) => {
   const { host: appName } = url;
 
-  const configJsonUrl = `${localServerOrigin}/${appName}/config.json`;
+  const configJsonUrl = urlResolve(localServerOrigin, appName, 'config.json');
   const config = await requestConfigJson(logger, configJsonUrl);
 
   return config;
@@ -83,7 +79,7 @@ const sendsAppConfig = ({
     const url = new URL(inputUrl);
     const handler = handlers[url.protocol];
 
-    logger.info(`Handling scheme ${url.protocol}`);
+    logger.info(`sendAppConfig: Handling scheme ${url.protocol}`);
 
     handler(logger, url, localServerOrigin)
       .then((config) => {
