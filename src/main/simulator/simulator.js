@@ -84,7 +84,8 @@ const simulator = (url, {
     sendsAppConfig({
       browser: appBrowser,
       url,
-      localServerOrigin
+      localServerOrigin,
+      logger: Logger
     }),
     sendsSettingsToAdmin(state, updateAdminUI),
     transformsCoordinates(

@@ -6,7 +6,19 @@ const got = require('got');
 const readFile = promisify(fs.readFile);
 const access = promisify(fs.access);
 
-const handleFileScheme = async (url) => {
+const requestConfigJson = async (logger, url) => {
+  let data = null;
+  try {
+    const res = await got.get(url);
+    data = JSON.parse(res.body);
+  } catch (e) {
+    data = null;
+  }
+
+  return data;
+};
+
+const handleFileScheme = async (logger, url) => {
   const urlWithoutSearchParams = url.href.split('?')[0];
   let appPath = urlWithoutSearchParams.replace('file://', '');
 
@@ -36,36 +48,20 @@ const handleFileScheme = async (url) => {
   return config;
 };
 
-const requestConfigJson = (url) => new Promise((resolve) => {
-  got(url, (err, res, body) => {
-    let data = null;
-
-    if (!err && res.statusCode === 200) {
-      try {
-        data = JSON.parse(body);
-      } catch (e) {
-        data = null;
-      }
-    }
-
-    resolve(data);
-  });
-});
-
-const handleSimulatorScheme = async (url, localServerOrigin) => {
+const handleSimulatorScheme = async (logger, url, localServerOrigin) => {
   const { host: appName } = url;
 
   const configJsonUrl = `${localServerOrigin}/${appName}/config.json`;
-  const config = await requestConfigJson(configJsonUrl);
+  const config = await requestConfigJson(logger, configJsonUrl);
 
   return config;
 };
 
-const handleHttpScheme = async (url) => {
+const handleHttpScheme = async (logger, url) => {
   const { origin } = url;
 
   const configJsonUrl = `${origin}/config.json`;
-  const config = await requestConfigJson(configJsonUrl);
+  const config = await requestConfigJson(logger, configJsonUrl);
 
   return config;
 };
@@ -80,13 +76,16 @@ const handlers = {
 const sendsAppConfig = ({
   browser,
   url: inputUrl,
-  localServerOrigin
+  localServerOrigin,
+  logger
 }) => ({
   sendAppConfig() {
     const url = new URL(inputUrl);
     const handler = handlers[url.protocol];
 
-    handler(url, localServerOrigin)
+    logger.info(`Handling scheme ${url.protocol}`);
+
+    handler(logger, url, localServerOrigin)
       .then((config) => {
         browser.webContents
           .executeJavaScript(`onAppConfig(${JSON.stringify(config)})`);
