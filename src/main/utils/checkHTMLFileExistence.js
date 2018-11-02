@@ -24,7 +24,7 @@ const checkHTMLFileExistence = (url) => new Promise((resolve, reject) => {
     Logger.info('Assuming path is a directory. Checking for index.html');
 
     // Assume directory was dropped instead of file, check for index.html existence
-    assumedURL = new URL(`${url}/index.html`);
+    assumedURL = new URL('index.html', url);
     fileOkay = fs.existsSync(assumedURL);
   }
 
