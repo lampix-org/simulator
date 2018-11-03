@@ -1,3 +1,10 @@
+## 2.1.7
+##### *Nov 3, 2018*
+
+Highlights:
+
+- added download links in README.md
+
 ## 2.1.6
 ##### *Nov 2, 2018*
 

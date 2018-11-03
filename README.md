@@ -1,4 +1,12 @@
-# Lampix App Simulator
+# Lampix Simulator
+
+## Download
+
+**Linux**: https://s3.amazonaws.com/simulator.lampix.com/lampix-simulator-master.AppImage
+**Windows**: https://s3.amazonaws.com/simulator.lampix.com/lampix-simulator-master.exe
+**macOS**: https://s3.amazonaws.com/simulator.lampix.com/lampix-simulator-master.dmg
+
+## Developer notes  
 
 **NOTE: Most of the notes included here are meant for members and collaborators. If you have questions regarding the usage of the simulator, try the help section in the app or file an issue.** 
 
