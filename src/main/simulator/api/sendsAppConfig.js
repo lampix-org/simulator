@@ -3,6 +3,8 @@ const { promisify } = require('util');
 const fs = require('fs');
 const got = require('got');
 
+const { getPathFromFileUrl } = require('../../utils/getPathFromFileUrl');
+
 const readFile = promisify(fs.readFile);
 
 const requestConfigJson = async (logger, url) => {
@@ -18,17 +20,7 @@ const requestConfigJson = async (logger, url) => {
 };
 
 const handleFileScheme = async (logger, url) => {
-  const urlWithoutSearchParams = url.href.split('?')[0];
-  let appPath = urlWithoutSearchParams.replace('file://', '');
-
-  if (appPath.includes('index.html')) {
-    const lastIndex = appPath.lastIndexOf('index.html');
-    appPath = appPath.slice(0, lastIndex);
-  }
-
-  if (appPath[appPath.length - 1] === '/') {
-    appPath = appPath.slice(0, -1);
-  }
+  const appPath = getPathFromFileUrl(url);
 
   const configJsonPath = `${appPath}/config.json`;
   let config = null;

@@ -9,7 +9,8 @@ const {
   REMOVE_WATCHERS,
   PAUSE_WATCHERS,
   RESUME_WATCHERS,
-  UPDATE_WATCHER_SHAPE
+  UPDATE_WATCHER_SHAPE,
+  WRITE_FILE
 } = require('../../ipcEvents');
 const { Logger } = require('../../Logger');
 
@@ -42,6 +43,14 @@ function initSimulatorLampixListeners() {
     Logger.verbose(`Received event: ${GET_APP_CONFIG}`);
     const simulator = this.simulators[data.url];
     simulator.sendAppConfig();
+  });
+
+  ipcMain.on(WRITE_FILE, (event, data) => {
+    Logger.verbose(`Received event: ${WRITE_FILE}`);
+
+    const { url, filename, toWrite } = data;
+    const simulator = this.simulators[url];
+    simulator.writeFile(filename, toWrite);
   });
 
   // Watcher Management

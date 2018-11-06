@@ -21,6 +21,7 @@ const { pausesWatchers } = require('./api/watcher-management/pausesWatchers');
 const { resumesWatchers } = require('./api/watcher-management/resumesWatchers');
 const { updatesWatcherShape } = require('./api/updatesWatcherShape');
 const { handlesClassification } = require('./api/watcher-management/handlesClassification');
+const { writesFile } = require('./api/writesFile');
 
 // Calls to browser
 const { onObjectsClassified } = require('./api/onObjectsClassified');
@@ -79,6 +80,13 @@ const simulator = (url, {
     pausesWatchers(state, appBrowser),
     resumesWatchers(state, appBrowser),
     updatesWatcherShape(state, appBrowser),
+    handlesClassification({
+      state,
+      onObjectsLocated,
+      onObjectsClassified,
+      logger: Logger,
+      browser: appBrowser
+    }),
     sendsLampixInfo(state, appBrowser, configStore),
     sendsApps(state, appBrowser, configStore),
     sendsAppConfig({
@@ -92,12 +100,10 @@ const simulator = (url, {
       appBrowser,
       configStore
     ),
-    handlesClassification({
-      state,
-      onObjectsLocated,
-      onObjectsClassified,
-      logger: Logger,
-      browser: appBrowser
+    writesFile({
+      browser: appBrowser,
+      url,
+      logger: Logger
     })
   );
 };

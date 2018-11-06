@@ -4,6 +4,7 @@ const url = require('url');
 const path = require('path');
 const getPort = require('get-port');
 
+const { initialize } = require('./initialize');
 const { enableFileServing } = require('./enableFileServing');
 const { registerSimulatorProtocol } = require('./registerSimulatorProtocol');
 const { isDev, isProd, isDebuggingProd } = require('./utils/envCheck');
@@ -36,6 +37,8 @@ async function createWindow() {
   if (isDev || isDebuggingProd) {
     await installExtensions();
   }
+
+  initialize();
 
   const appURL = isDev ? `http://localhost:${process.env.PORT}` : url.format({
     pathname: path.join(__dirname, 'index.html'),
