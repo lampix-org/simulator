@@ -1,4 +1,3 @@
-const { app } = require('electron');
 const { promisify } = require('util');
 const { URL } = require('url');
 const fs = require('fs');
@@ -10,11 +9,12 @@ const writeFile = promisify(fs.writeFile);
 const access = promisify(fs.access);
 const mkdir = promisify(fs.mkdir);
 
-const userDataPath = app.getPath('userData');
-const webappsDataFolder = path.join(userDataPath, 'webapps-data');
+const {
+  WEBAPPS_DATA_PATH
+} = require('../../constants');
 
 const createWebappDataDir = async (logger, appName) => {
-  const appDir = path.join(webappsDataFolder, appName);
+  const appDir = path.join(WEBAPPS_DATA_PATH, appName);
 
   try {
     // Check if directory exists
@@ -49,7 +49,7 @@ const handleWritingToFile = async (logger, appName, filename, data) => {
   }
 
   try {
-    const dest = path.join(webappsDataFolder, appName, filename);
+    const dest = path.join(WEBAPPS_DATA_PATH, appName, filename);
     await write(dest, data);
   } catch (e) {
     logger.error(e);

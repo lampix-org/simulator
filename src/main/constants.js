@@ -1,3 +1,6 @@
+const { app } = require('electron');
+const path = require('path');
+
 const { range } = require('./utils/range');
 
 exports.DEFAULT_WINDOW_WIDTH = 1280;
@@ -12,3 +15,7 @@ exports.Shapes = Object.freeze({
   Circle: 'circle',
   Polygon: 'polygon'
 });
+
+const userDataPath = app.getPath('userData');
+exports.WEBAPPS_PATH = path.join(userDataPath, 'webapps');
+exports.WEBAPPS_DATA_PATH = path.join(userDataPath, 'webapps-data');
