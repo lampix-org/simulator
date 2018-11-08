@@ -73,7 +73,7 @@ const handleHttpScheme = async (logger, url, filename, data) => {
   const appName = url.searchParams.get('simulated-app-name');
 
   if (!appName) {
-    Promise.reject(new Error(`Search param simulated-app-name not specified in ${url}`));
+    throw new Error(`Search param simulated-app-name not specified in ${url}`);
   }
 
   await handleWritingToFile(logger, appName, filename, data);

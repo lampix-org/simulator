@@ -39,6 +39,7 @@ exports.PAUSE_WATCHERS = event('PAUSE_WATCHERS');
 exports.RESUME_WATCHERS = event('RESUME_WATCHERS');
 exports.UPDATE_WATCHER_SHAPE = event('UPDATE_WATCHER_SHAPE');
 exports.WRITE_FILE = event('WRITE_FILE');
+exports.READ_FILE = event('READ_FILE');
 
 // Logger
 exports.LOG_R_TO_M = event('LOG_R_TO_M');

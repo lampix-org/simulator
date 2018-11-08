@@ -12,7 +12,8 @@ const {
   BEFORE_UNLOAD,
   UPDATE_WATCHER_SHAPE,
   GET_APP_CONFIG,
-  WRITE_FILE
+  WRITE_FILE,
+  READ_FILE
 } = require('../ipcEvents');
 
 const { Logger } = require('../Logger');
@@ -84,5 +85,6 @@ window._lampix_internal = {
     toClose: appUrl,
     toOpen: newApp
   }),
-  write_file: (filename, toWrite) => ipcRenderer.send(WRITE_FILE, payload({ filename, toWrite }))
+  write_file: (filename, toWrite) => ipcRenderer.send(WRITE_FILE, payload({ filename, toWrite })),
+  read_file: (filename) => ipcRenderer.send(READ_FILE, payload({ filename }))
 };

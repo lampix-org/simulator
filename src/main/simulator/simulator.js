@@ -21,6 +21,7 @@ const { resumesWatchers } = require('./api/watcher-management/resumesWatchers');
 const { updatesWatcherShape } = require('./api/updatesWatcherShape');
 const { handlesClassification } = require('./api/watcher-management/handlesClassification');
 const { writesFile } = require('./api/writesFile');
+const { readsFile } = require('./api/reads-file');
 
 // Calls to browser
 const { onObjectsClassified } = require('./api/onObjectsClassified');
@@ -93,6 +94,11 @@ const simulator = (url, {
       configStore
     ),
     writesFile({
+      browser: appBrowser,
+      url,
+      logger: Logger
+    }),
+    readsFile({
       browser: appBrowser,
       url,
       logger: Logger
