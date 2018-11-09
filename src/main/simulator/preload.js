@@ -81,7 +81,8 @@ window._lampix_internal = {
   get_config_data: () => ipcRenderer.send(GET_APP_CONFIG, {
     url: appUrl
   }),
-  switch_to_app: (newApp) => ipcRenderer.send(SWITCH_TO_APP, {
+  switch_to_app: (newApp, queryParams) => ipcRenderer.send(SWITCH_TO_APP, {
+    queryParams,
     toClose: appUrl,
     toOpen: newApp
   }),

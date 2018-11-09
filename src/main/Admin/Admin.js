@@ -7,6 +7,7 @@ const { configStore } = require('../config');
 const { handleURLScheme } = require('./handleURLScheme');
 const { Logger } = require('../Logger');
 const { isDev } = require('../utils/envCheck');
+const { safeJsonParse } = require('../utils/safeJsonParse');
 const {
   initSimulatorSettingsListeners,
   initAppManagementListeners,
@@ -57,7 +58,7 @@ class Admin {
     );
   }
 
-  async loadApp(urlOrName) {
+  async loadApp(urlOrName, queryParams = {}) {
     Logger.info(`Admin.loadApp called with URL / App Name: ${urlOrName}`);
     const associations = this.config.simulator.appSwitcher.nameToURLAssociations;
     const alias = (urlOrName in associations) ? urlOrName : null;
@@ -113,6 +114,12 @@ class Admin {
 
     const urlToLoad = new URL(checkedURL);
     urlToLoad.searchParams.append('url', urlToLoad.href);
+
+    const extraParams = safeJsonParse(queryParams) || {};
+
+    Object.keys(extraParams).forEach((param) => {
+      urlToLoad.searchParams.append(param, extraParams[param]);
+    });
 
     this.simulators[inputURL]
       .appBrowser.webContents
@@ -189,9 +196,9 @@ class Admin {
     this.browser.webContents.send(APP_CONFIG, this.config);
   }
 
-  switchToApp(toClose, toOpen) {
+  switchToApp(toClose, toOpen, queryParams) {
     this.closeSimulator(toClose);
-    this.loadApp(toOpen);
+    this.loadApp(toOpen, queryParams);
   }
 
   updateNameURLAssociation({ name, url }) {
