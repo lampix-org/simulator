@@ -82,6 +82,6 @@ window._lampix_internal = {
     toClose: appUrl,
     toOpen: newApp
   }),
-  write_file: (filename, toWrite) => ipcRenderer.send(WRITE_FILE, payload({ filename, toWrite })),
+  write_file: (requestJson) => ipcRenderer.send(WRITE_FILE, payload({ requestJson })),
   read_file: (requestJson) => ipcRenderer.send(READ_FILE, payload({ requestJson }))
 };

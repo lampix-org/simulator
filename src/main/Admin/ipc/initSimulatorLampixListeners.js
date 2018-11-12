@@ -53,9 +53,9 @@ function initSimulatorLampixListeners() {
   ipcMain.on(WRITE_FILE, (event, data) => {
     Logger.verbose(`Received event: ${WRITE_FILE}`);
 
-    const { url, filename, toWrite } = data;
+    const { url, requestJson } = data;
     const simulator = this.simulators[url];
-    simulator.writeFile(filename, toWrite);
+    simulator.writeFile(requestJson);
   });
 
   ipcMain.on(READ_FILE, (event, data) => {

@@ -4,6 +4,8 @@ const fs = require('fs');
 const path = require('path');
 
 const { getPathFromFileUrl } = require('../../utils/getPathFromFileUrl');
+const { response } = require('./response');
+const { respond } = require('./respond');
 
 const writeFile = promisify(fs.writeFile);
 const access = promisify(fs.access);
@@ -91,26 +93,26 @@ const writesFile = ({
   url: inputUrl,
   logger
 }) => ({
-  async writeFile(filename, data) {
-    try {
-      // Check if JSON is valid
-      JSON.parse(data);
+  async writeFile(requestJson) {
+    const req = JSON.parse(requestJson);
+    const { data, filename } = req.data;
 
+    let error = null;
+    try {
       const url = new URL(inputUrl);
       const handler = handlers[url.protocol];
       const parsedFilename = filename.endsWith('.json') ? filename : `${filename}.json`;
 
       logger.info(`writeFile: Handling scheme ${url.protocol}`);
 
-      await handler(logger, url, parsedFilename, data);
-      browser.webContents
-        .executeJavaScript(`onFileWritten(null, ${JSON.stringify(filename)})`);
+      await handler(logger, url, parsedFilename, JSON.stringify(data));
     } catch (e) {
       logger.error(e);
-
-      browser.webContents
-        .executeJavaScript(`onFileWritten(${JSON.stringify(e.toString())}, ${JSON.stringify(filename)})`);
+      error = e.toString();
     }
+
+    const res = response(req.requestId, error);
+    respond(browser, req, res);
   }
 });
 
