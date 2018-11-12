@@ -77,11 +77,7 @@ window._lampix_internal = {
   get_config_data: () => ipcRenderer.send(GET_APP_CONFIG, {
     url: appUrl
   }),
-  switch_to_app: (newApp, queryParams) => ipcRenderer.send(SWITCH_TO_APP, {
-    queryParams,
-    toClose: appUrl,
-    toOpen: newApp
-  }),
+  switch_to_app: (requestJson) => ipcRenderer.send(SWITCH_TO_APP, payload({ requestJson })),
   write_file: (requestJson) => ipcRenderer.send(WRITE_FILE, payload({ requestJson })),
   read_file: (requestJson) => ipcRenderer.send(READ_FILE, payload({ requestJson }))
 };

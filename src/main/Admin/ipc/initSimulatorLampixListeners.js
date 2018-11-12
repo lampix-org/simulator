@@ -40,8 +40,11 @@ function initSimulatorLampixListeners() {
 
   ipcMain.on(SWITCH_TO_APP, (event, data) => {
     Logger.verbose(`Received event: ${SWITCH_TO_APP}`);
-    const { toClose, toOpen, queryParams } = data;
-    this.switchToApp(toClose, toOpen, queryParams);
+    const { url, requestJson } = data;
+
+    const req = JSON.parse(requestJson);
+    const { name, params } = req.data;
+    this.switchToApp(url, name, params);
   });
 
   ipcMain.on(GET_APP_CONFIG, (event, data) => {
