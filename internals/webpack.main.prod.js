@@ -2,7 +2,9 @@
  * Webpack config for production electron main process
  */
 
+const webpack = require('webpack');
 const path = require('path');
+const pkg = require('../package.json');
 
 const cwd = process.cwd();
 
@@ -26,5 +28,12 @@ module.exports = {
   node: {
     __dirname: false,
     __filename: false
-  }
+  },
+  plugins: [
+    new webpack.EnvironmentPlugin({
+      VERSION: pkg.version,
+      NODE_ENV: 'production',
+      DEBUG_PROD: process.env.DEBUG_PROD || 'false'
+    })
+  ]
 };

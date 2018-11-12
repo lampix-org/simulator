@@ -1,6 +1,7 @@
 const net = require('net');
 const { spawn } = require('child_process');
 const getPort = require('get-port');
+const pkg = require('../../package.json');
 
 const spawnOptions = {
   stdio: 'inherit',
@@ -8,6 +9,7 @@ const spawnOptions = {
 };
 
 const env = Object.create(process.env);
+env.VERSION = pkg.version;
 
 const client = new net.Socket();
 let electronStarted = false;
