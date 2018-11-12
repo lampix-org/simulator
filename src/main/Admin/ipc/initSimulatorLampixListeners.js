@@ -61,9 +61,9 @@ function initSimulatorLampixListeners() {
   ipcMain.on(READ_FILE, (event, data) => {
     Logger.verbose(`Received event: ${READ_FILE}`);
 
-    const { url, filename } = data;
+    const { url, requestJson } = data;
     const simulator = this.simulators[url];
-    simulator.readFile(filename);
+    simulator.readFile(requestJson);
   });
 
   // Watcher Management

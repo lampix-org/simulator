@@ -68,18 +68,12 @@ window._lampix_internal = {
     Logger.info('update_watcher_shape called');
     ipcRenderer.send(UPDATE_WATCHER_SHAPE, payload({ watcherId, shape }));
   },
-  get_lampix_info: (requestJson) => ipcRenderer.send(GET_LAMPIX_INFO, {
-    url: appUrl,
-    requestJson
-  }),
+  get_lampix_info: (requestJson) => ipcRenderer.send(GET_LAMPIX_INFO, payload({ requestJson })),
   transform_coordinates: (rect) => ipcRenderer.send(TRANSFORM_COORDINATES, {
     url: appUrl,
     rect
   }),
-  get_apps: (requestJson) => ipcRenderer.send(GET_APPS, {
-    url: appUrl,
-    requestJson
-  }),
+  get_apps: (requestJson) => ipcRenderer.send(GET_APPS, payload({ requestJson })),
   get_config_data: () => ipcRenderer.send(GET_APP_CONFIG, {
     url: appUrl
   }),
@@ -89,5 +83,5 @@ window._lampix_internal = {
     toOpen: newApp
   }),
   write_file: (filename, toWrite) => ipcRenderer.send(WRITE_FILE, payload({ filename, toWrite })),
-  read_file: (filename) => ipcRenderer.send(READ_FILE, payload({ filename }))
+  read_file: (requestJson) => ipcRenderer.send(READ_FILE, payload({ requestJson }))
 };
