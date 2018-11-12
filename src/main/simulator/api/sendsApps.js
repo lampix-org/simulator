@@ -1,4 +1,5 @@
 const { response } = require('./response');
+const { respond } = require('./respond');
 
 const sendsApps = (
   state,
@@ -6,16 +7,15 @@ const sendsApps = (
   configStore
 ) => ({
   sendApps(requestJson) {
-    const request = JSON.parse(requestJson);
+    const req = JSON.parse(requestJson);
     const numberOfDummyApps = configStore.get('simulator.appSwitcher.numberOfDummyApps');
     const dummyApps = Array.from({ length: numberOfDummyApps }, (v, i) => ({ name: `App #${i}` }));
 
-    const res = response(request.requestId, null, {
+    const res = response(req.requestId, null, {
       apps: dummyApps
     });
 
-    browser.webContents
-      .executeJavaScript(`${request.callback}(${JSON.stringify(res)})`);
+    respond(browser, req, res);
   }
 });
 

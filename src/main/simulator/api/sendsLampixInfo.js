@@ -1,4 +1,5 @@
 const { response } = require('./response');
+const { respond } = require('./respond');
 
 const sendsLampixInfo = (
   state,
@@ -6,7 +7,7 @@ const sendsLampixInfo = (
   configStore
 ) => ({
   sendLampixInfo(requestJson) {
-    const request = JSON.parse(requestJson);
+    const req = JSON.parse(requestJson);
 
     const pix = configStore.get('pix');
     const info = {
@@ -16,12 +17,11 @@ const sendsLampixInfo = (
       pix
     };
 
-    const res = response(request.requestId, null, {
+    const res = response(req.requestId, null, {
       info
     });
 
-    browser.webContents
-      .executeJavaScript(`${request.callback}(${JSON.stringify(res)})`);
+    respond(browser, req, res);
   }
 });
 
