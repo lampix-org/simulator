@@ -68,15 +68,17 @@ window._lampix_internal = {
     Logger.info('update_watcher_shape called');
     ipcRenderer.send(UPDATE_WATCHER_SHAPE, payload({ watcherId, shape }));
   },
-  get_lampix_info: () => ipcRenderer.send(GET_LAMPIX_INFO, {
-    url: appUrl
+  get_lampix_info: (requestJson) => ipcRenderer.send(GET_LAMPIX_INFO, {
+    url: appUrl,
+    requestJson
   }),
   transform_coordinates: (rect) => ipcRenderer.send(TRANSFORM_COORDINATES, {
     url: appUrl,
     rect
   }),
-  get_apps: () => ipcRenderer.send(GET_APPS, {
-    url: appUrl
+  get_apps: (requestJson) => ipcRenderer.send(GET_APPS, {
+    url: appUrl,
+    requestJson
   }),
   get_config_data: () => ipcRenderer.send(GET_APP_CONFIG, {
     url: appUrl

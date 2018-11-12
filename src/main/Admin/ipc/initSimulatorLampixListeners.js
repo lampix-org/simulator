@@ -18,8 +18,10 @@ const { Logger } = require('../../Logger');
 function initSimulatorLampixListeners() {
   ipcMain.on(GET_LAMPIX_INFO, (event, data) => {
     Logger.verbose(`Received event: ${GET_LAMPIX_INFO}`);
-    const simulator = this.simulators[data.url];
-    simulator.sendLampixInfo();
+
+    const { url, requestJson } = data;
+    const simulator = this.simulators[url];
+    simulator.sendLampixInfo(requestJson);
   });
 
   ipcMain.on(TRANSFORM_COORDINATES, (event, data) => {
@@ -30,8 +32,10 @@ function initSimulatorLampixListeners() {
 
   ipcMain.on(GET_APPS, (event, data) => {
     Logger.verbose(`Received event: ${GET_APPS}`);
-    const simulator = this.simulators[data.url];
-    simulator.sendApps();
+
+    const { url, requestJson } = data;
+    const simulator = this.simulators[url];
+    simulator.sendApps(requestJson);
   });
 
   ipcMain.on(SWITCH_TO_APP, (event, data) => {
