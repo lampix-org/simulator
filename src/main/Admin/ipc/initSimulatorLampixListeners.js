@@ -81,9 +81,9 @@ function initSimulatorLampixListeners() {
 
   ipcMain.on(REMOVE_WATCHERS, (event, data) => {
     Logger.verbose(`Received event: ${REMOVE_WATCHERS}`);
-    const { watcherIds, url } = data;
+    const { url, requestJson } = data;
     const simulator = this.simulators[url];
-    simulator.removeWatchers(watcherIds);
+    simulator.removeWatchers(requestJson);
     simulator.sendSettingsToAdmin();
   });
 

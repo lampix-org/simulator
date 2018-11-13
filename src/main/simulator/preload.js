@@ -52,9 +52,9 @@ window._lampix_internal = {
     Logger.info('add_watchers called');
     ipcRenderer.send(ADD_WATCHERS, payload({ requestJson }));
   },
-  remove_watchers: (watcherIds = []) => {
+  remove_watchers: (requestJson) => {
     Logger.info('remove_watchers called');
-    ipcRenderer.send(REMOVE_WATCHERS, payload({ watcherIds }));
+    ipcRenderer.send(REMOVE_WATCHERS, payload({ requestJson }));
   },
   pause_watchers: (watcherIds = []) => {
     Logger.info('pause_watchers called');
