@@ -12,12 +12,12 @@ const removesWatchers = (state, browser) => ({
 
     // Notify of each watcher removal separately
     // This simulates device reality as things may take time on that end
-    req.data.watcherIds.forEach((id) => {
+    req.data.watcher_ids.forEach((id) => {
       delete watchers[id];
     });
 
     const res = response(req.request_id, null, {
-      watcherIds: req.data.watcherIds
+      watcher_ids: req.data.watcher_ids
     });
 
     respond(browser, req, res);

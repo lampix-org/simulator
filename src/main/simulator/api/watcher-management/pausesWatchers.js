@@ -7,7 +7,7 @@ const pausesWatchers = (state, browser) => ({
     const { watcherData: { watchers } } = state;
     const req = parseIfString(requestJson);
 
-    req.data.watcherIds.forEach((id) => {
+    req.data.watcher_ids.forEach((id) => {
       watchers[id].paused = true;
     });
 
