@@ -11,10 +11,6 @@ const updatesWatcherShape = (state, browser) => ({
     const req = parseIfString(requestJson);
     const { watcherId, shape } = req.data;
 
-    if (!watchers[watcherId]) {
-      console.log('wow');
-    }
-
     // This is a naive implementation that can lead to unwanted results
     // TODO: Check shape integrity
     watchers[watcherId].shape = Object.assign(watchers[watcherId].shape, shape);
