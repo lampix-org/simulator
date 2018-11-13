@@ -56,13 +56,13 @@ window._lampix_internal = {
     Logger.info('remove_watchers called');
     ipcRenderer.send(REMOVE_WATCHERS, payload({ requestJson }));
   },
-  pause_watchers: (watcherIds = []) => {
+  pause_watchers: (requestJson) => {
     Logger.info('pause_watchers called');
-    ipcRenderer.send(PAUSE_WATCHERS, payload({ watcherIds }));
+    ipcRenderer.send(PAUSE_WATCHERS, payload({ requestJson }));
   },
-  resume_watchers: (watcherIds = []) => {
+  resume_watchers: (requestJson) => {
     Logger.info('resume_watchers called');
-    ipcRenderer.send(RESUME_WATCHERS, payload({ watcherIds }));
+    ipcRenderer.send(RESUME_WATCHERS, payload({ requestJson }));
   },
   update_watcher_shape: (requestJson) => {
     Logger.info('update_watcher_shape called');

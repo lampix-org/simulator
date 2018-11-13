@@ -1,4 +1,4 @@
-const response = (requestId, error, data = null) => ({
+const response = (requestId, error = null, data = null) => ({
   requestId,
   error,
   data

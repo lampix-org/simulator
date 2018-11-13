@@ -89,17 +89,17 @@ function initSimulatorLampixListeners() {
 
   ipcMain.on(PAUSE_WATCHERS, (event, data) => {
     Logger.verbose(`Received event: ${PAUSE_WATCHERS}`);
-    const { watcherIds, url } = data;
+    const { url, requestJson } = data;
     const simulator = this.simulators[url];
-    simulator.pauseWatchers(watcherIds);
+    simulator.pauseWatchers(requestJson);
     simulator.sendSettingsToAdmin();
   });
 
   ipcMain.on(RESUME_WATCHERS, (event, data) => {
     Logger.verbose(`Received event: ${RESUME_WATCHERS}`);
-    const { watcherIds, url } = data;
+    const { url, requestJson } = data;
     const simulator = this.simulators[url];
-    simulator.resumeWatchers(watcherIds);
+    simulator.resumeWatchers(requestJson);
     simulator.sendSettingsToAdmin();
   });
 

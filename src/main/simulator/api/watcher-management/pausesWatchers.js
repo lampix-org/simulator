@@ -1,16 +1,18 @@
 const { parseIfString } = require('../../../utils/parseIfString');
+const { response } = require('../response');
+const { respond } = require('../respond');
 
 const pausesWatchers = (state, browser) => ({
-  pauseWatchers(watcherIds = []) {
+  pauseWatchers(requestJson) {
     const { watcherData: { watchers } } = state;
-    const parsedData = parseIfString(watcherIds);
+    const req = parseIfString(requestJson);
 
-    // Notify of each watcher pausing separately
-    // This simulates device reality as things may take time on that end
-    parsedData.forEach((id) => {
+    req.data.watcherIds.forEach((id) => {
       watchers[id].paused = true;
-      browser.webContents.executeJavaScript(`onWatcherPaused('${id}')`);
     });
+
+    const res = response(req.requestId);
+    respond(browser, req, res);
   }
 });
 
