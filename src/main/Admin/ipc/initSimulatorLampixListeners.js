@@ -105,9 +105,9 @@ function initSimulatorLampixListeners() {
 
   ipcMain.on(UPDATE_WATCHER_SHAPE, (event, data) => {
     Logger.verbose(`Received event: ${UPDATE_WATCHER_SHAPE}`);
-    const { watcherId, shape, url } = data;
+    const { url, requestJson } = data;
     const simulator = this.simulators[url];
-    simulator.updateWatcherShape(watcherId, shape);
+    simulator.updateWatcherShape(requestJson);
     simulator.sendSettingsToAdmin();
   });
 }

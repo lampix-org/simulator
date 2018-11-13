@@ -64,9 +64,9 @@ window._lampix_internal = {
     Logger.info('resume_watchers called');
     ipcRenderer.send(RESUME_WATCHERS, payload({ watcherIds }));
   },
-  update_watcher_shape: (watcherId, shape) => {
+  update_watcher_shape: (requestJson) => {
     Logger.info('update_watcher_shape called');
-    ipcRenderer.send(UPDATE_WATCHER_SHAPE, payload({ watcherId, shape }));
+    ipcRenderer.send(UPDATE_WATCHER_SHAPE, payload({ requestJson }));
   },
   get_lampix_info: (requestJson) => ipcRenderer.send(GET_LAMPIX_INFO, payload({ requestJson })),
   transform_coordinates: (rect) => ipcRenderer.send(TRANSFORM_COORDINATES, {
