@@ -1,17 +1,24 @@
 const { parseIfString } = require('../../../utils/parseIfString');
+const { response } = require('../response');
+const { respond } = require('../respond');
 
 const addsWatchers = (state, browser) => ({
-  addWatchers: (watcherDataStructures = []) => {
+  addWatchers: (requestJson) => {
     const {
       watcherData: { watchers }
     } = state;
 
-    const parsedData = parseIfString(watcherDataStructures);
+    const req = parseIfString(requestJson);
 
-    parsedData.forEach((w) => {
+    req.data.watchers.forEach((w) => {
       watchers[w.id] = w;
-      browser.webContents.executeJavaScript(`onWatcherAdded('${w.id}')`);
     });
+
+    const res = response(req.requestId, null, {
+      watcherIds: req.data.watchers.map((w) => w.id)
+    });
+
+    respond(browser, req, res);
   }
 });
 

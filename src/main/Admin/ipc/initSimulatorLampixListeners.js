@@ -72,9 +72,10 @@ function initSimulatorLampixListeners() {
   // Watcher Management
   ipcMain.on(ADD_WATCHERS, (event, data) => {
     Logger.verbose(`Received event: ${ADD_WATCHERS}`);
-    const { watchers, url } = data;
+    const { requestJson, url } = data;
     const simulator = this.simulators[url];
-    simulator.addWatchers(watchers);
+
+    simulator.addWatchers(requestJson);
     simulator.sendSettingsToAdmin();
   });
 

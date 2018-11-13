@@ -48,9 +48,9 @@ window.onbeforeunload = () => {
 };
 
 window._lampix_internal = {
-  add_watchers: (watchers = []) => {
+  add_watchers: (requestJson) => {
     Logger.info('add_watchers called');
-    ipcRenderer.send(ADD_WATCHERS, payload({ watchers }));
+    ipcRenderer.send(ADD_WATCHERS, payload({ requestJson }));
   },
   remove_watchers: (watcherIds = []) => {
     Logger.info('remove_watchers called');
