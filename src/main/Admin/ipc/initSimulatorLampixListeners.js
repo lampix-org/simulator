@@ -26,8 +26,10 @@ function initSimulatorLampixListeners() {
 
   ipcMain.on(TRANSFORM_COORDINATES, (event, data) => {
     Logger.verbose(`Received event: ${TRANSFORM_COORDINATES}`);
-    const simulator = this.simulators[data.url];
-    simulator.transformCoordinates(data.rect);
+
+    const { url, requestJson } = data;
+    const simulator = this.simulators[url];
+    simulator.transformCoordinates(requestJson);
   });
 
   ipcMain.on(GET_APPS, (event, data) => {

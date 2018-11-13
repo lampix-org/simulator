@@ -1,23 +1,30 @@
 const { parseIfString } = require('../../utils/parseIfString');
+const { response } = require('./response');
+const { respond } = require('./respond');
 
 const transformsCoordinates = (
   browser,
   configStore
 ) => ({
-  transformCoordinates(watchers = []) {
-    const parsedData = parseIfString(watchers);
+  transformCoordinates(requestJson) {
+    const req = parseIfString(requestJson);
     const scaleFactor = configStore.get('simulator.coordinateConversion.scaleFactor');
 
-    parsedData.forEach((w) => {
-      w.posX *= scaleFactor;
-      w.posY *= scaleFactor;
-      w.width *= scaleFactor;
-      w.height *= scaleFactor;
-      w.type = w.type === 'camera' ? 'projector' : 'camera';
+    const body = req.data.rectangles.map((w) => {
+      const wClone = { ...w };
+      wClone.posX *= scaleFactor;
+      wClone.posY *= scaleFactor;
+      wClone.width *= scaleFactor;
+      wClone.height *= scaleFactor;
+
+      return wClone;
     });
 
-    browser.webContents
-      .executeJavaScript(`onTransformCoordinates(${JSON.stringify(parsedData)})`);
+    const res = response(req.requestId, null, {
+      rectangles: body
+    });
+
+    respond(browser, req, res);
   }
 });
 
