@@ -16,7 +16,7 @@ const removesWatchers = (state, browser) => ({
       delete watchers[id];
     });
 
-    const res = response(req.requestId, null, {
+    const res = response(req.request_id, null, {
       watcherIds: req.data.watcherIds
     });
 

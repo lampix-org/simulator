@@ -14,7 +14,7 @@ const addsWatchers = (state, browser) => ({
       watchers[w.id] = w;
     });
 
-    const res = response(req.requestId, null, {
+    const res = response(req.request_id, null, {
       watcherIds: req.data.watchers.map((w) => w.id)
     });
 

@@ -15,7 +15,7 @@ const updatesWatcherShape = (state, browser) => ({
     // TODO: Check shape integrity
     watchers[watcherId].shape = Object.assign(watchers[watcherId].shape, shape);
 
-    const res = response(req.requestId, null);
+    const res = response(req.request_id, null);
     respond(browser, req, res);
   }
 });

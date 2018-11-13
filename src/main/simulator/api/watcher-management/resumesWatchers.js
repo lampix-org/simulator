@@ -11,7 +11,7 @@ const resumesWatchers = (state, browser) => ({
       watchers[id].paused = false;
     });
 
-    const res = response(req.requestId);
+    const res = response(req.request_id);
     respond(browser, req, res);
   }
 });

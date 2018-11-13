@@ -111,7 +111,7 @@ const writesFile = ({
       error = e.toString();
     }
 
-    const res = response(req.requestId, error);
+    const res = response(req.request_id, error);
     respond(browser, req, res);
   }
 });

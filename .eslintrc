@@ -127,6 +127,10 @@
     "global-require": "off",
     "no-underscore-dangle": "off",
     "func-names": "off",
-    "space-before-function-paren": "off"
+    "space-before-function-paren": "off",
+    "camelcase": [
+      "error",
+      { "properties": "never" }
+    ]
   }
 }

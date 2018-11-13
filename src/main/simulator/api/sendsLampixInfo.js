@@ -17,7 +17,7 @@ const sendsLampixInfo = (
       pix
     };
 
-    const res = response(req.requestId, null, {
+    const res = response(req.request_id, null, {
       info
     });
 

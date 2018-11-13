@@ -11,7 +11,7 @@ const sendsApps = (
     const numberOfDummyApps = configStore.get('simulator.appSwitcher.numberOfDummyApps');
     const dummyApps = Array.from({ length: numberOfDummyApps }, (v, i) => ({ name: `App #${i}` }));
 
-    const res = response(req.requestId, null, {
+    const res = response(req.request_id, null, {
       apps: dummyApps
     });
 

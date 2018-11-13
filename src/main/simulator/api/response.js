@@ -1,5 +1,5 @@
 const response = (requestId, error = null, data = null) => ({
-  requestId,
+  request_id: requestId,
   error,
   data
 });
