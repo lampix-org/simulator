@@ -9,7 +9,7 @@ const updatesWatcherShape = (state, browser) => ({
     } = state;
 
     const req = parseIfString(requestJson);
-    const { watcherId, shape } = req.data;
+    const { watcher_id: watcherId, shape } = req.data;
 
     // This is a naive implementation that can lead to unwanted results
     // TODO: Check shape integrity
