@@ -1,3 +1,13 @@
+## 2.3.0
+##### *Nov 14, 2018*
+
+Highlights:
+
+- standard request / response for all actions triggered by lampixjs
+- **lampixjs versions <= v1.0.0-beta.0 are no longer supported** as a consequence of the above - only change necessary is updating to `beta` from `alpha` via `npm i @lampix/core@next`
+- responses are properly matched with their requests for all calls (previously only true for watcher management functions)
+- compatible with Lampix 2.1.x
+
 ## 2.1.7
 ##### *Nov 3, 2018*
 
