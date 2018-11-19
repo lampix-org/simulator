@@ -2,6 +2,8 @@ const { paperOutline } = require('../../../utils/paperOutline');
 const { hexagonOutline } = require('../../../utils/hexagonOutline');
 const { somePointsInShape } = require('../../../utils/somePointsInShape');
 
+let idCounter = 0;
+
 const handlesClassification = ({
   state,
   browser,
@@ -14,8 +16,6 @@ const handlesClassification = ({
 
     const { watcherData, settings } = state;
     const { watchers } = watcherData;
-
-    let idCounter = 0;
 
     const {
       watcherName,
