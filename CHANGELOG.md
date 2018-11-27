@@ -1,3 +1,10 @@
+## 2.3.2
+##### *Nov 27, 2018*
+
+Highlights:
+
+- enabled cached busting for `http(s)`, `file` and `simulator` protocols
+
 ## 2.3.0
 ##### *Nov 14, 2018*
 
