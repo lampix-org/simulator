@@ -9,6 +9,7 @@ const { enableFileServing } = require('./enableFileServing');
 const { registerSimulatorProtocol } = require('./registerSimulatorProtocol');
 const { isDev, isProd, isDebuggingProd } = require('./utils/envCheck');
 const { enableUpdates } = require('./enableUpdates');
+const { enableCacheBusting } = require('./enableCacheBusting');
 const { Logger } = require('./Logger');
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -100,6 +101,7 @@ async function createWindow() {
 
   Logger.setAdminBrowser(admin.browser);
   enableUpdates();
+  enableCacheBusting();
 }
 
 // This method will be called when Electron has finished
