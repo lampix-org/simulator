@@ -28,6 +28,7 @@ const newWindow = ({
   const { x, y } = mainDisplayCenterCoords(width, height);
 
   const windowOptions = merge(options, {
+    frame: false,
     width,
     height,
     x,

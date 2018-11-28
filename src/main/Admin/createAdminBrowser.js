@@ -18,7 +18,8 @@ exports.createAdminBrowser = (onClosed = noop) => {
         preload: path.join(__dirname, preloadName),
         devTools: devToolsEnabled
       }
-    }
+    },
+
   });
 
   return browser;

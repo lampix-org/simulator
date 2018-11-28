@@ -11,6 +11,7 @@ import {
 import ButtonAppBar from '../../components/ButtonAppBar';
 import SimulatorList from '../SimulatorList';
 import SimulatorListContainer from '../SimulatorList/SimulatorListContainer';
+import TitleBar from '../../components/TitleBar/TitleBar';
 
 import Notifications from '../Notifications';
 import { queue } from '../Notifications/actions';
@@ -29,13 +30,17 @@ class Core extends Component {
   render() {
     return (
       <React.Fragment>
-        <ButtonAppBar />
+        <TitleBar />
 
-        <SimulatorListContainer>
-          <SimulatorList />
-        </SimulatorListContainer>
+        <div style={{ height: 'calc(100% - 25px)' }}>
+          <ButtonAppBar />
 
-        <Notifications />
+          <SimulatorListContainer>
+            <SimulatorList />
+          </SimulatorListContainer>
+
+          <Notifications />
+        </div>
       </React.Fragment>
     );
   }

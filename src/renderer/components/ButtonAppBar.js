@@ -7,11 +7,11 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 import Settings from '@material-ui/icons/Settings';
-import { UPDATE_URL_LIST } from '../../main/ipcEvents';
+import grey from '@material-ui/core/colors/grey';
 
+import { UPDATE_URL_LIST } from '../../main/ipcEvents';
 import AutoComplete from './AutoComplete';
 import HelpDialog from './HelpDialog';
-
 import SettingsDialog from '../containers/Settings';
 
 const styles = {
@@ -23,7 +23,7 @@ const styles = {
     height: 30
   },
   toolbar: {
-    background: '#222222'
+    backgroundColor: grey[900],
   }
 };
 
