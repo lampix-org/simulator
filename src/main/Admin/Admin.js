@@ -1,4 +1,5 @@
 const { URL } = require('url');
+const { app } = require('electron');
 
 const { simulator } = require('../simulator');
 const { createAdminBrowser } = require('./createAdminBrowser');
@@ -9,8 +10,9 @@ const { Logger } = require('../Logger');
 const { isDev } = require('../utils/envCheck');
 const { safeJsonParse } = require('../utils/safeJsonParse');
 const {
-  initSimulatorSettingsListeners,
   initAppManagementListeners,
+  initWindowManagementListeners,
+  initSimulatorSettingsListeners,
   initSimulatorClientEventListeners,
   initSimulatorLampixListeners,
   handleAdminUIReady,
@@ -51,8 +53,9 @@ class Admin {
       this,
       this.updateRendererURLs,
       this.sendSimulators,
-      initSimulatorSettingsListeners,
       initAppManagementListeners,
+      initWindowManagementListeners,
+      initSimulatorSettingsListeners,
       initSimulatorClientEventListeners,
       initSimulatorLampixListeners
     );
@@ -225,6 +228,22 @@ class Admin {
   updateUserDefinedClasses(userDefinedClasses) {
     configStore.set('userDefinedClasses', userDefinedClasses);
     this.config.userDefinedClasses = userDefinedClasses;
+  }
+
+  quit() {
+    app.quit();
+  }
+
+  minimize() {
+    this.browser.minimize();
+  }
+
+  maximize() {
+    if (this.browser.isMaximized()) {
+      this.browser.unmaximize();
+    } else {
+      this.browser.maximize();
+    }
   }
 }
 

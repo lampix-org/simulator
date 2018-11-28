@@ -22,8 +22,11 @@ const styles = {
   }
 };
 
-const Base = ({ children, classes }) => (
-  <div className={classes.root}>
+const Base = ({ children, classes, onClick }) => (
+  <div
+    className={classes.root}
+    onClick={onClick}
+  >
     <SvgIcon
       color="inherit"
       fontSize="small"
@@ -38,7 +41,8 @@ Base.propTypes = {
   classes: PropTypes.shape({
     root: PropTypes.string,
     icon: PropTypes.string
-  }).isRequired
+  }).isRequired,
+  onClick: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(Base);

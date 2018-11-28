@@ -3,7 +3,10 @@ import React from 'react';
 import Base from './Base';
 
 const Minimize = () => (
-  <Base fontSize="small">
+  <Base
+    fontSize="small"
+    onClick={() => window.admin.minimize()}
+  >
     <path
       d="M20,19H4v-2h16V19z"
     />

@@ -13,7 +13,10 @@ const {
   REMOVE_APP_NAME_URL_ASSOCIATION,
   SAVE_SCALE_FACTOR,
   SAVE_PIX,
-  SAVE_USER_DEFINED_CLASSES
+  SAVE_USER_DEFINED_CLASSES,
+  MINIMIZE_WINDOW,
+  MAXIMIZE_WINDOW,
+  CLOSE_WINDOW
 } = require('../ipcEvents');
 const { Logger } = require('../Logger');
 
@@ -53,5 +56,8 @@ window.admin = {
   removeAssociation: (name) => ipcRenderer.send(REMOVE_APP_NAME_URL_ASSOCIATION, name),
   saveScaleFactor: (value) => ipcRenderer.send(SAVE_SCALE_FACTOR, value),
   savePix: (object) => ipcRenderer.send(SAVE_PIX, object),
-  saveUserDefinedClasses: (userDefinedClasses) => ipcRenderer.send(SAVE_USER_DEFINED_CLASSES, userDefinedClasses)
+  saveUserDefinedClasses: (userDefinedClasses) => ipcRenderer.send(SAVE_USER_DEFINED_CLASSES, userDefinedClasses),
+  quit: () => ipcRenderer.send(CLOSE_WINDOW),
+  minimize: () => ipcRenderer.send(MINIMIZE_WINDOW),
+  maximize: () => ipcRenderer.send(MAXIMIZE_WINDOW),
 };

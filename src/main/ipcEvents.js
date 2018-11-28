@@ -41,6 +41,11 @@ exports.UPDATE_WATCHER_SHAPE = event('UPDATE_WATCHER_SHAPE');
 exports.WRITE_FILE = event('WRITE_FILE');
 exports.READ_FILE = event('READ_FILE');
 
+// Window management
+exports.MINIMIZE_WINDOW = event('MINIMIZE_WINDOW');
+exports.MAXIMIZE_WINDOW = event('MAXIMIZE_WINDOW');
+exports.CLOSE_WINDOW = event('CLOSE_WINDOW');
+
 // Logger
 exports.LOG_R_TO_M = event('LOG_R_TO_M');
 exports.LOG_M_TO_R = event('LOG_M_TO_R');
