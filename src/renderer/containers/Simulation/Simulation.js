@@ -4,8 +4,7 @@ import TitleBar from '../../components/TitleBar';
 
 const Simulation = () => (
   <div>
-    <TitleBar />
-    <div>Joyful tone</div>
+    <TitleBar noMaximize />
   </div>
 );
 

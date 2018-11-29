@@ -18,10 +18,10 @@ const styles = {
   }
 };
 
-const WindowControlsContainer = ({ classes }) => (
+const WindowControlsContainer = ({ classes, noMaximize }) => (
   <div className={classes.controls}>
     <Minimize />
-    <Maximize />
+    {noMaximize ? null : <Maximize />}
     <Close />
   </div>
 );
@@ -29,7 +29,8 @@ const WindowControlsContainer = ({ classes }) => (
 WindowControlsContainer.propTypes = {
   classes: PropTypes.shape({
     controls: PropTypes.string
-  }).isRequired
+  }).isRequired,
+  noMaximize: PropTypes.bool.isRequired
 };
 
 export default withStyles(styles)(WindowControlsContainer);

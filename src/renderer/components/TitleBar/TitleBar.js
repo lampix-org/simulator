@@ -15,16 +15,21 @@ const styles = () => ({
   }
 });
 
-const TitleBar = ({ classes }) => (
+const TitleBar = ({ classes, noMaximize }) => (
   <div className={classes.titleBar}>
-    <WindowControlsContainer />
+    <WindowControlsContainer noMaximize={noMaximize} />
   </div>
 );
+
+TitleBar.defaultProps = {
+  noMaximize: false
+};
 
 TitleBar.propTypes = {
   classes: PropTypes.shape({
     titleBar: PropTypes.string
-  }).isRequired
+  }).isRequired,
+  noMaximize: PropTypes.bool
 };
 
 export default withStyles(styles)(TitleBar);

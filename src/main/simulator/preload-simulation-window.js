@@ -1,8 +1,7 @@
 const { ipcRenderer } = require('electron');
 const {
   CLOSE_WINDOW,
-  MINIMIZE_WINDOW,
-  MAXIMIZE_WINDOW
+  MINIMIZE_WINDOW
 } = require('../ipcEvents');
 
 window.ipcRenderer = ipcRenderer;
@@ -16,6 +15,5 @@ const payload = (data = {}) => Object.assign(data, {
 
 window.admin = {
   quit: () => ipcRenderer.send(CLOSE_WINDOW, payload()),
-  minimize: () => ipcRenderer.send(MINIMIZE_WINDOW, payload()),
-  maximize: () => ipcRenderer.send(MAXIMIZE_WINDOW, payload())
+  minimize: () => ipcRenderer.send(MINIMIZE_WINDOW, payload())
 };
