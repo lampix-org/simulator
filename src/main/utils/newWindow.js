@@ -13,7 +13,7 @@ const BrowserWindow = electron.BrowserWindow || electron.remote.BrowserWindow;
 
 let lampixLogo = null;
 
-if (isDev) {
+if (isDev()) {
   const { nativeImage } = electron;
   const pathToLogo = path.resolve(__dirname, '../../../', 'resources', 'icon.png');
   lampixLogo = nativeImage.createFromPath(pathToLogo);
@@ -33,7 +33,7 @@ const newWindow = ({
     height,
     x,
     y,
-    icon: isDev ? lampixLogo : undefined,
+    icon: isDev() ? lampixLogo : undefined,
     useContentSize: true,
     webPreferences: {
       webviewTag: false,

@@ -5,10 +5,27 @@ const {
   APP_CONFIG
 } = require('../../ipcEvents');
 
+const { initAppManagementListeners } = require('./initAppManagementListeners');
+const { initWindowManagementListeners } = require('./initWindowManagementListeners');
+const { initSimulationListeners } = require('./initSimulationListeners');
+const { initSimulatorSettingsListeners } = require('./initSimulatorSettingsListeners');
+const { initSimulatorClientEventListeners } = require('./initSimulatorClientEventListeners');
+const { initSimulatorLampixListeners } = require('./initSimulatorLampixListeners');
+
 // Each uiRelatedCallback should be an asynchronous function
 // Preferably one that sends information to the simulator's browser
 function handleAdminUIReady(updateURLs, sendSimulators, ...uiRelatedCallbacks) {
-  const enableUIEventsOnce = once(() => uiRelatedCallbacks.forEach((c) => c.call(this)));
+  const callbacks = [
+    ...uiRelatedCallbacks,
+    initAppManagementListeners,
+    initWindowManagementListeners,
+    initSimulationListeners,
+    initSimulatorSettingsListeners,
+    initSimulatorClientEventListeners,
+    initSimulatorLampixListeners
+  ];
+
+  const enableUIEventsOnce = once(() => callbacks.forEach((c) => c.call(this)));
 
   ipcMain.on(ADMIN_UI_READY, () => {
     enableUIEventsOnce();

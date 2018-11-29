@@ -17,6 +17,7 @@ const {
 } = require('../ipcEvents');
 
 const { Logger } = require('../Logger');
+const { simulationKeybindings } = require('./simulationKeybindings');
 
 // Allow simulator:// requests
 webFrame.registerURLSchemeAsPrivileged('simulator', {
@@ -27,9 +28,11 @@ window.ipcRenderer = ipcRenderer;
 
 const urlQueryParams = new URLSearchParams(global.location.search);
 const appUrl = urlQueryParams.get('url');
+const windowId = Number(urlQueryParams.get('windowId'));
 
 const payload = (data = {}) => Object.assign(data, {
-  url: appUrl
+  url: appUrl,
+  windowId
 });
 
 const createClientEventPayload = (event) => payload({
@@ -78,3 +81,5 @@ window._lampix_internal = {
   write_file: (requestJson) => ipcRenderer.send(WRITE_FILE, payload({ requestJson })),
   read_file: (requestJson) => ipcRenderer.send(READ_FILE, payload({ requestJson }))
 };
+
+simulationKeybindings(ipcRenderer, payload);

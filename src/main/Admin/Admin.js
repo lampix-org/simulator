@@ -1,7 +1,5 @@
 const { URL } = require('url');
 const { app } = require('electron');
-const { format: urlFormat } = require('url');
-const path = require('path');
 const { BrowserWindow } = require('electron');
 
 const { simulator } = require('../simulator');
@@ -13,11 +11,6 @@ const { Logger } = require('../Logger');
 const { isDev } = require('../utils/envCheck');
 const { safeJsonParse } = require('../utils/safeJsonParse');
 const {
-  initAppManagementListeners,
-  initWindowManagementListeners,
-  initSimulatorSettingsListeners,
-  initSimulatorClientEventListeners,
-  initSimulatorLampixListeners,
   handleAdminUIReady,
   sendSettingsBack
 } = require('./ipc');
@@ -37,12 +30,6 @@ const errors = {
 let simulatorPosition = 30;
 const simulatorPositionStep = 15;
 
-const simulationParentUrl = isDev ? `http://localhost:${process.env.PORT}/#/simulation` : urlFormat({
-  pathname: path.join(__dirname, 'index.html'),
-  protocol: 'file:',
-  slashes: true
-});
-
 class Admin {
   constructor() {
     this.storedURLs = new Set(store.get('urls') || []);
@@ -61,12 +48,7 @@ class Admin {
     handleAdminUIReady.call(
       this,
       this.updateRendererURLs,
-      this.sendSimulators,
-      initAppManagementListeners,
-      initWindowManagementListeners,
-      initSimulatorSettingsListeners,
-      initSimulatorClientEventListeners,
-      initSimulatorLampixListeners
+      this.sendSimulators
     );
   }
 
@@ -112,13 +94,13 @@ class Admin {
     this.simulators[inputURL] = simulator(url, {
       store,
       configStore,
-      isDev,
+      isDev: isDev(),
       onClosed,
       updateAdminUI,
       localServerOrigin: this.localServerOrigin
     });
 
-    const options = isDev ? { extraHeaders: 'pragma: no-cache\n' } : {};
+    const options = isDev() ? { extraHeaders: 'pragma: no-cache\n' } : {};
 
     Logger.info(`Loading app at ${inputURL}`);
     simulatorPosition += simulatorPositionStep;
@@ -126,8 +108,10 @@ class Admin {
 
     const simulationUrl = new URL(checkedURL);
     simulationUrl.searchParams.append('url', simulationUrl.href);
+    simulationUrl.searchParams.append('windowId', this.simulators[inputURL].window.id);
 
-    const simulationCtrlUrl = new URL(simulationParentUrl);
+    const simulationCtrlUrl = new URL(`${this.browser.webContents.getURL()}`);
+    simulationCtrlUrl.hash = 'simulation';
     simulationCtrlUrl.searchParams.append('windowId', this.simulators[inputURL].window.id);
 
     const extraParams = safeJsonParse(queryParams) || {};
@@ -250,6 +234,10 @@ class Admin {
     const windowId = winId || this.browser.id;
     const win = BrowserWindow.fromId(windowId);
 
+    if (!win) {
+      return;
+    }
+
     if (this.browser.id === win.id) {
       app.quit();
     } else {
@@ -260,12 +248,22 @@ class Admin {
   minimize(winId) {
     const windowId = winId || this.browser.id;
     const win = BrowserWindow.fromId(windowId);
+
+    if (!win) {
+      return;
+    }
+
     win.minimize();
   }
 
   maximize(winId) {
     const windowId = winId || this.browser.id;
     const win = BrowserWindow.fromId(windowId);
+
+    if (!win) {
+      return;
+    }
+
     if (win.isMaximized()) {
       win.unmaximize();
     } else {

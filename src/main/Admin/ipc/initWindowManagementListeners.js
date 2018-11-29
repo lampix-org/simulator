@@ -2,7 +2,7 @@ const { ipcMain } = require('electron');
 const {
   MINIMIZE_WINDOW,
   MAXIMIZE_WINDOW,
-  CLOSE_WINDOW
+  CLOSE_WINDOW,
 } = require('../../ipcEvents');
 
 function initWindowManagementListeners() {

@@ -18,7 +18,9 @@ const {
   MAXIMIZE_WINDOW,
   CLOSE_WINDOW
 } = require('../ipcEvents');
+
 const { Logger } = require('../Logger');
+const { simulatorKeybindings } = require('./simulatorKeybindings');
 
 window.Logger = Logger;
 window.ipcRenderer = ipcRenderer;
@@ -27,9 +29,11 @@ if (process.env.NODE_ENV === 'production') {
   window.onbeforeunload = () => false;
 }
 
+const payload = (data = {}) => Object.assign(data, {});
+
 window.admin = {
-  loadApp: (url) => ipcRenderer.send(LOAD_APP, { url }),
-  toggleMovement: (url) => ipcRenderer.send(TOGGLE_MOVEMENT, { url }),
+  loadApp: (url) => ipcRenderer.send(LOAD_APP, payload({ url })),
+  toggleMovement: (url) => ipcRenderer.send(TOGGLE_MOVEMENT, payload({ url })),
   setWatcherName: (url, watcherName) => ipcRenderer.send(SET_WATCHER_NAME, {
     url,
     watcherName
@@ -42,17 +46,17 @@ window.admin = {
     url,
     metadata
   }),
-  closeSimulator: (url) => ipcRenderer.send(CLOSE_SIMULATOR, { url }),
-  focusSimulator: (url) => ipcRenderer.send(FOCUS_SIMULATOR, { url }),
-  openDevTools: (url) => ipcRenderer.send(OPEN_DEV_TOOLS, { url }),
-  changeCategoryClassifier: (url, watcherName) => ipcRenderer.send(CHANGE_CATEGORY_SETTINGS, {
+  closeSimulator: (url) => ipcRenderer.send(CLOSE_SIMULATOR, payload({ url })),
+  focusSimulator: (url) => ipcRenderer.send(FOCUS_SIMULATOR, payload({ url })),
+  openDevTools: (url) => ipcRenderer.send(OPEN_DEV_TOOLS, payload({ url })),
+  changeCategoryClassifier: (url, watcherName) => ipcRenderer.send(CHANGE_CATEGORY_SETTINGS, payload({
     url,
     watcherName
-  }),
-  addAssociation: (name, url) => ipcRenderer.send(ADD_APP_NAME_URL_ASSOCIATION, {
+  })),
+  addAssociation: (name, url) => ipcRenderer.send(ADD_APP_NAME_URL_ASSOCIATION, payload({
     name,
     url
-  }),
+  })),
   removeAssociation: (name) => ipcRenderer.send(REMOVE_APP_NAME_URL_ASSOCIATION, name),
   saveScaleFactor: (value) => ipcRenderer.send(SAVE_SCALE_FACTOR, value),
   savePix: (object) => ipcRenderer.send(SAVE_PIX, object),
@@ -61,3 +65,5 @@ window.admin = {
   minimize: () => ipcRenderer.send(MINIMIZE_WINDOW),
   maximize: () => ipcRenderer.send(MAXIMIZE_WINDOW)
 };
+
+simulatorKeybindings(ipcRenderer, payload);

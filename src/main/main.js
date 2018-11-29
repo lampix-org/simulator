@@ -1,5 +1,5 @@
 // Module to control application life.
-const { app, Menu, protocol } = require('electron');
+const { app, protocol } = require('electron');
 const url = require('url');
 const path = require('path');
 const getPort = require('get-port');
@@ -7,7 +7,7 @@ const getPort = require('get-port');
 const { initialize } = require('./initialize');
 const { enableFileServing } = require('./enableFileServing');
 const { registerSimulatorProtocol } = require('./registerSimulatorProtocol');
-const { isDev, isProd, isDebuggingProd } = require('./utils/envCheck');
+const { isDev, isDebuggingProd } = require('./utils/envCheck');
 const { enableUpdates } = require('./enableUpdates');
 const { enableCacheBusting } = require('./enableCacheBusting');
 const { Logger } = require('./Logger');
@@ -35,55 +35,20 @@ const installExtensions = async () => {
 };
 
 async function createWindow() {
-  if (isDev || isDebuggingProd) {
+  if (isDev() || isDebuggingProd()) {
+    Logger.info('Installing development extensions...');
     await installExtensions();
+    Logger.info('Development extensions installed.');
   }
 
   initialize();
 
-  const appURL = isDev ? `http://localhost:${process.env.PORT}` : url.format({
+  const appURL = isDev() ? `http://localhost:${process.env.PORT}` : url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
     slashes: true
   });
 
-  if (isProd) {
-    const menuTemplate = [
-      {
-        label: 'Edit',
-        submenu: [
-          { role: 'undo' },
-          { role: 'redo' },
-          { type: 'separator' },
-          { role: 'cut' },
-          { role: 'copy' },
-          { role: 'paste' },
-          { role: 'selectall' }
-        ]
-      },
-      {
-        label: 'View',
-        submenu: [
-          { role: 'reload' },
-          { role: 'forcereload' }
-        ]
-      },
-      {
-        role: 'window',
-        submenu: [
-          { role: 'close' }
-        ]
-      }
-    ];
-    menuTemplate.unshift({
-      label: app.getName(),
-      submenu: [
-        { role: 'quit' }
-      ]
-    });
-    const menu = Menu.buildFromTemplate(menuTemplate);
-    Menu.setApplicationMenu(menu);
-  }
   // Create the admin window and load the index.html of the app.
   const { admin } = require('./Admin'); // eslint-disable-line
   admin.browser.loadURL(appURL);

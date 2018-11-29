@@ -12,7 +12,6 @@ exports.ERROR = event('ERROR');
 exports.ADMIN_UI_READY = event('ADMIN_UI_READY');
 exports.CLOSE_SIMULATOR = event('CLOSE_SIMULATOR');
 exports.FOCUS_SIMULATOR = event('FOCUS_SIMULATOR');
-exports.OPEN_DEV_TOOLS = event('OPEN_DEV_TOOLS');
 exports.CHANGE_CATEGORY_SETTINGS = event('CHANGE_CATEGORY_SETTINGS');
 exports.LOAD_APP = event('LOAD_APP');
 exports.APP_CONFIG = event('APP_CONFIG');
@@ -41,10 +40,14 @@ exports.UPDATE_WATCHER_SHAPE = event('UPDATE_WATCHER_SHAPE');
 exports.WRITE_FILE = event('WRITE_FILE');
 exports.READ_FILE = event('READ_FILE');
 
-// Window management
+// Simulation window management
 exports.MINIMIZE_WINDOW = event('MINIMIZE_WINDOW');
 exports.MAXIMIZE_WINDOW = event('MAXIMIZE_WINDOW');
 exports.CLOSE_WINDOW = event('CLOSE_WINDOW');
+
+// Simulation management
+exports.OPEN_DEV_TOOLS = event('OPEN_DEV_TOOLS');
+exports.RELOAD_SIMULATION = event('RELOAD_SIMULATION');
 
 // Logger
 exports.LOG_R_TO_M = event('LOG_R_TO_M');
