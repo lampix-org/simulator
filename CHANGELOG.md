@@ -1,3 +1,10 @@
+## 2.4.0
+##### *Nov 29, 2018*
+
+Highlights:
+
+- custom title bar for both the simulator and simulations
+
 ## 2.3.2
 ##### *Nov 27, 2018*
 
