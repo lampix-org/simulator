@@ -6,16 +6,19 @@ const {
 } = require('../../ipcEvents');
 
 function initWindowManagementListeners() {
-  ipcMain.on(MINIMIZE_WINDOW, () => {
-    this.minimize();
+  ipcMain.on(MINIMIZE_WINDOW, (event, data = {}) => {
+    const { windowId } = data;
+    this.minimize(windowId);
   });
 
-  ipcMain.on(MAXIMIZE_WINDOW, () => {
-    this.maximize();
+  ipcMain.on(MAXIMIZE_WINDOW, (event, data = {}) => {
+    const { windowId } = data;
+    this.maximize(windowId);
   });
 
-  ipcMain.on(CLOSE_WINDOW, () => {
-    this.quit();
+  ipcMain.on(CLOSE_WINDOW, (event, data = {}) => {
+    const { windowId } = data;
+    this.quit(windowId);
   });
 }
 

@@ -3,7 +3,8 @@ const { newWindow } = require('../utils/newWindow');
 
 const createOwnBrowser = ({
   configStore,
-  preloadPath,
+  simulationPreload,
+  windowPreload,
   onClosed
 }) => {
   const {
@@ -17,22 +18,25 @@ const createOwnBrowser = ({
     },
     options: {
       resizable: false,
+      webPreferences: {
+        preload: windowPreload
+      }
     },
     width: simulatorWindowWidth,
-    height: simulatorWindowHeight
+    height: simulatorWindowHeight + 25
   });
 
   let view = new BrowserView({
     webPreferences: {
       nodeIntegration: false,
-      preload: preloadPath
+      preload: simulationPreload
     }
   });
 
   win.setBrowserView(view);
   view.setBounds({
     x: 0,
-    y: 0,
+    y: 25,
     width: simulatorWindowWidth,
     height: simulatorWindowHeight
   });

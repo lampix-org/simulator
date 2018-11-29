@@ -59,5 +59,5 @@ window.admin = {
   saveUserDefinedClasses: (userDefinedClasses) => ipcRenderer.send(SAVE_USER_DEFINED_CLASSES, userDefinedClasses),
   quit: () => ipcRenderer.send(CLOSE_WINDOW),
   minimize: () => ipcRenderer.send(MINIMIZE_WINDOW),
-  maximize: () => ipcRenderer.send(MAXIMIZE_WINDOW),
+  maximize: () => ipcRenderer.send(MAXIMIZE_WINDOW)
 };

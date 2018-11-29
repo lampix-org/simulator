@@ -1,5 +1,8 @@
 const { URL } = require('url');
 const { app } = require('electron');
+const { format: urlFormat } = require('url');
+const path = require('path');
+const { BrowserWindow } = require('electron');
 
 const { simulator } = require('../simulator');
 const { createAdminBrowser } = require('./createAdminBrowser');
@@ -33,6 +36,12 @@ const errors = {
 
 let simulatorPosition = 30;
 const simulatorPositionStep = 15;
+
+const simulationParentUrl = isDev ? `http://localhost:${process.env.PORT}/#/simulation` : urlFormat({
+  pathname: path.join(__dirname, 'index.html'),
+  protocol: 'file:',
+  slashes: true
+});
 
 class Admin {
   constructor() {
@@ -115,18 +124,25 @@ class Admin {
     simulatorPosition += simulatorPositionStep;
     this.simulators[inputURL].window.setPosition(simulatorPosition, simulatorPosition, true);
 
-    const urlToLoad = new URL(checkedURL);
-    urlToLoad.searchParams.append('url', urlToLoad.href);
+    const simulationUrl = new URL(checkedURL);
+    simulationUrl.searchParams.append('url', simulationUrl.href);
+
+    const simulationCtrlUrl = new URL(simulationParentUrl);
+    simulationCtrlUrl.searchParams.append('windowId', this.simulators[inputURL].window.id);
 
     const extraParams = safeJsonParse(queryParams) || {};
 
     Object.keys(extraParams).forEach((param) => {
-      urlToLoad.searchParams.append(param, extraParams[param]);
+      simulationUrl.searchParams.append(param, extraParams[param]);
     });
 
     this.simulators[inputURL]
+      .window.webContents
+      .loadURL(simulationCtrlUrl.href);
+
+    this.simulators[inputURL]
       .appBrowser.webContents
-      .loadURL(urlToLoad.href, options);
+      .loadURL(simulationUrl.href, options);
 
     this.updateURLListOrder(alias || url);
     this.sendSimulators();
@@ -230,19 +246,30 @@ class Admin {
     this.config.userDefinedClasses = userDefinedClasses;
   }
 
-  quit() {
-    app.quit();
-  }
+  quit(winId) {
+    const windowId = winId || this.browser.id;
+    const win = BrowserWindow.fromId(windowId);
 
-  minimize() {
-    this.browser.minimize();
-  }
-
-  maximize() {
-    if (this.browser.isMaximized()) {
-      this.browser.unmaximize();
+    if (this.browser.id === win.id) {
+      app.quit();
     } else {
-      this.browser.maximize();
+      win.close();
+    }
+  }
+
+  minimize(winId) {
+    const windowId = winId || this.browser.id;
+    const win = BrowserWindow.fromId(windowId);
+    win.minimize();
+  }
+
+  maximize(winId) {
+    const windowId = winId || this.browser.id;
+    const win = BrowserWindow.fromId(windowId);
+    if (win.isMaximized()) {
+      win.unmaximize();
+    } else {
+      win.maximize();
     }
   }
 }

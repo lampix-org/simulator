@@ -4,7 +4,7 @@ import { hot } from 'react-hot-loader';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import store from '../../store';
-import Core from '../Core';
+import AppRouter from '../AppRouter';
 
 class App extends Component {
   render() {
@@ -12,7 +12,7 @@ class App extends Component {
       <Provider store={store}>
         <React.Fragment>
           <CssBaseline />
-          <Core />
+          <AppRouter />
         </React.Fragment>
       </Provider>
     );

@@ -6,7 +6,6 @@ const { Logger } = require('../Logger');
 // Utils
 const { naiveIDGenerator } = require('../utils/naiveIDGenerator');
 const { createOwnBrowser } = require('./createOwnBrowser');
-const { preloadName } = require('./preloadName');
 const { createWatcherDataCategories } = require('./createWatcherDataCategories');
 const { createSettings } = require('./createSettings');
 
@@ -38,7 +37,6 @@ const watcherData = () => createWatcherDataCategories();
 const simulator = (url, {
   store,
   configStore,
-  isDev,
   onClosed,
   updateAdminUI
 }) => {
@@ -61,7 +59,8 @@ const simulator = (url, {
   const { window, appBrowser } = createOwnBrowser({
     configStore,
     onClosed,
-    preloadPath: path.join(__dirname, preloadName(isDev))
+    simulationPreload: path.join(__dirname, 'preload-simulation.js'),
+    windowPreload: path.join(__dirname, 'preload-simulation-window.js')
   });
 
   return Object.assign(
