@@ -83,7 +83,7 @@ class SimulatorList extends React.Component {
       )) : (
         <React.Fragment>
           <Typography variant="display1">
-            {'Looks like you haven\'t loaded any simulators :('}
+            {'Looks like you haven\'t loaded any simulations :('}
           </Typography>
 
           <Separator />
