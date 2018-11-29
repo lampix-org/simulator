@@ -13,7 +13,8 @@ module.exports = {
   target: 'electron-main',
   entry: {
     main: path.join(cwd, 'src', 'main', 'main.js'),
-    'preload-simulator': path.resolve(cwd, 'src/main/simulator/preload.js'),
+    'preload-simulation': path.resolve(cwd, 'src/main/simulator/preload-simulation.js'),
+    'preload-simulation-window': path.resolve(cwd, 'src/main/simulator/preload-simulation-window.js'),
     'preload-admin': path.resolve(cwd, 'src/main/Admin/preload.js')
   },
   output: {
