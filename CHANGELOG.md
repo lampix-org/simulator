@@ -1,3 +1,16 @@
+## 2.5.0
+##### *Dec 4, 2019*
+
+Highlights:
+
+- `cmd/ctrl + q` to close focused window
+- `cmd/ctrl + shift + i` to open simulation devtools
+- updated to **electron@3.0.10** (Chromium v66 and upstream bug fixes)
+
+Captain's log:
+
+- `cmd/ctrl + shift + i` only works when the simulation itself is focused, not the host window (which can be focused by clicking on the title bar)
+
 ## 2.4.0
 ##### *Nov 29, 2018*
 
