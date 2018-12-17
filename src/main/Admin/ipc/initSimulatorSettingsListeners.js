@@ -17,8 +17,6 @@ function initSimulatorSettingsListeners() {
     const { settings, registeredData } = this.simulators[data.url];
     settings.watcherName = data.watcherName;
 
-    console.log(settings.watcherName);
-
     sendSettingsBack(event.sender, data.url, {
       settings,
       registeredData

@@ -1,6 +1,7 @@
 const { paperOutline } = require('../../../utils/paperOutline');
 const { hexagonOutline } = require('../../../utils/hexagonOutline');
 const { somePointsInShape } = require('../../../utils/somePointsInShape');
+const { matchesWatcherReqs } = require('../../matchesWatcherReqs');
 
 let idCounter = 0;
 
@@ -41,7 +42,7 @@ const handlesClassification = ({
     Object.keys(watchers).forEach((wKey, i) => {
       const w = watchers[wKey];
 
-      if (w.paused || w.name !== watcherName) {
+      if (w.paused || !matchesWatcherReqs(w, watcherName)) {
         return;
       }
 
