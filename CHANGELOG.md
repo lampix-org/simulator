@@ -1,3 +1,10 @@
+## 2.5.2
+##### *Dec 17, 2019*
+
+Highlights:
+
+- provide dummy `package_data` (package.json info) and `is_local` property to `getApps()` method of lampixjs API   
+
 ## 2.5.1
 ##### *Dec 17, 2019*
 
