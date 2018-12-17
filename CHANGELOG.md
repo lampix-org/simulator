@@ -1,3 +1,10 @@
+## 2.5.1
+##### *Dec 17, 2019*
+
+Highlights:
+
+- [UI] Watcher name now shows neural network name where applicable
+
 ## 2.5.0
 ##### *Dec 4, 2019*
 
