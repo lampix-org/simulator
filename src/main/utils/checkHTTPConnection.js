@@ -4,7 +4,7 @@ const { Logger } = require('../Logger');
 const checkHTTPConnection = async (url) => {
   Logger.info(`Attempting to connect to ${url.href}`);
   try {
-    const res = await got.head(url.href);
+    const res = await got.get(url.href);
 
     if (res.statusCode >= 200 && res.statusCode <= 299) {
       Logger.info('Connection check passed, assuming valid URL');
