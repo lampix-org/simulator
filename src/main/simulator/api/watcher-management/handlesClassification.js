@@ -63,7 +63,8 @@ const handlesClassification = ({
           },
           outline: {
             points: polygon.map((p) => ({ posX: p.x, posY: p.y }))
-          }
+          },
+          metadata
         });
 
         logger.info('Calling onObjectsLocated');
@@ -74,7 +75,7 @@ const handlesClassification = ({
           data[data.length - 1].classTag = recognizedClass;
 
           logger.info('Calling onObjectsClassified');
-          browser.webContents.executeJavaScript(onObjectsClassified(w.id || i, data, metadata));
+          browser.webContents.executeJavaScript(onObjectsClassified(w.id || i, data));
         }, 0);
       }
     });
